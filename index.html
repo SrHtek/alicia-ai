@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 
 <meta charset="UTF-8">
@@ -45,8 +46,6 @@ body {
 }
 
 
-/* SIDEBAR */
-
 .sidebar {
 
     width: 260px;
@@ -55,7 +54,7 @@ body {
 
     border-right:
         1px solid
-        rgba(0, 220, 255, 0.15);
+        rgba(0, 220, 255, .15);
 
     display: flex;
 
@@ -90,8 +89,6 @@ body {
 }
 
 
-/* MAIN */
-
 .main {
 
     flex: 1;
@@ -105,8 +102,6 @@ body {
 }
 
 
-/* HEADER */
-
 .header {
 
     height: 70px;
@@ -115,12 +110,11 @@ body {
 
     align-items: center;
 
-    padding:
-        0 25px;
+    padding: 0 25px;
 
     border-bottom:
         1px solid
-        rgba(0, 220, 255, 0.12);
+        rgba(0, 220, 255, .12);
 
     background: #070a0e;
 
@@ -156,8 +150,6 @@ body {
 
 }
 
-
-/* CHAT */
 
 .chat {
 
@@ -226,8 +218,6 @@ body {
 }
 
 
-/* WELCOME */
-
 .welcome {
 
     text-align: center;
@@ -259,8 +249,6 @@ body {
 
 }
 
-
-/* SUGGESTIONS */
 
 .suggestions {
 
@@ -309,8 +297,6 @@ body {
 }
 
 
-/* THINKING */
-
 .thinking {
 
     display: flex;
@@ -340,35 +326,37 @@ body {
 
 
 .thinking span:nth-child(2) {
-
     animation-delay: .15s;
-
 }
 
 
 .thinking span:nth-child(3) {
-
     animation-delay: .3s;
-
 }
 
 
 @keyframes thinking {
 
     0%, 100% {
+
         opacity: .25;
-        transform: translateY(0);
+
+        transform:
+            translateY(0);
+
     }
 
     50% {
+
         opacity: 1;
-        transform: translateY(-4px);
+
+        transform:
+            translateY(-4px);
+
     }
 
 }
 
-
-/* INPUT */
 
 .input-area {
 
@@ -428,15 +416,6 @@ textarea {
 }
 
 
-button {
-
-    border: none;
-
-    cursor: pointer;
-
-}
-
-
 .send {
 
     width: 42px;
@@ -456,12 +435,11 @@ button {
 
 .send:hover {
 
-    filter: brightness(1.1);
+    filter:
+        brightness(1.1);
 
 }
 
-
-/* IMAGE */
 
 .image-button {
 
@@ -499,8 +477,6 @@ button {
 
 }
 
-
-/* MOBILE */
 
 @media(max-width: 700px) {
 
@@ -555,7 +531,6 @@ button {
     </aside>
 
 
-
     <main class="main">
 
 
@@ -572,12 +547,10 @@ button {
         </header>
 
 
-
         <section
             class="chat"
             id="chat"
         >
-
 
             <div
                 class="welcome"
@@ -595,6 +568,7 @@ button {
 
 
                 <div class="suggestions">
+
 
                     <div
                         class="suggestion"
@@ -619,13 +593,12 @@ button {
                         Analizá esta conversación
                     </div>
 
+
                 </div>
 
             </div>
 
-
         </section>
-
 
 
         <div class="input-area">
@@ -656,7 +629,11 @@ button {
 
                 <button
                     class="image-button"
-                    onclick="document.getElementById('imageInput').click()"
+                    onclick="
+                        document
+                        .getElementById('imageInput')
+                        .click()
+                    "
                 >
                     +
                 </button>
@@ -691,32 +668,64 @@ button {
 <script>
 
 
+// =====================================================
+// CONFIGURACIÓN
+// =====================================================
+
 const WORKER_URL =
     "https://alica-ai.hector-s-g-rivero.workers.dev/";
 
 
 const STORAGE_KEY =
-    "alicia_conversation_v2";
+    "alicia_conversation_v3";
 
 
-const INITIATIVE_MIN =
-    3 * 60 * 1000;
+const LAST_CHECK_KEY =
+    "alicia_last_initiative_check";
 
 
-const INITIATIVE_MAX =
-    7 * 60 * 1000;
+const NEXT_CHECK_KEY =
+    "alicia_next_initiative_check";
 
 
 let messages = [];
 
 let selectedImage = null;
 
-let initiativeTimer = null;
+let initiativeBusy = false;
 
 
 
 // =====================================================
-// CARGAR CONVERSACIÓN
+// MEMORIA
+// =====================================================
+
+function saveConversation() {
+
+    try {
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(messages)
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "No se pudo guardar la conversación:",
+            error
+        );
+
+    }
+
+}
+
+
+
+// =====================================================
+// CARGAR MEMORIA
 // =====================================================
 
 function loadConversation() {
@@ -724,20 +733,44 @@ function loadConversation() {
     try {
 
         const saved =
-            localStorage.getItem(STORAGE_KEY);
+            localStorage.getItem(
+                STORAGE_KEY
+            );
 
-        if (saved) {
 
-            messages =
-                JSON.parse(saved);
+        if (!saved) {
 
-            renderMessages();
+            messages = [];
+
+            return;
+
+        }
+
+
+        const parsed =
+            JSON.parse(saved);
+
+
+        if (Array.isArray(parsed)) {
+
+            messages = parsed;
+
+        }
+
+        else {
+
+            messages = [];
 
         }
 
     }
 
-    catch {
+    catch (error) {
+
+        console.error(
+            "No se pudo cargar la conversación:",
+            error
+        );
 
         messages = [];
 
@@ -748,22 +781,7 @@ function loadConversation() {
 
 
 // =====================================================
-// GUARDAR CONVERSACIÓN
-// =====================================================
-
-function saveConversation() {
-
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(messages)
-    );
-
-}
-
-
-
-// =====================================================
-// ESCAPAR HTML
+// HTML SEGURO
 // =====================================================
 
 function escapeHTML(text) {
@@ -771,8 +789,10 @@ function escapeHTML(text) {
     const div =
         document.createElement("div");
 
+
     div.textContent =
         text;
+
 
     return div.innerHTML;
 
@@ -781,7 +801,7 @@ function escapeHTML(text) {
 
 
 // =====================================================
-// MOSTRAR MENSAJES
+// RENDER
 // =====================================================
 
 function renderMessages() {
@@ -794,19 +814,25 @@ function renderMessages() {
         document.getElementById("welcome");
 
 
-    if (messages.length > 0) {
+    chat.innerHTML = "";
 
-        if (welcome) {
 
-            welcome.style.display =
-                "none";
+    if (messages.length === 0) {
 
-        }
+        chat.appendChild(
+            welcome
+        );
+
+        welcome.style.display =
+            "block";
+
+        return;
 
     }
 
 
-    chat.innerHTML = "";
+    welcome.style.display =
+        "none";
 
 
     messages.forEach(message => {
@@ -814,13 +840,19 @@ function renderMessages() {
         const wrapper =
             document.createElement("div");
 
+
         wrapper.className =
             "message " +
-            message.role;
+            (
+                message.role === "user"
+                    ? "user"
+                    : "assistant"
+            );
 
 
         const content =
             document.createElement("div");
+
 
         content.className =
             "message-content";
@@ -832,9 +864,14 @@ function renderMessages() {
             );
 
 
-        wrapper.appendChild(content);
+        wrapper.appendChild(
+            content
+        );
 
-        chat.appendChild(wrapper);
+
+        chat.appendChild(
+            wrapper
+        );
 
     });
 
@@ -857,9 +894,14 @@ function addMessage(
 
     messages.push({
 
-        role: role,
+        role:
+            role,
 
-        content: content
+        content:
+            content,
+
+        timestamp:
+            Date.now()
 
     });
 
@@ -873,7 +915,7 @@ function addMessage(
 
 
 // =====================================================
-// ENVIAR MENSAJE
+// ENVIAR
 // =====================================================
 
 async function sendMessage() {
@@ -888,7 +930,10 @@ async function sendMessage() {
         input.value.trim();
 
 
-    if (!text && !selectedImage) {
+    if (
+        !text &&
+        !selectedImage
+    ) {
 
         return;
 
@@ -899,7 +944,8 @@ async function sendMessage() {
         selectedImage;
 
 
-    input.value = "";
+    input.value =
+        "";
 
 
     input.style.height =
@@ -933,7 +979,9 @@ async function sendMessage() {
 
 
     const thinking =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     thinking.className =
@@ -966,12 +1014,7 @@ async function sendMessage() {
         .appendChild(thinking);
 
 
-    document
-        .getElementById("chat")
-        .scrollTop =
-            document
-            .getElementById("chat")
-            .scrollHeight;
+    scrollChat();
 
 
     try {
@@ -981,7 +1024,8 @@ async function sendMessage() {
                 WORKER_URL,
                 {
 
-                    method: "POST",
+                    method:
+                        "POST",
 
                     headers: {
 
@@ -993,7 +1037,8 @@ async function sendMessage() {
                     body:
                         JSON.stringify({
 
-                            message: text,
+                            message:
+                                text,
 
                             image:
                                 imageToSend
@@ -1009,17 +1054,7 @@ async function sendMessage() {
             await response.json();
 
 
-        const thinkingElement =
-            document.getElementById(
-                "thinking"
-            );
-
-
-        if (thinkingElement) {
-
-            thinkingElement.remove();
-
-        }
+        removeThinking();
 
 
         if (!response.ok) {
@@ -1028,7 +1063,7 @@ async function sendMessage() {
 
                 "assistant",
 
-                "No pude conectarme con mi cerebro ahora mismo.\n\n" +
+                "No pude procesar eso ahora mismo.\n\n" +
                 (
                     data.error ||
                     "Error desconocido."
@@ -1063,17 +1098,7 @@ async function sendMessage() {
 
     catch (error) {
 
-        const thinkingElement =
-            document.getElementById(
-                "thinking"
-            );
-
-
-        if (thinkingElement) {
-
-            thinkingElement.remove();
-
-        }
+        removeThinking();
 
 
         addMessage(
@@ -1086,6 +1111,47 @@ async function sendMessage() {
         );
 
     }
+
+}
+
+
+
+// =====================================================
+// THINKING
+// =====================================================
+
+function removeThinking() {
+
+    const thinking =
+        document.getElementById(
+            "thinking"
+        );
+
+
+    if (thinking) {
+
+        thinking.remove();
+
+    }
+
+}
+
+
+
+// =====================================================
+// SCROLL
+// =====================================================
+
+function scrollChat() {
+
+    const chat =
+        document.getElementById(
+            "chat"
+        );
+
+
+    chat.scrollTop =
+        chat.scrollHeight;
 
 }
 
@@ -1114,7 +1180,7 @@ function useSuggestion(text) {
 
 
 // =====================================================
-// IMÁGENES
+// IMAGEN
 // =====================================================
 
 document
@@ -1202,14 +1268,16 @@ function clearImage() {
         .getElementById(
             "previewImage"
         )
-        .src = "";
+        .src =
+            "";
 
 
     document
         .getElementById(
             "imageInput"
         )
-        .value = "";
+        .value =
+            "";
 
 }
 
@@ -1254,6 +1322,7 @@ document
             this.style.height =
                 "auto";
 
+
             this.style.height =
                 Math.min(
                     this.scrollHeight,
@@ -1266,62 +1335,87 @@ document
 
 
 // =====================================================
-// INICIATIVA DE ALICIA
+// INICIATIVA
 // =====================================================
 
-function scheduleInitiative() {
+function scheduleNextInitiativeCheck() {
 
-    if (initiativeTimer) {
+    const minimum =
+        3 * 60 * 1000;
 
-        clearTimeout(
-            initiativeTimer
-        );
 
-    }
+    const maximum =
+        7 * 60 * 1000;
 
 
     const delay =
         Math.floor(
             Math.random() *
             (
-                INITIATIVE_MAX -
-                INITIATIVE_MIN
+                maximum -
+                minimum
             )
         ) +
-        INITIATIVE_MIN;
+        minimum;
 
 
-    initiativeTimer =
-        setTimeout(
-            checkInitiative,
-            delay
-        );
+    const next =
+        Date.now() +
+        delay;
+
+
+    localStorage.setItem(
+        NEXT_CHECK_KEY,
+        String(next)
+    );
 
 }
 
 
 
+// =====================================================
+// CHEQUEAR INICIATIVA
+// =====================================================
+
 async function checkInitiative() {
 
-    if (
-        !messages.length
-    ) {
-
-        scheduleInitiative();
+    if (initiativeBusy) {
 
         return;
 
     }
 
 
+    if (
+        messages.length === 0
+    ) {
+
+        scheduleNextInitiativeCheck();
+
+        return;
+
+    }
+
+
+    initiativeBusy =
+        true;
+
+
     try {
+
+        localStorage.setItem(
+            LAST_CHECK_KEY,
+            String(Date.now())
+        );
+
 
         const response =
             await fetch(
                 WORKER_URL,
                 {
 
-                    method: "POST",
+                    method:
+                        "POST",
 
                     headers: {
 
@@ -1337,7 +1431,7 @@ async function checkInitiative() {
                                 true,
 
                             conversation:
-                                messages.slice(-12)
+                                messages.slice(-16)
 
                         })
 
@@ -1368,29 +1462,103 @@ async function checkInitiative() {
     catch (error) {
 
         console.log(
-            "Iniciativa:",
+            "Chequeo de iniciativa:",
             error
         );
 
     }
 
+    finally {
 
-    scheduleInitiative();
+        initiativeBusy =
+            false;
+
+
+        scheduleNextInitiativeCheck();
+
+    }
 
 }
 
 
 
 // =====================================================
-// INICIAR
+// CONTROL DEL TIEMPO
+// =====================================================
+
+function initiativeLoop() {
+
+    const next =
+        Number(
+            localStorage.getItem(
+                NEXT_CHECK_KEY
+            )
+        );
+
+
+    if (!next) {
+
+        scheduleNextInitiativeCheck();
+
+        return;
+
+    }
+
+
+    if (
+        Date.now() >= next
+    ) {
+
+        checkInitiative();
+
+    }
+
+}
+
+
+
+// =====================================================
+// ARRANQUE
 // =====================================================
 
 loadConversation();
 
-scheduleInitiative();
+renderMessages();
+
+scheduleNextInitiativeCheck();
+
+
+// Revisa cada 30 segundos si corresponde
+// hacer el chequeo de iniciativa.
+
+setInterval(
+    initiativeLoop,
+    30 * 1000
+);
+
+
+// Si volvés a la pestaña después de un rato,
+// también comprobamos.
+
+document.addEventListener(
+    "visibilitychange",
+    function() {
+
+        if (
+            document.visibilityState ===
+            "visible"
+        ) {
+
+            initiativeLoop();
+
+        }
+
+    }
+);
 
 
 </script>
 
 </body>
+
 </html>
