@@ -10,13 +10,19 @@ content="width=device-width, initial-scale=1.0">
 
 <title>Alicia AI</title>
 
+
 <style>
+
+/* =====================================================
+   INTERFAZ ORIGINAL
+   ===================================================== */
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
+
 
 body {
 
@@ -39,6 +45,7 @@ body {
 .app {
 
     width: 100%;
+
     height: 100vh;
 
     display: flex;
@@ -54,7 +61,7 @@ body {
 
     border-right:
         1px solid
-        rgba(0, 220, 255, .15);
+        rgba(0, 220, 255, 0.15);
 
     display: flex;
 
@@ -110,11 +117,12 @@ body {
 
     align-items: center;
 
-    padding: 0 25px;
+    padding:
+        0 25px;
 
     border-bottom:
         1px solid
-        rgba(0, 220, 255, .12);
+        rgba(0, 220, 255, 0.12);
 
     background: #070a0e;
 
@@ -183,7 +191,8 @@ body {
 
     max-width: 750px;
 
-    padding: 15px 18px;
+    padding:
+        15px 18px;
 
     border-radius: 15px;
 
@@ -194,8 +203,7 @@ body {
 }
 
 
-.message.assistant
-.message-content {
+.message.assistant .message-content {
 
     background: #0b1117;
 
@@ -206,8 +214,7 @@ body {
 }
 
 
-.message.user
-.message-content {
+.message.user .message-content {
 
     background: #123541;
 
@@ -319,19 +326,24 @@ body {
     border-radius: 50%;
 
     animation:
-        thinking 1.2s
-        infinite;
+        thinking 1.2s infinite;
 
 }
 
 
 .thinking span:nth-child(2) {
-    animation-delay: .15s;
+
+    animation-delay:
+        .15s;
+
 }
 
 
 .thinking span:nth-child(3) {
-    animation-delay: .3s;
+
+    animation-delay:
+        .3s;
+
 }
 
 
@@ -416,6 +428,15 @@ textarea {
 }
 
 
+button {
+
+    border: none;
+
+    cursor: pointer;
+
+}
+
+
 .send {
 
     width: 42px;
@@ -435,8 +456,7 @@ textarea {
 
 .send:hover {
 
-    filter:
-        brightness(1.1);
+    filter: brightness(1.1);
 
 }
 
@@ -574,7 +594,9 @@ textarea {
                         class="suggestion"
                         onclick="useSuggestion('Contame algo interesante')"
                     >
+
                         Contame algo interesante
+
                     </div>
 
 
@@ -582,7 +604,9 @@ textarea {
                         class="suggestion"
                         onclick="useSuggestion('¿Qué podés hacer?')"
                     >
+
                         ¿Qué podés hacer?
+
                     </div>
 
 
@@ -590,7 +614,9 @@ textarea {
                         class="suggestion"
                         onclick="useSuggestion('Analizá esta conversación')"
                     >
+
                         Analizá esta conversación
+
                     </div>
 
 
@@ -635,7 +661,9 @@ textarea {
                         .click()
                     "
                 >
+
                     +
+
                 </button>
 
 
@@ -650,7 +678,9 @@ textarea {
                     class="send"
                     onclick="sendMessage()"
                 >
+
                     ↑
+
                 </button>
 
 
@@ -680,19 +710,29 @@ const STORAGE_KEY =
     "alicia_conversation_v3";
 
 
-const LAST_CHECK_KEY =
-    "alicia_last_initiative_check";
+/*
+    Alicia revisará periódicamente si tiene
+    un motivo natural para hablar.
+
+    No significa que vaya a hablar cada 2 minutos.
+    El modelo decide.
+*/
+
+const INITIATIVE_CHECK_MIN =
+    90 * 1000;
 
 
-const NEXT_CHECK_KEY =
-    "alicia_next_initiative_check";
+const INITIATIVE_CHECK_MAX =
+    180 * 1000;
 
 
 let messages = [];
 
 let selectedImage = null;
 
-let initiativeBusy = false;
+let initiativeTimer = null;
+
+let initiativeChecking = false;
 
 
 
@@ -704,9 +744,25 @@ function saveConversation() {
 
     try {
 
+        const data = {
+
+            version: 3,
+
+            savedAt:
+                Date.now(),
+
+            messages:
+                messages
+
+        };
+
+
         localStorage.setItem(
+
             STORAGE_KEY,
-            JSON.stringify(messages)
+
+            JSON.stringify(data)
+
         );
 
     }
@@ -747,28 +803,57 @@ function loadConversation() {
         }
 
 
-        const parsed =
+        const data =
             JSON.parse(saved);
 
 
-        if (Array.isArray(parsed)) {
+        // Compatibilidad con formatos anteriores
 
-            messages = parsed;
+        if (Array.isArray(data)) {
+
+            messages =
+                data;
+
+        }
+
+        else if (
+            data &&
+            Array.isArray(data.messages)
+        ) {
+
+            messages =
+                data.messages;
 
         }
 
         else {
 
-            messages = [];
+            messages =
+                [];
 
         }
+
+
+        // Limpiar datos corruptos
+
+        messages =
+            messages.filter(
+                item =>
+                    item &&
+                    (
+                        item.role === "user" ||
+                        item.role === "assistant"
+                    ) &&
+                    typeof item.content === "string"
+            );
+
 
     }
 
     catch (error) {
 
         console.error(
-            "No se pudo cargar la conversación:",
+            "Error cargando memoria:",
             error
         );
 
@@ -781,7 +866,7 @@ function loadConversation() {
 
 
 // =====================================================
-// HTML SEGURO
+// ESCAPAR HTML
 // =====================================================
 
 function escapeHTML(text) {
@@ -801,7 +886,7 @@ function escapeHTML(text) {
 
 
 // =====================================================
-// RENDER
+// RENDERIZAR
 // =====================================================
 
 function renderMessages() {
@@ -817,25 +902,37 @@ function renderMessages() {
     chat.innerHTML = "";
 
 
-    if (messages.length === 0) {
+    if (
+        messages.length === 0
+    ) {
 
-        chat.appendChild(
-            welcome
-        );
+        if (welcome) {
 
-        welcome.style.display =
-            "block";
+            chat.appendChild(
+                welcome
+            );
+
+            welcome.style.display =
+                "block";
+
+        }
 
         return;
 
     }
 
 
-    welcome.style.display =
-        "none";
+    if (welcome) {
+
+        welcome.style.display =
+            "none";
+
+    }
 
 
-    messages.forEach(message => {
+    for (
+        const message of messages
+    ) {
 
         const wrapper =
             document.createElement("div");
@@ -843,11 +940,7 @@ function renderMessages() {
 
         wrapper.className =
             "message " +
-            (
-                message.role === "user"
-                    ? "user"
-                    : "assistant"
-            );
+            message.role;
 
 
         const content =
@@ -860,7 +953,7 @@ function renderMessages() {
 
         content.innerHTML =
             escapeHTML(
-                message.content || ""
+                message.content
             );
 
 
@@ -873,7 +966,7 @@ function renderMessages() {
             wrapper
         );
 
-    });
+    }
 
 
     chat.scrollTop =
@@ -891,6 +984,16 @@ function addMessage(
     role,
     content
 ) {
+
+    if (
+        !content ||
+        !content.trim()
+    ) {
+
+        return;
+
+    }
+
 
     messages.push({
 
@@ -915,7 +1018,7 @@ function addMessage(
 
 
 // =====================================================
-// ENVIAR
+// ENVIAR MENSAJE
 // =====================================================
 
 async function sendMessage() {
@@ -971,17 +1074,11 @@ async function sendMessage() {
     }
 
 
-    if (imageToSend) {
-
-        clearImage();
-
-    }
+    clearImage();
 
 
     const thinking =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
 
     thinking.className =
@@ -1011,17 +1108,28 @@ async function sendMessage() {
 
     document
         .getElementById("chat")
-        .appendChild(thinking);
+        .appendChild(
+            thinking
+        );
 
 
-    scrollChat();
+    const chat =
+        document.getElementById(
+            "chat"
+        );
+
+
+    chat.scrollTop =
+        chat.scrollHeight;
 
 
     try {
 
         const response =
             await fetch(
+
                 WORKER_URL,
+
                 {
 
                     method:
@@ -1054,7 +1162,17 @@ async function sendMessage() {
             await response.json();
 
 
-        removeThinking();
+        const thinkingElement =
+            document.getElementById(
+                "thinking"
+            );
+
+
+        if (thinkingElement) {
+
+            thinkingElement.remove();
+
+        }
 
 
         if (!response.ok) {
@@ -1063,7 +1181,7 @@ async function sendMessage() {
 
                 "assistant",
 
-                "No pude procesar eso ahora mismo.\n\n" +
+                "No pude conectarme con mi cerebro ahora mismo.\n\n" +
                 (
                     data.error ||
                     "Error desconocido."
@@ -1076,7 +1194,10 @@ async function sendMessage() {
         }
 
 
-        if (data.reply) {
+        if (
+            data.reply &&
+            typeof data.reply === "string"
+        ) {
 
             addMessage(
                 "assistant",
@@ -1088,17 +1209,38 @@ async function sendMessage() {
         else {
 
             addMessage(
+
                 "assistant",
+
                 "No recibí una respuesta."
+
             );
 
         }
+
+
+        /*
+            Después de una conversación normal,
+            reiniciamos el reloj de iniciativa.
+        */
+
+        scheduleInitiative();
 
     }
 
     catch (error) {
 
-        removeThinking();
+        const thinkingElement =
+            document.getElementById(
+                "thinking"
+            );
+
+
+        if (thinkingElement) {
+
+            thinkingElement.remove();
+
+        }
 
 
         addMessage(
@@ -1111,47 +1253,6 @@ async function sendMessage() {
         );
 
     }
-
-}
-
-
-
-// =====================================================
-// THINKING
-// =====================================================
-
-function removeThinking() {
-
-    const thinking =
-        document.getElementById(
-            "thinking"
-        );
-
-
-    if (thinking) {
-
-        thinking.remove();
-
-    }
-
-}
-
-
-
-// =====================================================
-// SCROLL
-// =====================================================
-
-function scrollChat() {
-
-    const chat =
-        document.getElementById(
-            "chat"
-        );
-
-
-    chat.scrollTop =
-        chat.scrollHeight;
 
 }
 
@@ -1180,7 +1281,7 @@ function useSuggestion(text) {
 
 
 // =====================================================
-// IMAGEN
+// IMÁGENES
 // =====================================================
 
 document
@@ -1208,6 +1309,9 @@ document
                 alert(
                     "La imagen es demasiado grande. Máximo 8 MB."
                 );
+
+                this.value =
+                    "";
 
                 return;
 
@@ -1338,48 +1442,75 @@ document
 // INICIATIVA
 // =====================================================
 
-function scheduleNextInitiativeCheck() {
+function getRandomInitiativeDelay() {
 
-    const minimum =
-        3 * 60 * 1000;
+    return Math.floor(
 
+        Math.random() *
+        (
+            INITIATIVE_CHECK_MAX -
+            INITIATIVE_CHECK_MIN
+        )
 
-    const maximum =
-        7 * 60 * 1000;
-
-
-    const delay =
-        Math.floor(
-            Math.random() *
-            (
-                maximum -
-                minimum
-            )
-        ) +
-        minimum;
-
-
-    const next =
-        Date.now() +
-        delay;
-
-
-    localStorage.setItem(
-        NEXT_CHECK_KEY,
-        String(next)
-    );
+    ) +
+    INITIATIVE_CHECK_MIN;
 
 }
 
 
 
-// =====================================================
-// CHEQUEAR INICIATIVA
-// =====================================================
+function scheduleInitiative() {
+
+    if (initiativeTimer) {
+
+        clearTimeout(
+            initiativeTimer
+        );
+
+    }
+
+
+    /*
+        Si no hay conversación,
+        Alicia no tiene contexto suficiente
+        para iniciar algo.
+    */
+
+    if (
+        messages.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const delay =
+        getRandomInitiativeDelay();
+
+
+    initiativeTimer =
+        setTimeout(
+
+            checkInitiative,
+
+            delay
+
+        );
+
+}
+
+
 
 async function checkInitiative() {
 
-    if (initiativeBusy) {
+    /*
+        Evita dos consultas simultáneas.
+    */
+
+    if (initiativeChecking) {
+
+        scheduleInitiative();
 
         return;
 
@@ -1390,28 +1521,44 @@ async function checkInitiative() {
         messages.length === 0
     ) {
 
-        scheduleNextInitiativeCheck();
+        scheduleInitiative();
 
         return;
 
     }
 
 
-    initiativeBusy =
+    initiativeChecking =
         true;
 
 
     try {
 
-        localStorage.setItem(
-            LAST_CHECK_KEY,
-            String(Date.now())
-        );
+        /*
+            Mandamos solamente el contexto reciente.
+            Las imágenes no se mandan de nuevo acá;
+            queda registrado que hubo una imagen.
+        */
+
+        const recentConversation =
+            messages
+                .slice(-16)
+                .map(item => ({
+
+                    role:
+                        item.role,
+
+                    content:
+                        item.content
+
+                }));
 
 
         const response =
             await fetch(
+
                 WORKER_URL,
+
                 {
 
                     method:
@@ -1431,7 +1578,7 @@ async function checkInitiative() {
                                 true,
 
                             conversation:
-                                messages.slice(-16)
+                                recentConversation
 
                         })
 
@@ -1447,12 +1594,21 @@ async function checkInitiative() {
         if (
             response.ok &&
             data.initiative === true &&
-            data.reply
+            typeof data.reply === "string" &&
+            data.reply.trim()
         ) {
 
+            /*
+                Alicia decidió hablar.
+                Se guarda igual que cualquier respuesta normal.
+            */
+
             addMessage(
+
                 "assistant",
-                data.reply
+
+                data.reply.trim()
+
             );
 
         }
@@ -1462,7 +1618,7 @@ async function checkInitiative() {
     catch (error) {
 
         console.log(
-            "Chequeo de iniciativa:",
+            "Error comprobando iniciativa de Alicia:",
             error
         );
 
@@ -1470,46 +1626,15 @@ async function checkInitiative() {
 
     finally {
 
-        initiativeBusy =
+        initiativeChecking =
             false;
 
+        /*
+            Siempre vuelve a programar
+            la siguiente comprobación.
+        */
 
-        scheduleNextInitiativeCheck();
-
-    }
-
-}
-
-
-
-// =====================================================
-// CONTROL DEL TIEMPO
-// =====================================================
-
-function initiativeLoop() {
-
-    const next =
-        Number(
-            localStorage.getItem(
-                NEXT_CHECK_KEY
-            )
-        );
-
-
-    if (!next) {
-
-        scheduleNextInitiativeCheck();
-
-        return;
-
-    }
-
-
-    if (
-        Date.now() >= next
-    ) {
-
-        checkInitiative();
+        scheduleInitiative();
 
     }
 
@@ -1518,30 +1643,25 @@ function initiativeLoop() {
 
 
 // =====================================================
-// ARRANQUE
+// INICIAR ALICIA
 // =====================================================
 
 loadConversation();
 
 renderMessages();
 
-scheduleNextInitiativeCheck();
+scheduleInitiative();
 
 
-// Revisa cada 30 segundos si corresponde
-// hacer el chequeo de iniciativa.
 
-setInterval(
-    initiativeLoop,
-    30 * 1000
-);
-
-
-// Si volvés a la pestaña después de un rato,
-// también comprobamos.
+// =====================================================
+// SI LA PÁGINA VUELVE A SER VISIBLE
+// =====================================================
 
 document.addEventListener(
+
     "visibilitychange",
+
     function() {
 
         if (
@@ -1549,13 +1669,18 @@ document.addEventListener(
             "visible"
         ) {
 
-            initiativeLoop();
+            /*
+                Al volver a la pestaña,
+                reiniciamos el sistema de iniciativa.
+            */
+
+            scheduleInitiative();
 
         }
 
     }
-);
 
+);
 
 </script>
 
