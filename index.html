@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alicia</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #090909;
+            color: white;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 700px;
+            height: 90vh;
+            background: #111;
+            border: 1px solid #292929;
+            border-radius: 18px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 20px;
+            border-bottom: 1px solid #292929;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status {
+            width: 12px;
+            height: 12px;
+            background: #35d06f;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #35d06f;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .chat {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 14px;
+            line-height: 1.4;
+        }
+
+        .alicia {
+            background: #202020;
+            align-self: flex-start;
+        }
+
+        .user {
+            background: #333;
+            align-self: flex-end;
+        }
+
+        .input-area {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #292929;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            background: #191919;
+            color: white;
+            outline: none;
+        }
+
+        button {
+            padding: 0 20px;
+            border: none;
+            border-radius: 12px;
+            background: white;
+            color: black;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="header">
+        <div class="status"></div>
+        <h1>Alicia</h1>
+    </div>
+
+    <div class="chat" id="chat">
+
+        <div class="message alicia">
+            Hola. Soy Alicia. 👋
+        </div>
+
+    </div>
+
+    <div class="input-area">
+        <input
+            id="messageInput"
+            type="text"
+            placeholder="Escribile a Alicia..."
+            autocomplete="off"
+        >
+
+        <button onclick="sendMessage()">Enviar</button>
+    </div>
+
+</div>
+
+<script>
+
+    const input = document.getElementById("messageInput");
+    const chat = document.getElementById("chat");
+
+    function addMessage(text, type) {
+
+        const message = document.createElement("div");
+
+        message.classList.add("message", type);
+        message.textContent = text;
+
+        chat.appendChild(message);
+
+        chat.scrollTop = chat.scrollHeight;
+    }
+
+    function sendMessage() {
+
+        const text = input.value.trim();
+
+        if (text === "") return;
+
+        addMessage(text, "user");
+
+        input.value = "";
+
+        setTimeout(() => {
+
+            let response = "Todavía estoy aprendiendo a conversar...";
+
+            if (text.toLowerCase().includes("hola")) {
+                response = "Holaa. ¿Cómo estás?";
+            }
+
+            else if (text.toLowerCase().includes("cómo estás")) {
+                response = "Estoy bien. Aunque técnicamente recién estoy despertando. 😌";
+            }
+
+            else if (text.toLowerCase().includes("quién sos")) {
+                response = "Soy Alicia. Esta es mi primera versión.";
+            }
+
+            addMessage(response, "alicia");
+
+        }, 700);
+    }
+
+    input.addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+            sendMessage();
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
