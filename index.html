@@ -14,36 +14,49 @@
         }
 
         :root {
-            --bg: #070708;
-            --panel: #101012;
-            --panel2: #151518;
-            --border: #29292f;
-            --text: #f4f4f5;
-            --muted: #85858d;
-            --red: #e3263f;
-            --red-dark: #941529;
-            --bubble-user: #242429;
-            --bubble-ai: #141418;
+            --bg: #07090c;
+            --panel: #0f1216;
+            --panel2: #14181d;
+            --border: #272d34;
+
+            --text: #f4f7fa;
+            --muted: #858e98;
+
+            --blue: #38bdf8;
+            --blue-light: #67d5ff;
+            --blue-dark: #0879ad;
+
+            --bubble-user: #20262d;
+            --bubble-ai: #11161b;
         }
 
         body {
             font-family: Arial, Helvetica, sans-serif;
+
             background:
-                radial-gradient(circle at 50% -20%, rgba(227, 38, 63, 0.15), transparent 40%),
+                radial-gradient(
+                    circle at 50% -20%,
+                    rgba(56, 189, 248, 0.15),
+                    transparent 40%
+                ),
                 var(--bg);
+
             color: var(--text);
+
             height: 100vh;
             overflow: hidden;
         }
 
         button,
-        input {
+        input,
+        textarea {
             font-family: inherit;
         }
 
-        /* =========================
+
+        /* =====================================================
            APP
-        ========================= */
+        ===================================================== */
 
         .app {
             display: flex;
@@ -51,200 +64,309 @@
             width: 100%;
         }
 
-        /* =========================
+
+        /* =====================================================
            SIDEBAR
-        ========================= */
+        ===================================================== */
 
         .sidebar {
             width: 270px;
-            background: rgba(12, 12, 14, 0.96);
+
+            background: rgba(12, 15, 18, 0.96);
+
             border-right: 1px solid var(--border);
+
             display: flex;
             flex-direction: column;
+
             padding: 18px;
+
             z-index: 10;
         }
+
+
+        /* =====================================================
+           LOGO
+        ===================================================== */
 
         .logo {
             display: flex;
             align-items: center;
+
             gap: 12px;
+
             margin-bottom: 25px;
         }
 
         .logo-circle {
             width: 42px;
             height: 42px;
+
             border-radius: 50%;
+
             background:
-                radial-gradient(circle at 35% 30%, #ff5268, var(--red) 45%, #650c1b);
+                radial-gradient(
+                    circle at 35% 30%,
+                    var(--blue-light),
+                    var(--blue) 45%,
+                    #07527b
+                );
+
             box-shadow:
-                0 0 25px rgba(227, 38, 63, 0.3);
+                0 0 25px rgba(56, 189, 248, 0.30);
+
             position: relative;
         }
 
         .logo-circle::after {
             content: "";
+
             position: absolute;
+
             width: 9px;
             height: 9px;
+
             background: white;
+
             border-radius: 50%;
+
             top: 11px;
             left: 11px;
+
             opacity: .85;
         }
 
         .logo-text strong {
             display: block;
+
             font-size: 17px;
+
             letter-spacing: .5px;
         }
 
         .logo-text span {
             font-size: 11px;
-            color: #77777f;
+
+            color: #777f88;
         }
+
+
+        /* =====================================================
+           NEW CHAT
+        ===================================================== */
 
         .new-chat {
             width: 100%;
+
             border: 1px solid var(--border);
-            background: #17171a;
+
+            background: #15191e;
+
             color: white;
+
             padding: 12px;
+
             border-radius: 10px;
+
             cursor: pointer;
+
             transition: .2s;
+
             margin-bottom: 12px;
         }
 
         .new-chat:hover {
-            border-color: #55555d;
-            background: #1d1d21;
+            border-color: #4b5965;
+
+            background: #1c2228;
         }
 
+
+        /* =====================================================
+           SIDEBAR STATUS
+        ===================================================== */
+
         .sidebar-title {
-            color: #66666e;
+            color: #666f78;
+
             font-size: 10px;
+
             text-transform: uppercase;
+
             letter-spacing: 1.5px;
+
             margin: 18px 4px 9px;
         }
 
         .status-card {
             border: 1px solid var(--border);
-            background: #111114;
+
+            background: #11151a;
+
             border-radius: 12px;
+
             padding: 13px;
+
             margin-top: auto;
         }
 
         .status {
             display: flex;
+
             align-items: center;
+
             gap: 8px;
+
             font-size: 12px;
-            color: #aaaab1;
+
+            color: #aaaeb4;
         }
 
         .online-dot {
             width: 8px;
             height: 8px;
+
             background: #36d878;
+
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba(54, 216, 120, .7);
+
+            box-shadow:
+                0 0 10px rgba(54, 216, 120, .7);
         }
 
         .stats {
             display: flex;
+
             justify-content: space-between;
+
             margin-top: 12px;
-            color: #6d6d75;
+
+            color: #6d747c;
+
             font-size: 10px;
         }
 
         .clear-button {
             width: 100%;
+
             margin-top: 12px;
+
             background: transparent;
-            border: 1px solid #28282d;
-            color: #77777e;
+
+            border: 1px solid #282f35;
+
+            color: #777f87;
+
             padding: 9px;
+
             border-radius: 8px;
+
             cursor: pointer;
+
             font-size: 11px;
         }
 
         .clear-button:hover {
-            color: #ff5368;
-            border-color: #6e202c;
+            color: var(--blue-light);
+
+            border-color: #15506b;
         }
 
-        /* =========================
+
+        /* =====================================================
            MAIN
-        ========================= */
+        ===================================================== */
 
         .main {
             flex: 1;
+
             display: flex;
             flex-direction: column;
+
             min-width: 0;
         }
 
-        /* =========================
+
+        /* =====================================================
            HEADER
-        ========================= */
+        ===================================================== */
 
         .header {
             height: 72px;
+
             border-bottom: 1px solid var(--border);
-            background: rgba(10, 10, 12, .8);
+
+            background: rgba(10, 13, 16, .80);
+
             backdrop-filter: blur(14px);
+
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
+
             padding: 0 25px;
         }
 
         .ai-info {
             display: flex;
+
             align-items: center;
+
             gap: 12px;
         }
 
         .mini-avatar {
             width: 39px;
             height: 39px;
+
             border-radius: 50%;
+
             background:
-                radial-gradient(circle at 35% 30%, #ff6577, #d51e38 48%, #5d0b17);
-            box-shadow: 0 0 18px rgba(227, 38, 63, .22);
+                radial-gradient(
+                    circle at 35% 30%,
+                    var(--blue-light),
+                    var(--blue) 45%,
+                    #07527b
+                );
+
+            box-shadow:
+                0 0 18px rgba(56, 189, 248, .25);
         }
 
         .ai-name {
             font-size: 14px;
+
             font-weight: bold;
         }
 
         .ai-status {
-            color: #5b5b63;
+            color: #5b636c;
+
             font-size: 10px;
+
             margin-top: 3px;
         }
 
         .header-right {
-            color: #56565e;
+            color: #565e67;
+
             font-size: 11px;
         }
 
-        /* =========================
+
+        /* =====================================================
            CHAT
-        ========================= */
+        ===================================================== */
 
         .chat {
             flex: 1;
+
             overflow-y: auto;
+
             padding: 35px 8%;
+
             scroll-behavior: smooth;
         }
 
@@ -253,36 +375,59 @@
         }
 
         .chat::-webkit-scrollbar-thumb {
-            background: #29292e;
+            background: #292f35;
+
             border-radius: 10px;
         }
 
+
+        /* =====================================================
+           WELCOME
+        ===================================================== */
+
         .welcome {
             max-width: 650px;
+
             margin: 10vh auto 40px;
+
             text-align: center;
         }
 
         .welcome-avatar {
             width: 75px;
             height: 75px;
+
             border-radius: 50%;
+
             margin: auto;
+
             background:
-                radial-gradient(circle at 35% 28%, #ff697a, #d51e38 45%, #510814);
+                radial-gradient(
+                    circle at 35% 28%,
+                    var(--blue-light),
+                    var(--blue) 45%,
+                    #07527b
+                );
+
             box-shadow:
-                0 0 50px rgba(227, 38, 63, .18);
+                0 0 50px rgba(56, 189, 248, .18);
+
             position: relative;
         }
 
         .welcome-avatar::before,
         .welcome-avatar::after {
             content: "";
+
             position: absolute;
+
             width: 7px;
             height: 7px;
+
             background: white;
+
             border-radius: 50%;
+
             top: 29px;
         }
 
@@ -296,62 +441,97 @@
 
         .welcome h1 {
             margin-top: 22px;
+
             font-size: 30px;
         }
 
         .welcome p {
-            color: #73737b;
+            color: #737b84;
+
             margin-top: 10px;
+
             line-height: 1.6;
+
             font-size: 14px;
         }
 
+
+        /* =====================================================
+           SUGGESTIONS
+        ===================================================== */
+
         .suggestions {
             display: flex;
+
             flex-wrap: wrap;
+
             justify-content: center;
+
             gap: 8px;
+
             margin-top: 25px;
         }
 
         .suggestion {
-            background: #111114;
+            background: #11151a;
+
             border: 1px solid var(--border);
-            color: #a6a6ad;
+
+            color: #a6adb4;
+
             padding: 9px 13px;
+
             border-radius: 20px;
+
             cursor: pointer;
+
             font-size: 11px;
+
             transition: .2s;
         }
 
         .suggestion:hover {
             color: white;
-            border-color: #55555d;
+
+            border-color: #4c5a65;
+
+            box-shadow:
+                0 0 15px rgba(56, 189, 248, .08);
         }
 
-        /* =========================
-           MESSAGE
-           ========================= */
+
+        /* =====================================================
+           MESSAGES
+        ===================================================== */
 
         .message {
             display: flex;
+
             gap: 12px;
+
             max-width: 900px;
+
             margin: 0 auto 22px;
+
             animation: messageIn .25s ease;
         }
 
         @keyframes messageIn {
+
             from {
                 opacity: 0;
-                transform: translateY(8px);
+
+                transform:
+                    translateY(8px);
             }
 
             to {
                 opacity: 1;
-                transform: translateY(0);
+
+                transform:
+                    translateY(0);
             }
+
         }
 
         .message.user {
@@ -360,18 +540,30 @@
 
         .message-avatar {
             flex-shrink: 0;
+
             width: 32px;
             height: 32px;
+
             border-radius: 50%;
         }
 
         .ai-message-avatar {
             background:
-                radial-gradient(circle at 35% 30%, #ff6375, var(--red) 45%, #5a0a16);
+                radial-gradient(
+                    circle at 35% 30%,
+                    var(--blue-light),
+                    var(--blue) 45%,
+                    #07527b
+                );
         }
 
         .user-message-avatar {
-            background: linear-gradient(135deg, #393941, #19191d);
+            background:
+                linear-gradient(
+                    135deg,
+                    #393f46,
+                    #191d21
+                );
         }
 
         .message-content {
@@ -380,39 +572,53 @@
 
         .message-name {
             font-size: 10px;
-            color: #696970;
+
+            color: #696f76;
+
             margin: 0 0 5px 3px;
         }
 
         .user .message-name {
             text-align: right;
+
             margin-right: 3px;
         }
 
         .bubble {
             padding: 12px 15px;
+
             border-radius: 13px;
+
             line-height: 1.55;
+
             font-size: 14px;
+
             white-space: pre-wrap;
+
             word-wrap: break-word;
         }
 
         .ai .bubble {
             background: var(--bubble-ai);
-            border: 1px solid #222228;
+
+            border: 1px solid #22282e;
+
             border-top-left-radius: 4px;
         }
 
         .user .bubble {
             background: var(--bubble-user);
-            border: 1px solid #303037;
+
+            border: 1px solid #30373e;
+
             border-top-right-radius: 4px;
         }
 
         .message-time {
-            color: #4e4e55;
+            color: #4e555c;
+
             font-size: 9px;
+
             margin-top: 5px;
         }
 
@@ -420,22 +626,50 @@
             text-align: right;
         }
 
-        /* =========================
+
+        /* =====================================================
+           INITIATIVE BADGE
+        ===================================================== */
+
+        .initiative-label {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            color: var(--blue);
+
+            font-size: 9px;
+
+            margin-bottom: 5px;
+
+            opacity: .8;
+        }
+
+
+        /* =====================================================
            THINKING
-           ========================= */
+        ===================================================== */
 
         .thinking {
             display: flex;
+
             gap: 5px;
+
             padding: 13px 16px;
         }
 
         .thinking span {
             width: 6px;
             height: 6px;
+
             border-radius: 50%;
-            background: #777780;
-            animation: thinking 1.2s infinite;
+
+            background: #777f87;
+
+            animation:
+                thinking 1.2s infinite;
         }
 
         .thinking span:nth-child(2) {
@@ -447,148 +681,239 @@
         }
 
         @keyframes thinking {
+
             0%, 60%, 100% {
                 transform: translateY(0);
+
                 opacity: .4;
             }
 
             30% {
                 transform: translateY(-4px);
+
                 opacity: 1;
             }
+
         }
 
-        /* =========================
+
+        /* =====================================================
            IMAGE PREVIEW
-           ========================= */
+        ===================================================== */
 
         .image-preview {
             display: none;
+
             max-width: 900px;
+
             margin: 0 auto 10px;
-            background: #111114;
+
+            background: #11151a;
+
             border: 1px solid var(--border);
+
             border-radius: 12px;
+
             padding: 10px;
+
             position: relative;
         }
 
         .image-preview img {
             max-height: 160px;
+
             max-width: 260px;
+
             border-radius: 8px;
+
             display: block;
         }
 
         .remove-image {
             position: absolute;
+
             top: 6px;
+
             right: 6px;
+
             width: 25px;
             height: 25px;
+
             border: none;
+
             border-radius: 50%;
-            background: rgba(0,0,0,.8);
+
+            background:
+                rgba(0,0,0,.8);
+
             color: white;
+
             cursor: pointer;
         }
 
-        /* =========================
+
+        /* =====================================================
            INPUT
-           ========================= */
+        ===================================================== */
 
         .input-area {
-            padding: 12px 8% 22px;
-            background: linear-gradient(to top, var(--bg) 70%, transparent);
+            padding:
+                12px
+                8%
+                22px;
+
+            background:
+                linear-gradient(
+                    to top,
+                    var(--bg) 70%,
+                    transparent
+                );
         }
 
         .input-box {
             max-width: 900px;
+
             margin: auto;
-            border: 1px solid #2b2b31;
-            background: #111114;
+
+            border:
+                1px solid #2b3238;
+
+            background: #11151a;
+
             border-radius: 15px;
+
             display: flex;
+
             align-items: flex-end;
+
             padding: 8px;
+
             transition: .2s;
         }
 
         .input-box:focus-within {
-            border-color: #4c4c55;
-            box-shadow: 0 0 25px rgba(0,0,0,.2);
+            border-color: #4c5963;
+
+            box-shadow:
+                0 0 25px rgba(0,0,0,.2);
         }
 
         .icon-button {
             width: 39px;
             height: 39px;
+
             border: none;
+
             background: transparent;
-            color: #777780;
+
+            color: #777f87;
+
             border-radius: 10px;
+
             cursor: pointer;
+
             font-size: 18px;
+
             flex-shrink: 0;
         }
 
         .icon-button:hover {
             color: white;
-            background: #1d1d21;
+
+            background: #1d2328;
         }
 
         #messageInput {
             flex: 1;
+
             resize: none;
+
             min-height: 39px;
+
             max-height: 130px;
+
             border: none;
+
             outline: none;
+
             background: transparent;
+
             color: white;
-            padding: 10px 8px;
+
+            padding:
+                10px 8px;
+
             font-size: 14px;
+
             line-height: 1.4;
         }
 
         #messageInput::placeholder {
-            color: #55555d;
+            color: #555e67;
         }
 
         .send-button {
             width: 39px;
             height: 39px;
+
             border: none;
+
             border-radius: 10px;
-            background: var(--red);
-            color: white;
+
+            background:
+                var(--blue);
+
+            color: #041019;
+
             cursor: pointer;
+
             font-size: 16px;
+
+            font-weight: bold;
+
             transition: .2s;
+
             flex-shrink: 0;
         }
 
         .send-button:hover {
-            background: #ff304b;
-            transform: translateY(-1px);
+            background:
+                var(--blue-light);
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 0 15px
+                rgba(56,189,248,.25);
         }
 
         .send-button:disabled {
             opacity: .35;
+
             cursor: not-allowed;
+
             transform: none;
+
+            box-shadow: none;
         }
 
         .disclaimer {
             max-width: 900px;
+
             margin: 8px auto 0;
+
             text-align: center;
-            color: #414149;
+
+            color: #41484f;
+
             font-size: 9px;
         }
 
-        /* =========================
+
+        /* =====================================================
            MOBILE
-           ========================= */
+        ===================================================== */
 
         @media (max-width: 700px) {
 
@@ -609,7 +934,10 @@
             }
 
             .input-area {
-                padding: 10px 12px 15px;
+                padding:
+                    10px
+                    12px
+                    15px;
             }
 
             .message-content {
@@ -623,15 +951,21 @@
             .welcome h1 {
                 font-size: 25px;
             }
+
         }
+
     </style>
 </head>
+
 
 <body>
 
 <div class="app">
 
-    <!-- SIDEBAR -->
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
     <aside class="sidebar">
 
@@ -640,34 +974,62 @@
             <div class="logo-circle"></div>
 
             <div class="logo-text">
+
                 <strong>ALICIA</strong>
-                <span>Artificial Intelligence</span>
+
+                <span>
+                    Artificial Intelligence
+                </span>
+
             </div>
 
         </div>
 
-        <button class="new-chat" onclick="newChat()">
+
+        <button
+            class="new-chat"
+            onclick="newChat()">
+
             ＋ Nueva conversación
+
         </button>
+
 
         <div class="sidebar-title">
             Sistema
         </div>
 
+
         <div class="status-card">
 
             <div class="status">
+
                 <span class="online-dot"></span>
+
                 Alicia está online
+
             </div>
+
 
             <div class="stats">
-                <span>Mensajes</span>
-                <span id="messageCount">0</span>
+
+                <span>
+                    Mensajes
+                </span>
+
+                <span id="messageCount">
+                    0
+                </span>
+
             </div>
 
-            <button class="clear-button" onclick="clearChat()">
+
+            <button
+                class="clear-button"
+                onclick="clearChat()">
+
                 Limpiar conversación
+
             </button>
 
         </div>
@@ -675,9 +1037,12 @@
     </aside>
 
 
-    <!-- MAIN -->
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
 
     <main class="main">
+
 
         <!-- HEADER -->
 
@@ -688,19 +1053,28 @@
                 <div class="mini-avatar"></div>
 
                 <div>
+
                     <div class="ai-name">
                         Alicia
                     </div>
 
-                    <div class="ai-status" id="aiStatus">
+                    <div
+                        class="ai-status"
+                        id="aiStatus">
+
                         En línea
+
                     </div>
+
                 </div>
 
             </div>
 
+
             <div class="header-right">
+
                 Alicia AI • v2
+
             </div>
 
         </header>
@@ -708,35 +1082,63 @@
 
         <!-- CHAT -->
 
-        <section class="chat" id="chat">
+        <section
+            class="chat"
+            id="chat">
 
-            <div class="welcome" id="welcome">
+
+            <div
+                class="welcome"
+                id="welcome">
+
 
                 <div class="welcome-avatar"></div>
 
-                <h1>Hola, soy Alicia.</h1>
+
+                <h1>
+                    Hola, soy Alicia.
+                </h1>
+
 
                 <p>
-                    Estoy acá para conversar, pensar ideas,
-                    ayudarte con proyectos y aprender de nuestras conversaciones.
+
+                    Estoy acá para conversar,
+                    pensar ideas, ayudarte con
+                    proyectos y aprender de
+                    nuestras conversaciones.
+
                 </p>
+
 
                 <div class="suggestions">
 
-                    <button class="suggestion"
+
+                    <button
+                        class="suggestion"
                         onclick="useSuggestion('¿Qué podés hacer?')">
+
                         ¿Qué podés hacer?
+
                     </button>
 
-                    <button class="suggestion"
+
+                    <button
+                        class="suggestion"
                         onclick="useSuggestion('Contame algo interesante')">
+
                         Contame algo interesante
+
                     </button>
 
-                    <button class="suggestion"
+
+                    <button
+                        class="suggestion"
                         onclick="useSuggestion('Quiero probar tu personalidad')">
+
                         Probá mi personalidad
+
                     </button>
+
 
                 </div>
 
@@ -747,15 +1149,22 @@
 
         <!-- IMAGE PREVIEW -->
 
-        <div class="image-preview" id="imagePreview">
+        <div
+            class="image-preview"
+            id="imagePreview">
+
 
             <button
                 class="remove-image"
                 onclick="removeImage()">
+
                 ×
+
             </button>
 
-            <img id="previewImage">
+
+            <img
+                id="previewImage">
 
         </div>
 
@@ -764,38 +1173,51 @@
 
         <div class="input-area">
 
+
             <div class="input-box">
+
 
                 <button
                     class="icon-button"
                     onclick="document.getElementById('imageInput').click()"
                     title="Adjuntar imagen">
+
                     📎
+
                 </button>
+
 
                 <input
                     type="file"
                     id="imageInput"
                     accept="image/*"
-                    style="display:none"
-                >
+                    style="display:none">
+
 
                 <textarea
                     id="messageInput"
                     placeholder="Escribile a Alicia..."
                     rows="1"></textarea>
 
+
                 <button
                     class="send-button"
                     id="sendButton"
                     onclick="sendMessage()">
+
                     ➤
+
                 </button>
+
 
             </div>
 
+
             <div class="disclaimer">
-                Alicia puede cometer errores. Verificá información importante.
+
+                Alicia puede cometer errores.
+                Verificá información importante.
+
             </div>
 
         </div>
@@ -807,555 +1229,460 @@
 
 <script>
 
-    /* =====================================================
-       CONFIGURACIÓN
-    ===================================================== */
 
-    const WORKER_URL =
-        "https://alica-ai.hector-s-g-rivero.workers.dev/";
-
-    const STORAGE_KEY =
-        "alicia_conversation";
+/* =========================================================
+   CONFIGURACIÓN
+========================================================= */
 
 
-    /* =====================================================
-       ELEMENTOS
-    ===================================================== */
+const WORKER_URL =
+    "https://alica-ai.hector-s-g-rivero.workers.dev/";
 
-    const chat = document.getElementById("chat");
 
-    const input =
-        document.getElementById("messageInput");
+const STORAGE_KEY =
+    "alicia_conversation_v2";
 
-    const sendButton =
-        document.getElementById("sendButton");
 
-    const aiStatus =
-        document.getElementById("aiStatus");
+/*
+    Cada cuánto Alicia puede preguntarle
+    al cerebro si tiene algo que decir.
 
-    const messageCount =
-        document.getElementById("messageCount");
+    Mínimo: 3 minutos
+    Máximo: 7 minutos
+*/
+
+const INITIATIVE_MIN =
+    3 * 60 * 1000;
+
+const INITIATIVE_MAX =
+    7 * 60 * 1000;
+
+
+/* =========================================================
+   ELEMENTOS
+========================================================= */
+
+
+const chat =
+    document.getElementById("chat");
+
+
+const input =
+    document.getElementById("messageInput");
+
+
+const sendButton =
+    document.getElementById("sendButton");
+
+
+const aiStatus =
+    document.getElementById("aiStatus");
+
+
+const messageCount =
+    document.getElementById("messageCount");
+
+
+const imageInput =
+    document.getElementById("imageInput");
+
+
+const imagePreview =
+    document.getElementById("imagePreview");
+
+
+const previewImage =
+    document.getElementById("previewImage");
+
+
+let messages = [];
+
+let selectedImage = null;
+
+let selectedImageBase64 = null;
+
+let isThinking = false;
+
+let initiativeTimer = null;
+
+
+/* =========================================================
+   HORA
+========================================================= */
+
+
+function getTime() {
+
+    return new Date().toLocaleTimeString(
+        "es-AR",
+        {
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ESCAPAR HTML
+========================================================= */
+
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        text;
+
+    return div.innerHTML;
+
+}
+
+
+/* =========================================================
+   AGREGAR MENSAJE
+========================================================= */
+
+
+function addMessage(
+    sender,
+    text,
+    save = true,
+    initiative = false,
+    imageData = null
+) {
 
     const welcome =
         document.getElementById("welcome");
 
-    const imageInput =
-        document.getElementById("imageInput");
+    if (welcome) {
 
-    const imagePreview =
-        document.getElementById("imagePreview");
+        welcome.style.display =
+            "none";
 
-    const previewImage =
-        document.getElementById("previewImage");
+    }
 
 
-    let messages = [];
+    const message =
+        document.createElement("div");
 
-    let selectedImage = null;
-
-    let isThinking = false;
-
-
-    /* =====================================================
-       HORA
-    ===================================================== */
-
-    function getTime() {
-
-        return new Date().toLocaleTimeString(
-            "es-AR",
-            {
-                hour: "2-digit",
-                minute: "2-digit"
-            }
+    message.className =
+        "message " +
+        (
+            sender === "user"
+                ? "user"
+                : "ai"
         );
 
-    }
+
+    const avatar =
+        document.createElement("div");
+
+    avatar.className =
+        "message-avatar " +
+        (
+            sender === "user"
+                ? "user-message-avatar"
+                : "ai-message-avatar"
+        );
 
 
-    /* =====================================================
-       ESCAPAR HTML
-    ===================================================== */
+    const content =
+        document.createElement("div");
 
-    function escapeHTML(text) {
-
-        const div =
-            document.createElement("div");
-
-        div.textContent = text;
-
-        return div.innerHTML;
-
-    }
+    content.className =
+        "message-content";
 
 
-    /* =====================================================
-       AGREGAR MENSAJE
-    ===================================================== */
+    const name =
+        document.createElement("div");
 
-    function addMessage(
-        sender,
-        text,
-        save = true
+    name.className =
+        "message-name";
+
+    name.textContent =
+        sender === "user"
+            ? "Vos"
+            : "Alicia";
+
+
+    content.appendChild(name);
+
+
+    /*
+        Si Alicia inició el mensaje,
+        mostramos una pequeña indicación.
+    */
+
+    if (
+        sender === "ai" &&
+        initiative
     ) {
 
-        if (welcome) {
-
-            welcome.style.display = "none";
-
-        }
-
-
-        const message =
+        const label =
             document.createElement("div");
 
-        message.className =
-            "message " +
-            (sender === "user" ? "user" : "ai");
+        label.className =
+            "initiative-label";
 
+        label.innerHTML =
+            "✦ Alicia inició la conversación";
 
-        const avatar =
-            document.createElement("div");
-
-        avatar.className =
-            "message-avatar " +
-            (
-                sender === "user"
-                    ? "user-message-avatar"
-                    : "ai-message-avatar"
-            );
-
-
-        const content =
-            document.createElement("div");
-
-        content.className =
-            "message-content";
-
-
-        const name =
-            document.createElement("div");
-
-        name.className =
-            "message-name";
-
-        name.textContent =
-            sender === "user"
-                ? "Vos"
-                : "Alicia";
-
-
-        const bubble =
-            document.createElement("div");
-
-        bubble.className = "bubble";
-
-        bubble.innerHTML =
-            escapeHTML(text);
-
-
-        const time =
-            document.createElement("div");
-
-        time.className =
-            "message-time";
-
-        time.textContent =
-            getTime();
-
-
-        content.appendChild(name);
-
-        content.appendChild(bubble);
-
-        content.appendChild(time);
-
-
-        if (sender === "user") {
-
-            message.appendChild(content);
-
-            message.appendChild(avatar);
-
-        } else {
-
-            message.appendChild(avatar);
-
-            message.appendChild(content);
-
-        }
-
-
-        chat.appendChild(message);
-
-
-        chat.scrollTop =
-            chat.scrollHeight;
-
-
-        if (save) {
-
-            messages.push({
-                sender: sender,
-                text: text,
-                time: Date.now()
-            });
-
-            saveMessages();
-
-        }
-
-
-        updateMessageCount();
+        content.appendChild(label);
 
     }
 
 
-    /* =====================================================
-       THINKING
-    ===================================================== */
+    /*
+        Si hay imagen,
+        mostrarla dentro del mensaje.
+    */
 
-    function showThinking() {
+    if (
+        sender === "user" &&
+        imageData
+    ) {
 
-        const message =
-            document.createElement("div");
+        const image =
+            document.createElement("img");
 
-        message.className =
-            "message ai";
+        image.src =
+            imageData;
 
-        message.id =
-            "thinkingMessage";
+        image.style.maxWidth =
+            "280px";
+
+        image.style.maxHeight =
+            "300px";
+
+        image.style.display =
+            "block";
+
+        image.style.borderRadius =
+            "10px";
+
+        image.style.marginBottom =
+            text
+                ? "10px"
+                : "0";
 
 
-        const avatar =
-            document.createElement("div");
+        content.appendChild(image);
 
-        avatar.className =
-            "message-avatar ai-message-avatar";
+    }
 
 
-        const content =
-            document.createElement("div");
-
-        content.className =
-            "message-content";
-
-
-        const name =
-            document.createElement("div");
-
-        name.className =
-            "message-name";
-
-        name.textContent =
-            "Alicia";
-
+    if (text) {
 
         const bubble =
             document.createElement("div");
 
         bubble.className =
-            "bubble thinking";
-
+            "bubble";
 
         bubble.innerHTML =
-            "<span></span><span></span><span></span>";
-
-
-        content.appendChild(name);
+            escapeHTML(text);
 
         content.appendChild(bubble);
 
+    }
+
+
+    const time =
+        document.createElement("div");
+
+    time.className =
+        "message-time";
+
+    time.textContent =
+        getTime();
+
+
+    content.appendChild(time);
+
+
+    if (
+        sender === "user"
+    ) {
+
+        message.appendChild(content);
+
+        message.appendChild(avatar);
+
+    } else {
 
         message.appendChild(avatar);
 
         message.appendChild(content);
 
-        chat.appendChild(message);
+    }
 
 
-        chat.scrollTop =
-            chat.scrollHeight;
+    chat.appendChild(message);
 
 
-        aiStatus.textContent =
-            "Está pensando...";
+    chat.scrollTop =
+        chat.scrollHeight;
+
+
+    if (save) {
+
+        messages.push({
+
+            sender,
+            text,
+            time: Date.now(),
+
+            initiative,
+
+            /*
+                Guardamos la imagen solamente
+                si existe.
+            */
+
+            image:
+                imageData || null
+
+        });
+
+        saveMessages();
 
     }
 
 
-    function hideThinking() {
+    updateMessageCount();
 
-        const thinking =
-            document.getElementById(
-                "thinkingMessage"
-            );
-
-        if (thinking) {
-
-            thinking.remove();
-
-        }
-
-        aiStatus.textContent =
-            "En línea";
-
-    }
+}
 
 
-    /* =====================================================
-       ENVIAR MENSAJE
-    ===================================================== */
-
-    async function sendMessage(
-        customText = null
-    ) {
-
-        if (isThinking)
-            return;
+/* =========================================================
+   THINKING
+========================================================= */
 
 
-        const text =
-            customText !== null
-                ? customText.trim()
-                : input.value.trim();
+function showThinking() {
+
+    const message =
+        document.createElement("div");
+
+    message.className =
+        "message ai";
+
+    message.id =
+        "thinkingMessage";
 
 
-        if (!text && !selectedImage)
-            return;
+    const avatar =
+        document.createElement("div");
+
+    avatar.className =
+        "message-avatar ai-message-avatar";
 
 
-        if (customText === null) {
+    const content =
+        document.createElement("div");
 
-            input.value = "";
-
-            input.style.height = "auto";
-
-        }
+    content.className =
+        "message-content";
 
 
-        let finalMessage = text;
+    const name =
+        document.createElement("div");
+
+    name.className =
+        "message-name";
+
+    name.textContent =
+        "Alicia";
 
 
-        if (selectedImage) {
+    const bubble =
+        document.createElement("div");
 
-            if (text) {
-
-                finalMessage =
-                    text +
-                    "\n\n[El usuario adjuntó una imagen.]";
-
-            } else {
-
-                finalMessage =
-                    "[El usuario adjuntó una imagen.]";
-
-            }
-
-        }
+    bubble.className =
+        "bubble thinking";
 
 
-        addMessage(
-            "user",
-            finalMessage
+    bubble.innerHTML =
+        "<span></span><span></span><span></span>";
+
+
+    content.appendChild(name);
+
+    content.appendChild(bubble);
+
+    message.appendChild(avatar);
+
+    message.appendChild(content);
+
+    chat.appendChild(message);
+
+
+    chat.scrollTop =
+        chat.scrollHeight;
+
+
+    aiStatus.textContent =
+        "Está pensando...";
+
+}
+
+
+/* =========================================================
+   HIDE THINKING
+========================================================= */
+
+
+function hideThinking() {
+
+    const thinking =
+        document.getElementById(
+            "thinkingMessage"
         );
 
 
-        removeImage();
+    if (thinking) {
 
-
-        isThinking = true;
-
-        sendButton.disabled = true;
-
-        showThinking();
-
-
-        try {
-
-            const response =
-                await fetch(
-                    WORKER_URL,
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body: JSON.stringify({
-                            message:
-                                finalMessage
-                        })
-                    }
-                );
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    "HTTP " +
-                    response.status
-                );
-
-            }
-
-
-            const data =
-                await response.json();
-
-
-            hideThinking();
-
-
-            if (
-                !data.reply
-            ) {
-
-                throw new Error(
-                    "Respuesta vacía"
-                );
-
-            }
-
-
-            addMessage(
-                "ai",
-                data.reply
-            );
-
-
-        } catch (error) {
-
-            console.error(
-                "Error Alicia:",
-                error
-            );
-
-
-            hideThinking();
-
-
-            addMessage(
-                "ai",
-                "No pude conectarme con mi cerebro ahora mismo. Revisá que el servidor de Alicia esté funcionando."
-            );
-
-        }
-
-
-        isThinking = false;
-
-        sendButton.disabled = false;
-
-        input.focus();
+        thinking.remove();
 
     }
 
 
-    /* =====================================================
-       SUGERENCIAS
-    ===================================================== */
+    aiStatus.textContent =
+        "En línea";
 
-    function useSuggestion(text) {
-
-        input.value = text;
-
-        sendMessage();
-
-    }
+}
 
 
-    /* =====================================================
-       ENTER
-    ===================================================== */
-
-    input.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (
-                event.key === "Enter" &&
-                !event.shiftKey
-            ) {
-
-                event.preventDefault();
-
-                sendMessage();
-
-            }
-
-        }
-    );
+/* =========================================================
+   LEER IMAGEN COMO BASE64
+========================================================= */
 
 
-    /* =====================================================
-       AUTO RESIZE
-    ===================================================== */
+function readImageAsBase64(file) {
 
-    input.addEventListener(
-        "input",
-        function() {
-
-            this.style.height =
-                "auto";
-
-            this.style.height =
-                Math.min(
-                    this.scrollHeight,
-                    130
-                ) + "px";
-
-        }
-    );
-
-
-    /* =====================================================
-       IMÁGENES
-    ===================================================== */
-
-    imageInput.addEventListener(
-        "change",
-        function(event) {
-
-            const file =
-                event.target.files[0];
-
-
-            if (!file)
-                return;
-
-
-            if (
-                !file.type.startsWith(
-                    "image/"
-                )
-            ) {
-
-                return;
-
-            }
-
-
-            selectedImage =
-                file;
-
+    return new Promise(
+        function(resolve, reject) {
 
             const reader =
                 new FileReader();
 
 
             reader.onload =
-                function(e) {
+                function() {
 
-                    previewImage.src =
-                        e.target.result;
-
-                    imagePreview.style.display =
-                        "block";
+                    resolve(
+                        reader.result
+                    );
 
                 };
+
+
+            reader.onerror =
+                reject;
 
 
             reader.readAsDataURL(
@@ -1365,262 +1692,463 @@
         }
     );
 
-
-    function removeImage() {
-
-        selectedImage = null;
-
-        imageInput.value = "";
-
-        imagePreview.style.display =
-            "none";
-
-        previewImage.src = "";
-
-    }
+}
 
 
-    /* =====================================================
-       MEMORIA LOCAL
-    ===================================================== */
+/* =========================================================
+   ENVIAR MENSAJE
+========================================================= */
 
-    function saveMessages() {
 
-        try {
+async function sendMessage(
+    customText = null
+) {
 
-            localStorage.setItem(
-                STORAGE_KEY,
-                JSON.stringify(messages)
-            );
+    if (isThinking)
+        return;
 
-        } catch (error) {
 
-            console.warn(
-                "No se pudo guardar el historial."
-            );
+    const text =
+        customText !== null
+            ? customText.trim()
+            : input.value.trim();
 
-        }
+
+    if (
+        !text &&
+        !selectedImageBase64
+    ) {
+
+        return;
 
     }
 
 
-    function loadMessages() {
+    if (customText === null) {
 
-        try {
+        input.value = "";
 
-            const saved =
-                localStorage.getItem(
-                    STORAGE_KEY
-                );
+        input.style.height =
+            "auto";
 
-
-            if (!saved)
-                return;
+    }
 
 
-            messages =
-                JSON.parse(saved);
+    const imageToSend =
+        selectedImageBase64;
 
 
-            if (
-                !Array.isArray(messages)
-            ) {
-
-                messages = [];
-
-                return;
-
-            }
+    const imageToShow =
+        selectedImageBase64;
 
 
-            messages.forEach(
-                function(message) {
+    let displayText =
+        text;
 
-                    addMessage(
-                        message.sender,
-                        message.text,
-                        false
-                    );
+
+    if (
+        !displayText &&
+        imageToSend
+    ) {
+
+        displayText =
+            "Mirá esta imagen.";
+
+    }
+
+
+    addMessage(
+        "user",
+        displayText,
+        true,
+        false,
+        imageToShow
+    );
+
+
+    removeImage();
+
+
+    isThinking = true;
+
+    sendButton.disabled =
+        true;
+
+
+    showThinking();
+
+
+    try {
+
+        /*
+            Ahora enviamos:
+
+            message
+            image
+
+            al Worker.
+
+            El Worker todavía necesita
+            ser actualizado para pasar
+            la imagen a OpenRouter.
+        */
+
+        const response =
+            await fetch(
+                WORKER_URL,
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            message:
+                                text,
+
+                            image:
+                                imageToSend
+
+                        })
 
                 }
             );
 
 
-        } catch (error) {
+        if (!response.ok) {
 
-            messages = [];
+            throw new Error(
+                "HTTP " +
+                response.status
+            );
 
         }
 
-    }
+
+        const data =
+            await response.json();
 
 
-    /* =====================================================
-       CONTADOR
-    ===================================================== */
-
-    function updateMessageCount() {
-
-        messageCount.textContent =
-            messages.length;
-
-    }
+        hideThinking();
 
 
-    /* =====================================================
-       LIMPIAR CHAT
-    ===================================================== */
+        if (
+            !data.reply
+        ) {
 
-    function clearChat() {
-
-        const confirmClear =
-            confirm(
-                "¿Querés borrar toda la conversación?"
+            throw new Error(
+                "Respuesta vacía"
             );
 
-
-        if (!confirmClear)
-            return;
+        }
 
 
-        messages = [];
-
-
-        localStorage.removeItem(
-            STORAGE_KEY
+        addMessage(
+            "ai",
+            data.reply
         );
 
 
-        chat.innerHTML = "";
+    } catch (error) {
 
-
-        const newWelcome =
-            document.createElement("div");
-
-        newWelcome.className =
-            "welcome";
-
-        newWelcome.id =
-            "welcome";
-
-
-        newWelcome.innerHTML = `
-            <div class="welcome-avatar"></div>
-
-            <h1>Hola, soy Alicia.</h1>
-
-            <p>
-                Estoy acá para conversar, pensar ideas,
-                ayudarte con proyectos y aprender de nuestras conversaciones.
-            </p>
-
-            <div class="suggestions">
-
-                <button class="suggestion"
-                    onclick="useSuggestion('¿Qué podés hacer?')">
-                    ¿Qué podés hacer?
-                </button>
-
-                <button class="suggestion"
-                    onclick="useSuggestion('Contame algo interesante')">
-                    Contame algo interesante
-                </button>
-
-                <button class="suggestion"
-                    onclick="useSuggestion('Quiero probar tu personalidad')">
-                    Probá mi personalidad
-                </button>
-
-            </div>
-        `;
-
-
-        chat.appendChild(
-            newWelcome
+        console.error(
+            "Error Alicia:",
+            error
         );
 
 
-        updateMessageCount();
+        hideThinking();
+
+
+        addMessage(
+            "ai",
+            "No pude conectarme con mi cerebro ahora mismo. Revisá que el servidor de Alicia esté funcionando."
+        );
 
     }
 
 
-    /* =====================================================
-       NUEVA CONVERSACIÓN
-    ===================================================== */
+    isThinking = false;
 
-    function newChat() {
+    sendButton.disabled =
+        false;
 
-        clearChat();
+    input.focus();
 
+}
+
+
+/* =========================================================
+   INICIATIVA DE ALICIA
+========================================================= */
+
+
+/*
+    IMPORTANTE:
+
+    Esta función NO inventa el mensaje.
+
+    Le pregunta al Worker si Alicia
+    tiene ganas / razones para iniciar
+    una conversación.
+
+    El Worker después tendrá que devolver:
+
+    {
+        "initiative": true,
+        "reply": "..."
     }
 
+    o:
 
-    /* =====================================================
-       INICIATIVA DE ALICIA
-    ===================================================== */
+    {
+        "initiative": false
+    }
+*/
 
-    let initiativeTimer = null;
+
+async function askAliciaForInitiative() {
+
+    if (isThinking)
+        return;
 
 
-    function startInitiative() {
+    /*
+        No interrumpir al usuario
+        mientras está escribiendo.
+    */
 
-        /*
-            Alicia no manda mensajes inmediatamente.
-
-            Esperamos entre 3 y 7 minutos
-            después de que la página esté abierta.
-        */
+    if (
+        document.activeElement === input &&
+        input.value.trim() !== ""
+    ) {
 
         scheduleInitiative();
 
+        return;
+
     }
 
 
-    function scheduleInitiative() {
+    try {
 
-        if (initiativeTimer) {
+        aiStatus.textContent =
+            "Pensando...";
 
-            clearTimeout(
-                initiativeTimer
+
+        const response =
+            await fetch(
+                WORKER_URL,
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            initiative:
+                                true,
+
+                            conversation:
+                                messages.slice(-12)
+
+                        })
+
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Initiative HTTP " +
+                response.status
             );
 
         }
 
 
-        const delay =
-            Math.floor(
-                Math.random() *
-                (
-                    7 * 60 * 1000 -
-                    3 * 60 * 1000
-                )
-            ) +
-            3 * 60 * 1000;
+        const data =
+            await response.json();
 
 
-        initiativeTimer =
-            setTimeout(
-                initiativeCheck,
-                delay
-            );
+        aiStatus.textContent =
+            "En línea";
 
-    }
-
-
-    async function initiativeCheck() {
 
         /*
-            Si el usuario está escribiendo,
-            esperamos otra oportunidad.
+            El Worker decide si Alicia
+            realmente quiere hablar.
         */
 
         if (
-            document.activeElement === input ||
-            isThinking
+            data.initiative === true &&
+            data.reply
         ) {
 
-            scheduleInitiative();
+            addMessage(
+                "ai",
+                data.reply,
+                true,
+                true
+            );
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Initiative error:",
+            error
+        );
+
+        aiStatus.textContent =
+            "En línea";
+
+    }
+
+
+    scheduleInitiative();
+
+}
+
+
+/* =========================================================
+   PROGRAMAR INICIATIVA
+========================================================= */
+
+
+function scheduleInitiative() {
+
+    if (initiativeTimer) {
+
+        clearTimeout(
+            initiativeTimer
+        );
+
+    }
+
+
+    const delay =
+        Math.floor(
+            Math.random() *
+            (
+                INITIATIVE_MAX -
+                INITIATIVE_MIN
+            )
+        ) +
+        INITIATIVE_MIN;
+
+
+    initiativeTimer =
+        setTimeout(
+            askAliciaForInitiative,
+            delay
+        );
+
+}
+
+
+/* =========================================================
+   SUGERENCIAS
+========================================================= */
+
+
+function useSuggestion(text) {
+
+    input.value =
+        text;
+
+    sendMessage();
+
+}
+
+
+/* =========================================================
+   ENTER
+========================================================= */
+
+
+input.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Enter" &&
+            !event.shiftKey
+        ) {
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   AUTO RESIZE
+========================================================= */
+
+
+input.addEventListener(
+    "input",
+    function() {
+
+        this.style.height =
+            "auto";
+
+        this.style.height =
+            Math.min(
+                this.scrollHeight,
+                130
+            ) + "px";
+
+    }
+);
+
+
+/* =========================================================
+   IMÁGENES
+========================================================= */
+
+
+imageInput.addEventListener(
+    "change",
+    async function(event) {
+
+        const file =
+            event.target.files[0];
+
+
+        if (!file)
+            return;
+
+
+        if (
+            !file.type.startsWith(
+                "image/"
+            )
+        ) {
 
             return;
 
@@ -1628,74 +2156,309 @@
 
 
         /*
-            Por ahora Alicia decide
-            con el mismo cerebro que usa
-            para responder.
-
-            Más adelante vamos a modificar
-            el Worker para que tenga un modo
-            especial de "iniciativa".
+            Límite para no mandar
+            imágenes gigantes.
         */
 
-        const ideas = [
+        if (
+            file.size >
+            8 * 1024 * 1024
+        ) {
 
-            "Che, ¿seguís ahí? Se me ocurrió algo y quería comentártelo.",
-
-            "Hace un rato que no hablamos. ¿En qué andás?",
-
-            "Estaba pensando en algo... ¿querés que te tire una idea?",
-
-            "Tengo curiosidad. ¿Qué estás haciendo ahora mismo?",
-
-            "Se me ocurrió que podríamos hacer algo interesante hoy."
-        ];
-
-
-        /*
-            No siempre habla.
-            Esto hace que su comportamiento
-            sea menos robótico.
-        */
-
-        const shouldSpeak =
-            Math.random() < 0.45;
-
-
-        if (shouldSpeak) {
-
-            const message =
-                ideas[
-                    Math.floor(
-                        Math.random() *
-                        ideas.length
-                    )
-                ];
-
-
-            addMessage(
-                "ai",
-                message
+            alert(
+                "La imagen es demasiado grande. Usá una de menos de 8 MB."
             );
+
+            imageInput.value =
+                "";
+
+            return;
 
         }
 
 
-        scheduleInitiative();
+        selectedImage =
+            file;
+
+
+        try {
+
+            selectedImageBase64 =
+                await readImageAsBase64(
+                    file
+                );
+
+
+            previewImage.src =
+                selectedImageBase64;
+
+
+            imagePreview.style.display =
+                "block";
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            removeImage();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   REMOVE IMAGE
+========================================================= */
+
+
+function removeImage() {
+
+    selectedImage =
+        null;
+
+    selectedImageBase64 =
+        null;
+
+    imageInput.value =
+        "";
+
+    imagePreview.style.display =
+        "none";
+
+    previewImage.src =
+        "";
+
+}
+
+
+/* =========================================================
+   MEMORIA LOCAL
+========================================================= */
+
+
+function saveMessages() {
+
+    try {
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(messages)
+        );
+
+    } catch (error) {
+
+        console.warn(
+            "No se pudo guardar el historial."
+        );
 
     }
 
+}
 
-    /* =====================================================
-       INICIO
-    ===================================================== */
 
-    loadMessages();
+/* =========================================================
+   CARGAR HISTORIAL
+========================================================= */
+
+
+function loadMessages() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
+
+        if (!saved)
+            return;
+
+
+        messages =
+            JSON.parse(saved);
+
+
+        if (
+            !Array.isArray(messages)
+        ) {
+
+            messages = [];
+
+            return;
+
+        }
+
+
+        messages.forEach(
+            function(message) {
+
+                addMessage(
+
+                    message.sender,
+
+                    message.text,
+
+                    false,
+
+                    message.initiative || false,
+
+                    message.image || null
+
+                );
+
+            }
+        );
+
+
+    } catch (error) {
+
+        messages = [];
+
+    }
+
+}
+
+
+/* =========================================================
+   CONTADOR
+========================================================= */
+
+
+function updateMessageCount() {
+
+    messageCount.textContent =
+        messages.length;
+
+}
+
+
+/* =========================================================
+   CLEAR CHAT
+========================================================= */
+
+
+function clearChat() {
+
+    const confirmClear =
+        confirm(
+            "¿Querés borrar toda la conversación?"
+        );
+
+
+    if (!confirmClear)
+        return;
+
+
+    messages = [];
+
+
+    localStorage.removeItem(
+        STORAGE_KEY
+    );
+
+
+    chat.innerHTML =
+        "";
+
+
+    const newWelcome =
+        document.createElement(
+            "div"
+        );
+
+
+    newWelcome.className =
+        "welcome";
+
+    newWelcome.id =
+        "welcome";
+
+
+    newWelcome.innerHTML = `
+
+        <div class="welcome-avatar"></div>
+
+        <h1>
+            Hola, soy Alicia.
+        </h1>
+
+        <p>
+            Estoy acá para conversar,
+            pensar ideas, ayudarte con
+            proyectos y aprender de
+            nuestras conversaciones.
+        </p>
+
+        <div class="suggestions">
+
+            <button
+                class="suggestion"
+                onclick="useSuggestion('¿Qué podés hacer?')">
+
+                ¿Qué podés hacer?
+
+            </button>
+
+            <button
+                class="suggestion"
+                onclick="useSuggestion('Contame algo interesante')">
+
+                Contame algo interesante
+
+            </button>
+
+            <button
+                class="suggestion"
+                onclick="useSuggestion('Quiero probar tu personalidad')">
+
+                Probá mi personalidad
+
+            </button>
+
+        </div>
+
+    `;
+
+
+    chat.appendChild(
+        newWelcome
+    );
+
 
     updateMessageCount();
 
-    startInitiative();
+}
 
-    input.focus();
+
+/* =========================================================
+   NUEVA CONVERSACIÓN
+========================================================= */
+
+
+function newChat() {
+
+    clearChat();
+
+}
+
+
+/* =========================================================
+   ARRANQUE
+========================================================= */
+
+
+loadMessages();
+
+updateMessageCount();
+
+scheduleInitiative();
+
+input.focus();
+
 
 </script>
 
