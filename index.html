@@ -6,40 +6,92 @@
 
 <title>Alicia AI</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
+:root {
+    --bg: #05070a;
+    --bg2: #080c11;
+    --panel: rgba(10, 15, 22, .82);
+    --panel2: rgba(14, 20, 29, .9);
+
+    --cyan: #5ee7ff;
+    --cyan2: #1fb8ff;
+    --cyan3: #8df1ff;
+
+    --text: #e8f7ff;
+    --muted: #70818e;
+    --border: rgba(94, 231, 255, .13);
+
+    --user: rgba(25, 45, 58, .75);
+    --ai: rgba(8, 15, 22, .92);
+
+    --shadow:
+        0 0 35px rgba(31, 184, 255, .08),
+        inset 0 0 30px rgba(94, 231, 255, .015);
+}
+
 * {
     box-sizing: border-box;
 }
 
-:root {
-    --bg: #07090d;
-    --panel: #0c1017;
-    --panel2: #10151e;
-    --border: #1d2733;
-    --cyan: #5ee7ff;
-    --cyan2: #2dbedb;
-    --text: #e9f1f5;
-    --muted: #7e8b96;
-    --danger: #ff5555;
-}
-
 html,
 body {
-    margin: 0;
-    padding: 0;
     width: 100%;
     height: 100%;
-    background: var(--bg);
-    color: var(--text);
-    font-family:
-        Inter,
-        Arial,
-        Helvetica,
-        sans-serif;
+    margin: 0;
 }
 
 body {
     overflow: hidden;
+    background:
+        radial-gradient(circle at 70% 15%, rgba(31,184,255,.07), transparent 25%),
+        radial-gradient(circle at 20% 80%, rgba(94,231,255,.035), transparent 25%),
+        var(--bg);
+
+    color: var(--text);
+    font-family: Inter, sans-serif;
+}
+
+/* =========================
+   BACKGROUND
+========================= */
+
+.background-grid {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: .22;
+
+    background-image:
+        linear-gradient(rgba(94,231,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(94,231,255,.025) 1px, transparent 1px);
+
+    background-size: 55px 55px;
+
+    mask-image: linear-gradient(
+        to bottom,
+        black,
+        transparent 90%
+    );
+}
+
+.scanline {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0px,
+            transparent 3px,
+            rgba(255,255,255,.008) 4px
+        );
 }
 
 /* =========================
@@ -47,9 +99,10 @@ body {
 ========================= */
 
 .app {
+    position: relative;
     display: flex;
     width: 100%;
-    height: 100vh;
+    height: 100%;
 }
 
 /* =========================
@@ -57,75 +110,176 @@ body {
 ========================= */
 
 .sidebar {
-    width: 280px;
-    min-width: 280px;
-    height: 100vh;
+    position: relative;
+    width: 290px;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
 
     background:
         linear-gradient(
             180deg,
-            #0a0e14 0%,
-            #070a0f 100%
+            rgba(7,12,18,.96),
+            rgba(4,7,11,.98)
         );
 
-    border-right:
-        1px solid var(--border);
+    border-right: 1px solid var(--border);
+
+    backdrop-filter: blur(25px);
+
+    z-index: 20;
+}
+
+.brand {
+    height: 92px;
 
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+
+    padding: 0 24px;
+
+    border-bottom: 1px solid rgba(94,231,255,.08);
 }
 
 .logo {
-    padding: 25px 22px 20px;
+    width: 43px;
+    height: 43px;
 
-    font-size: 23px;
-    font-weight: 700;
+    display: grid;
+    place-items: center;
 
-    letter-spacing: 1px;
+    border: 1px solid rgba(94,231,255,.5);
+    border-radius: 12px;
 
     color: var(--cyan);
+
+    font-family: Orbitron, sans-serif;
+    font-size: 17px;
+
+    box-shadow:
+        0 0 20px rgba(94,231,255,.14),
+        inset 0 0 14px rgba(94,231,255,.06);
+
+    position: relative;
 }
 
+.logo::after {
+    content: "";
+    position: absolute;
+    inset: -5px;
+
+    border: 1px solid rgba(94,231,255,.08);
+    border-radius: 15px;
+}
+
+.brand-name {
+    font-family: Orbitron, sans-serif;
+    font-size: 18px;
+    letter-spacing: 3px;
+}
+
+.brand-sub {
+    margin-top: 4px;
+
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+}
+
+/* =========================
+   NEW CHAT
+========================= */
+
 .new-chat {
-    margin: 0 15px 15px;
+    margin: 20px;
 
-    padding: 12px 14px;
+    height: 48px;
 
-    border: 1px solid #24323f;
+    border: 1px solid rgba(94,231,255,.24);
     border-radius: 10px;
 
-    background: #101721;
-    color: var(--text);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(94,231,255,.08),
+            rgba(94,231,255,.02)
+        );
+
+    color: var(--cyan3);
+
+    font-family: Inter, sans-serif;
+    font-weight: 600;
 
     cursor: pointer;
 
-    transition: .2s;
+    transition: .25s;
 }
 
 .new-chat:hover {
-    border-color: var(--cyan2);
-    background: #131e29;
+    border-color: rgba(94,231,255,.55);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(94,231,255,.15),
+            rgba(94,231,255,.04)
+        );
+
+    box-shadow:
+        0 0 25px rgba(94,231,255,.08);
+
+    transform: translateY(-1px);
+}
+
+/* =========================
+   CONVERSATIONS
+========================= */
+
+.section-title {
+    padding: 4px 22px 12px;
+
+    color: #50616d;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
 }
 
 .conversations {
     flex: 1;
-
     overflow-y: auto;
 
-    padding: 5px 10px 15px;
+    padding: 0 10px 20px;
+}
+
+.conversations::-webkit-scrollbar,
+.messages::-webkit-scrollbar {
+    width: 5px;
+}
+
+.conversations::-webkit-scrollbar-thumb,
+.messages::-webkit-scrollbar-thumb {
+    background: rgba(94,231,255,.12);
+    border-radius: 10px;
 }
 
 .conversation {
+    position: relative;
+
     display: flex;
     align-items: center;
-    justify-content: space-between;
 
-    padding: 11px 12px;
-    margin-bottom: 5px;
+    min-height: 48px;
+
+    padding: 0 13px;
+    margin-bottom: 4px;
 
     border-radius: 8px;
 
-    color: #bac5cc;
+    color: #7f929f;
 
     cursor: pointer;
 
@@ -133,25 +287,38 @@ body {
 }
 
 .conversation:hover {
-    background: #101720;
+    background: rgba(94,231,255,.045);
+    color: #cceef7;
 }
 
 .conversation.active {
-    background: #111d27;
-    color: var(--cyan);
+    background:
+        linear-gradient(
+            90deg,
+            rgba(94,231,255,.11),
+            rgba(94,231,255,.025)
+        );
+
+    color: var(--cyan3);
+
+    border-left: 2px solid var(--cyan);
 }
 
 .conversation-name {
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 
-    flex: 1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    font-size: 13px;
 }
 
 .conversation-actions {
+    margin-left: auto;
+
     display: flex;
-    gap: 4px;
+    gap: 3px;
+
     opacity: 0;
 }
 
@@ -159,15 +326,65 @@ body {
     opacity: 1;
 }
 
-.conversation-actions button {
-    border: none;
-    background: transparent;
-    color: #77838c;
+.small-action {
+    width: 25px;
+    height: 25px;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: rgba(255,255,255,.04);
+    color: #80929e;
+
     cursor: pointer;
 }
 
-.conversation-actions button:hover {
-    color: var(--cyan);
+.small-action:hover {
+    color: white;
+    background: rgba(255,255,255,.09);
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.system-status {
+    padding: 17px 21px;
+
+    border-top: 1px solid rgba(94,231,255,.07);
+
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    color: #657984;
+
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #3fffb0;
+
+    box-shadow:
+        0 0 8px #3fffb0;
+
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%,100% {
+        opacity: .45;
+    }
+
+    50% {
+        opacity: 1;
+    }
 }
 
 /* =========================
@@ -175,14 +392,14 @@ body {
 ========================= */
 
 .main {
+    position: relative;
+
     flex: 1;
 
-    height: 100vh;
+    min-width: 0;
 
     display: flex;
     flex-direction: column;
-
-    min-width: 0;
 }
 
 /* =========================
@@ -190,50 +407,105 @@ body {
 ========================= */
 
 .header {
-    height: 65px;
-    min-height: 65px;
+    height: 78px;
 
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
-    padding: 0 24px;
+    padding: 0 30px;
 
-    border-bottom:
-        1px solid var(--border);
+    border-bottom: 1px solid rgba(94,231,255,.07);
 
-    background:
-        rgba(8, 11, 16, .88);
+    background: rgba(5,8,12,.6);
 
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(20px);
+
+    z-index: 10;
 }
 
-.header-title {
+.header-left {
     display: flex;
     align-items: center;
-    gap: 10px;
-
-    font-weight: 600;
+    gap: 14px;
 }
 
-.status-dot {
-    width: 8px;
-    height: 8px;
+.core {
+    position: relative;
+
+    width: 11px;
+    height: 11px;
 
     border-radius: 50%;
 
     background: var(--cyan);
 
     box-shadow:
-        0 0 10px rgba(94,231,255,.7);
+        0 0 8px var(--cyan),
+        0 0 22px rgba(94,231,255,.55);
 }
 
-.header-status {
-    color: var(--muted);
-    font-size: 12px;
+.core::before,
+.core::after {
+    content: "";
+
+    position: absolute;
+
+    inset: -7px;
+
+    border: 1px solid rgba(94,231,255,.25);
+    border-radius: 50%;
+
+    animation: orbit 3s linear infinite;
+}
+
+.core::after {
+    inset: -12px;
+
+    opacity: .35;
+
+    animation-duration: 5s;
+}
+
+@keyframes orbit {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.header-title {
+    font-family: Orbitron, sans-serif;
+
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+.header-state {
+    margin-top: 4px;
+
+    font-size: 9px;
+    color: #5d7480;
+
+    letter-spacing: 1.5px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    color: #5e727e;
+
+    font-size: 10px;
+    letter-spacing: 1px;
 }
 
 /* =========================
-   MESSAGES
+   CHAT
 ========================= */
 
 .messages {
@@ -241,15 +513,31 @@ body {
 
     overflow-y: auto;
 
-    padding: 30px 7%;
+    padding: 35px clamp(20px, 7vw, 100px) 30px;
+
+    scroll-behavior: smooth;
 }
 
 .message {
-    width: 100%;
-
     display: flex;
 
-    margin-bottom: 22px;
+    width: 100%;
+
+    margin-bottom: 27px;
+
+    animation: messageIn .25s ease;
+}
+
+@keyframes messageIn {
+    from {
+        opacity: 0;
+        transform: translateY(7px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .message.user {
@@ -260,299 +548,361 @@ body {
     justify-content: flex-start;
 }
 
-.message-bubble {
-    max-width: min(760px, 85%);
+.message-content {
+    max-width: min(760px, 80%);
 
-    padding: 13px 16px;
+    padding: 16px 19px;
 
-    border-radius: 13px;
+    line-height: 1.65;
 
-    line-height: 1.55;
+    font-size: 14px;
 
-    font-size: 15px;
+    border: 1px solid rgba(94,231,255,.07);
+
+    border-radius: 14px;
 
     white-space: pre-wrap;
 
-    word-break: break-word;
+    box-shadow: var(--shadow);
 }
 
-.message.user .message-bubble {
-    background: #14212b;
+.message.user .message-content {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(28,52,67,.75),
+            rgba(12,25,33,.85)
+        );
 
-    border:
-        1px solid #1e3542;
+    border-bottom-right-radius: 4px;
 }
 
-.message.assistant .message-bubble {
-    background: #0d131b;
+.message.assistant .message-content {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(8,15,22,.9),
+            rgba(7,12,18,.75)
+        );
 
-    border:
-        1px solid #18232d;
+    border-left: 2px solid rgba(94,231,255,.45);
+
+    border-bottom-left-radius: 4px;
 }
 
 .message-label {
-    font-size: 11px;
+    margin-bottom: 7px;
 
-    color: var(--muted);
+    color: #55717e;
 
-    margin-bottom: 5px;
-}
+    font-family: Orbitron, sans-serif;
 
-.message.user .message-label {
-    text-align: right;
+    font-size: 8px;
+
+    letter-spacing: 2px;
 }
 
 /* =========================
-   WELCOME
+   EMPTY STATE
 ========================= */
 
-.welcome {
+.empty {
     height: 100%;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    flex-direction: column;
-
     text-align: center;
-
-    color: var(--muted);
 }
 
-.welcome h1 {
+.empty-inner {
+    max-width: 580px;
+}
+
+.empty-orb {
+    width: 110px;
+    height: 110px;
+
+    margin: 0 auto 30px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid rgba(94,231,255,.25);
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 35px rgba(94,231,255,.06),
+        inset 0 0 35px rgba(94,231,255,.05);
+
+    position: relative;
+
+    animation: floating 4s ease-in-out infinite;
+}
+
+.empty-orb::before,
+.empty-orb::after {
+    content: "";
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(94,231,255,.16);
+}
+
+.empty-orb::before {
+    inset: -13px;
+}
+
+.empty-orb::after {
+    inset: 13px;
+}
+
+.orb-letter {
+    font-family: Orbitron, sans-serif;
+
+    font-size: 35px;
+
     color: var(--cyan);
 
-    font-size: 38px;
-
-    margin: 0 0 8px;
+    text-shadow:
+        0 0 25px rgba(94,231,255,.55);
 }
 
-.welcome p {
+@keyframes floating {
+    0%,100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+.empty h1 {
     margin: 0;
 
-    max-width: 500px;
+    font-family: Orbitron, sans-serif;
+
+    font-size: 27px;
+    font-weight: 500;
+
+    letter-spacing: 4px;
+}
+
+.empty p {
+    margin-top: 14px;
+
+    color: #647985;
+
+    font-size: 13px;
+
+    line-height: 1.7;
 }
 
 /* =========================
-   INPUT
+   INPUT AREA
 ========================= */
 
 .input-area {
-    padding: 14px 7% 20px;
-
-    border-top:
-        1px solid var(--border);
+    padding: 15px clamp(20px, 7vw, 100px) 22px;
 
     background:
-        rgba(7, 9, 13, .94);
+        linear-gradient(
+            to top,
+            rgba(5,7,10,.98),
+            rgba(5,7,10,.75)
+        );
+
+    border-top: 1px solid rgba(94,231,255,.06);
 }
 
-.input-wrapper {
-    max-width: 900px;
-
-    margin: auto;
+.input-shell {
+    position: relative;
 
     display: flex;
     align-items: flex-end;
 
-    gap: 8px;
+    gap: 9px;
+
+    max-width: 950px;
+
+    margin: auto;
 
     padding: 9px;
 
-    background: #0d131a;
+    border: 1px solid rgba(94,231,255,.14);
 
-    border:
-        1px solid #202c37;
+    border-radius: 15px;
 
-    border-radius: 14px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(12,19,27,.94),
+            rgba(6,10,15,.96)
+        );
+
+    box-shadow:
+        0 0 35px rgba(94,231,255,.035),
+        inset 0 0 25px rgba(94,231,255,.015);
+
+    transition: .25s;
 }
 
-#messageInput {
+.input-shell:focus-within {
+    border-color: rgba(94,231,255,.38);
+
+    box-shadow:
+        0 0 35px rgba(94,231,255,.08),
+        inset 0 0 20px rgba(94,231,255,.025);
+}
+
+textarea {
     flex: 1;
+
+    min-height: 44px;
+    max-height: 180px;
 
     resize: none;
 
-    min-height: 42px;
-    max-height: 160px;
+    padding: 12px 10px;
 
-    padding: 10px 11px;
-
-    border: none;
-    outline: none;
+    border: 0;
+    outline: 0;
 
     background: transparent;
 
-    color: var(--text);
+    color: #e8f7ff;
 
-    font-family: inherit;
-    font-size: 15px;
+    font-family: Inter, sans-serif;
+
+    font-size: 14px;
+
+    line-height: 1.5;
 }
 
-#messageInput::placeholder {
-    color: #59656f;
+textarea::placeholder {
+    color: #536773;
 }
 
 .input-button {
+    flex-shrink: 0;
+
     width: 42px;
     height: 42px;
 
+    border: 1px solid rgba(94,231,255,.16);
+
     border-radius: 10px;
 
-    border: 1px solid #263744;
+    background: rgba(94,231,255,.045);
 
-    background: #111b24;
-
-    color: var(--cyan);
+    color: #75909d;
 
     cursor: pointer;
 
     transition: .2s;
+
+    font-size: 16px;
 }
 
 .input-button:hover {
-    background: #172733;
-    border-color: var(--cyan2);
+    color: var(--cyan);
+    border-color: rgba(94,231,255,.4);
+
+    background: rgba(94,231,255,.1);
 }
 
-.input-button:disabled {
-    opacity: .4;
-    cursor: default;
+.send-button {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(94,231,255,.18),
+            rgba(31,184,255,.08)
+        );
+
+    color: var(--cyan3);
+
+    border-color: rgba(94,231,255,.3);
 }
 
-/* =========================
-   FILE
-========================= */
+.send-button:hover {
+    box-shadow:
+        0 0 20px rgba(94,231,255,.15);
+}
 
 .file-preview {
-    max-width: 900px;
+    display: none;
+
+    max-width: 950px;
 
     margin: 0 auto 8px;
 
-    display: none;
+    padding: 8px 13px;
 
-    padding: 8px 11px;
+    border: 1px solid rgba(94,231,255,.1);
 
-    border:
-        1px solid #26343f;
+    border-radius: 8px;
 
-    border-radius: 9px;
+    color: #77919d;
 
-    background: #0d131a;
-
-    font-size: 13px;
-
-    color: var(--muted);
+    font-size: 11px;
 }
 
-.file-preview.visible {
-    display: flex;
+.footer-info {
+    max-width: 950px;
 
-    align-items: center;
-    justify-content: space-between;
-}
+    margin: 8px auto 0;
 
-.file-remove {
-    border: none;
+    text-align: center;
 
-    background: transparent;
+    color: #334852;
 
-    color: var(--danger);
+    font-size: 9px;
 
-    cursor: pointer;
-}
-
-/* =========================
-   TYPING
-========================= */
-
-.typing {
-    display: flex;
-
-    align-items: center;
-
-    gap: 5px;
-
-    padding: 4px 2px;
-}
-
-.typing span {
-    width: 6px;
-    height: 6px;
-
-    border-radius: 50%;
-
-    background: var(--cyan);
-
-    animation:
-        typingAnimation 1.2s infinite;
-}
-
-.typing span:nth-child(2) {
-    animation-delay: .15s;
-}
-
-.typing span:nth-child(3) {
-    animation-delay: .3s;
-}
-
-@keyframes typingAnimation {
-
-    0%,
-    60%,
-    100% {
-        opacity: .25;
-        transform: translateY(0);
-    }
-
-    30% {
-        opacity: 1;
-        transform: translateY(-3px);
-    }
-}
-
-/* =========================
-   SCROLLBAR
-========================= */
-
-::-webkit-scrollbar {
-    width: 7px;
-}
-
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #202c36;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #2c3d49;
+    letter-spacing: .5px;
 }
 
 /* =========================
    MOBILE
 ========================= */
 
-@media (max-width: 700px) {
+@media (max-width: 800px) {
 
     .sidebar {
-        width: 220px;
-        min-width: 220px;
+        width: 230px;
     }
 
     .messages {
-        padding: 20px 4%;
+        padding-left: 20px;
+        padding-right: 20px;
     }
 
     .input-area {
-        padding: 10px 4% 15px;
+        padding-left: 15px;
+        padding-right: 15px;
     }
 
-    .message-bubble {
-        max-width: 90%;
+    .header {
+        padding: 0 18px;
+    }
+
+    .header-right {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .sidebar {
+        display: none;
+    }
+
+    .message-content {
+        max-width: 92%;
     }
 }
 </style>
@@ -560,57 +910,86 @@ body {
 
 <body>
 
+<div class="background-grid"></div>
+<div class="scanline"></div>
+
 <div class="app">
 
-    <!-- SIDEBAR -->
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
 
     <aside class="sidebar">
 
-        <div class="logo">
-            ALICIA
+        <div class="brand">
+
+            <div class="logo">A</div>
+
+            <div>
+                <div class="brand-name">ALICIA</div>
+                <div class="brand-sub">AI SYSTEM</div>
+            </div>
+
         </div>
 
-        <button
-            class="new-chat"
-            id="newChatButton"
-        >
-            + Nueva conversación
+        <button class="new-chat" id="newChat">
+            + NUEVA CONVERSACIÓN
         </button>
 
-        <div
-            class="conversations"
-            id="conversationList"
-        ></div>
+        <div class="section-title">
+            CONVERSACIONES
+        </div>
+
+        <div class="conversations" id="conversations"></div>
+
+        <div class="system-status">
+            <span class="status-dot"></span>
+            SISTEMA ONLINE
+        </div>
 
     </aside>
 
 
-    <!-- MAIN -->
+    <!-- =========================
+         MAIN
+    ========================== -->
 
     <main class="main">
 
         <header class="header">
 
-            <div class="header-title">
+            <div class="header-left">
 
-                <div class="status-dot"></div>
+                <div class="core"></div>
 
                 <div>
-                    Alicia
-                    <div
-                        class="header-status"
-                        id="headerStatus"
-                    >
-                        En línea
+                    <div class="header-title">
+                        ALICIA
+                    </div>
+
+                    <div class="header-state">
+                        INTELLIGENCE CORE · ACTIVE
                     </div>
                 </div>
 
             </div>
 
+            <div class="header-right">
+                <span id="connectionStatus">
+                    GEMINI LINK
+                </span>
+
+                <span>
+                    v1.0
+                </span>
+            </div>
+
         </header>
 
 
-        <!-- MESSAGES -->
+        <!-- =========================
+             MESSAGES
+        ========================== -->
 
         <section
             class="messages"
@@ -618,29 +997,18 @@ body {
         ></section>
 
 
-        <!-- INPUT -->
+        <!-- =========================
+             INPUT
+        ========================== -->
 
         <div class="input-area">
 
             <div
                 class="file-preview"
                 id="filePreview"
-            >
+            ></div>
 
-                <span id="fileName">
-                    Archivo
-                </span>
-
-                <button
-                    class="file-remove"
-                    id="removeFile"
-                >
-                    ×
-                </button>
-
-            </div>
-
-            <div class="input-wrapper">
+            <div class="input-shell">
 
                 <button
                     class="input-button"
@@ -654,17 +1022,16 @@ body {
                     type="file"
                     id="fileInput"
                     hidden
-                    accept="
-                        image/*,
-                        .txt,
-                        .md,
-                        .json,
-                        .csv,
-                        .html,
-                        .pdf,
-                        .docx
-                    "
+                    accept="image/*,.txt,.md,.json,.csv,.html,.pdf,.docx"
                 >
+
+                <button
+                    class="input-button"
+                    id="micButton"
+                    title="Hablar"
+                >
+                    ◉
+                </button>
 
                 <textarea
                     id="messageInput"
@@ -673,13 +1040,17 @@ body {
                 ></textarea>
 
                 <button
-                    class="input-button"
+                    class="input-button send-button"
                     id="sendButton"
                     title="Enviar"
                 >
-                    ↑
+                    ➤
                 </button>
 
+            </div>
+
+            <div class="footer-info">
+                ALICIA · GEMINI CORE · CONVERSACIÓN PRIVADA
             </div>
 
         </div>
@@ -700,386 +1071,236 @@ const WORKER_URL =
 
 
 /* =========================================================
-   ESTADO
-========================================================= */
-
-let conversations = [];
-
-let activeConversationId = null;
-
-let selectedFile = null;
-
-let selectedImage = null;
-
-let aliciaInitiativeRunning = false;
-
-let aliciaInitiativeTimer = null;
-
-let aliciaLastInitiative = 0;
-
-
-/* =========================================================
    ELEMENTOS
 ========================================================= */
 
-const conversationList =
-    document.getElementById(
-        "conversationList"
-    );
+const messagesEl =
+    document.getElementById("messages");
 
-const messagesElement =
-    document.getElementById(
-        "messages"
-    );
-
-const messageInput =
-    document.getElementById(
-        "messageInput"
-    );
+const input =
+    document.getElementById("messageInput");
 
 const sendButton =
-    document.getElementById(
-        "sendButton"
-    );
-
-const fileButton =
-    document.getElementById(
-        "fileButton"
-    );
-
-const fileInput =
-    document.getElementById(
-        "fileInput"
-    );
-
-const filePreview =
-    document.getElementById(
-        "filePreview"
-    );
-
-const fileName =
-    document.getElementById(
-        "fileName"
-    );
-
-const removeFile =
-    document.getElementById(
-        "removeFile"
-    );
+    document.getElementById("sendButton");
 
 const newChatButton =
-    document.getElementById(
-        "newChatButton"
-    );
+    document.getElementById("newChat");
 
-const headerStatus =
-    document.getElementById(
-        "headerStatus"
-    );
+const conversationsEl =
+    document.getElementById("conversations");
+
+const fileButton =
+    document.getElementById("fileButton");
+
+const fileInput =
+    document.getElementById("fileInput");
+
+const filePreview =
+    document.getElementById("filePreview");
+
+const micButton =
+    document.getElementById("micButton");
+
+const connectionStatus =
+    document.getElementById("connectionStatus");
 
 
 /* =========================================================
-   STORAGE
+   ESTADO
 ========================================================= */
 
-function saveConversations() {
+let conversations =
+    JSON.parse(
+        localStorage.getItem("alicia_conversations") || "[]"
+    );
 
-    try {
+let activeConversationId =
+    localStorage.getItem("alicia_active") || null;
 
-        localStorage.setItem(
-            "alicia_conversations",
-            JSON.stringify(
-                conversations
-            )
-        );
+let selectedFile = null;
 
-    } catch (error) {
-
-        console.error(
-            "No se pudieron guardar las conversaciones:",
-            error
-        );
-    }
-}
-
-
-function loadConversations() {
-
-    try {
-
-        const saved =
-            localStorage.getItem(
-                "alicia_conversations"
-            );
-
-        if (saved) {
-
-            conversations =
-                JSON.parse(saved);
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Error cargando conversaciones:",
-            error
-        );
-
-        conversations = [];
-    }
-
-    if (
-        !Array.isArray(
-            conversations
-        )
-    ) {
-
-        conversations = [];
-    }
-
-    if (
-        conversations.length === 0
-    ) {
-
-        createConversation();
-
-    } else {
-
-        activeConversationId =
-            conversations[0].id;
-
-        renderConversations();
-        renderMessages();
-    }
-}
+let isSending = false;
 
 
 /* =========================================================
-   CONVERSACIONES
+   CREAR CONVERSACIÓN
 ========================================================= */
 
 function createConversation() {
 
     const conversation = {
-
-        id:
-            Date.now().toString(),
-
-        title:
-            "Nueva conversación",
-
+        id: Date.now().toString(),
+        title: "Nueva conversación",
         messages: []
-
     };
 
-    conversations.unshift(
-        conversation
-    );
+    conversations.unshift(conversation);
 
     activeConversationId =
         conversation.id;
 
-    saveConversations();
+    saveState();
 
     renderConversations();
+
     renderMessages();
-}
-
-
-function getActiveConversation() {
-
-    return conversations.find(
-        conversation =>
-            conversation.id ===
-            activeConversationId
-    );
-}
-
-
-function deleteConversation(id) {
-
-    conversations =
-        conversations.filter(
-            conversation =>
-                conversation.id !== id
-        );
-
-    if (
-        activeConversationId === id
-    ) {
-
-        if (
-            conversations.length > 0
-        ) {
-
-            activeConversationId =
-                conversations[0].id;
-
-        } else {
-
-            createConversation();
-
-            return;
-        }
-    }
-
-    saveConversations();
-
-    renderConversations();
-    renderMessages();
-}
-
-
-function renameConversation(id) {
-
-    const conversation =
-        conversations.find(
-            c => c.id === id
-        );
-
-    if (!conversation) {
-        return;
-    }
-
-    const name =
-        prompt(
-            "Nombre de la conversación:",
-            conversation.title
-        );
-
-    if (
-        name &&
-        name.trim()
-    ) {
-
-        conversation.title =
-            name.trim();
-
-        saveConversations();
-
-        renderConversations();
-    }
 }
 
 
 /* =========================================================
-   RENDER CONVERSACIONES
+   ESTADO
+========================================================= */
+
+function saveState() {
+
+    localStorage.setItem(
+        "alicia_conversations",
+        JSON.stringify(conversations)
+    );
+
+    localStorage.setItem(
+        "alicia_active",
+        activeConversationId || ""
+    );
+}
+
+
+/* =========================================================
+   CONVERSACIÓN ACTIVA
+========================================================= */
+
+function getActiveConversation() {
+
+    return conversations.find(
+        c => c.id === activeConversationId
+    );
+}
+
+
+/* =========================================================
+   RENDER SIDEBAR
 ========================================================= */
 
 function renderConversations() {
 
-    conversationList.innerHTML = "";
+    conversationsEl.innerHTML = "";
 
-    conversations.forEach(
-        conversation => {
+    for (const conversation of conversations) {
 
-            const item =
-                document.createElement(
-                    "div"
-                );
+        const item =
+            document.createElement("div");
 
-            item.className =
-                "conversation" +
-                (
-                    conversation.id ===
-                    activeConversationId
-                        ? " active"
-                        : ""
-                );
-
-            item.onclick =
-                () => {
-
-                    activeConversationId =
-                        conversation.id;
-
-                    renderConversations();
-                    renderMessages();
-                };
-
-            const name =
-                document.createElement(
-                    "div"
-                );
-
-            name.className =
-                "conversation-name";
-
-            name.textContent =
-                conversation.title;
-
-            const actions =
-                document.createElement(
-                    "div"
-                );
-
-            actions.className =
-                "conversation-actions";
-
-            const rename =
-                document.createElement(
-                    "button"
-                );
-
-            rename.textContent =
-                "✎";
-
-            rename.title =
-                "Renombrar";
-
-            rename.onclick =
-                event => {
-
-                    event.stopPropagation();
-
-                    renameConversation(
-                        conversation.id
-                    );
-                };
-
-            const remove =
-                document.createElement(
-                    "button"
-                );
-
-            remove.textContent =
-                "×";
-
-            remove.title =
-                "Eliminar";
-
-            remove.onclick =
-                event => {
-
-                    event.stopPropagation();
-
-                    deleteConversation(
-                        conversation.id
-                    );
-                };
-
-            actions.appendChild(
-                rename
+        item.className =
+            "conversation" +
+            (
+                conversation.id === activeConversationId
+                    ? " active"
+                    : ""
             );
 
-            actions.appendChild(
-                remove
-            );
+        const name =
+            document.createElement("span");
 
-            item.appendChild(
-                name
-            );
+        name.className =
+            "conversation-name";
 
-            item.appendChild(
-                actions
-            );
+        name.textContent =
+            conversation.title;
 
-            conversationList.appendChild(
-                item
-            );
-        }
-    );
+        const actions =
+            document.createElement("div");
+
+        actions.className =
+            "conversation-actions";
+
+        const rename =
+            document.createElement("button");
+
+        rename.className =
+            "small-action";
+
+        rename.textContent =
+            "✎";
+
+        rename.onclick = event => {
+
+            event.stopPropagation();
+
+            const newName =
+                prompt(
+                    "Nombre de la conversación:",
+                    conversation.title
+                );
+
+            if (
+                newName &&
+                newName.trim()
+            ) {
+
+                conversation.title =
+                    newName.trim();
+
+                saveState();
+
+                renderConversations();
+            }
+        };
+
+        const remove =
+            document.createElement("button");
+
+        remove.className =
+            "small-action";
+
+        remove.textContent =
+            "×";
+
+        remove.onclick = event => {
+
+            event.stopPropagation();
+
+            conversations =
+                conversations.filter(
+                    c =>
+                        c.id !== conversation.id
+                );
+
+            if (
+                activeConversationId ===
+                conversation.id
+            ) {
+
+                activeConversationId =
+                    conversations[0]?.id || null;
+            }
+
+            saveState();
+
+            renderConversations();
+
+            renderMessages();
+        };
+
+        actions.appendChild(rename);
+        actions.appendChild(remove);
+
+        item.appendChild(name);
+        item.appendChild(actions);
+
+        item.onclick = () => {
+
+            activeConversationId =
+                conversation.id;
+
+            saveState();
+
+            renderConversations();
+
+            renderMessages();
+        };
+
+        conversationsEl.appendChild(item);
+    }
 }
 
 
@@ -1089,66 +1310,68 @@ function renderConversations() {
 
 function renderMessages() {
 
-    messagesElement.innerHTML = "";
+    messagesEl.innerHTML = "";
 
     const conversation =
         getActiveConversation();
 
-    if (!conversation) {
-        return;
-    }
-
     if (
+        !conversation ||
         conversation.messages.length === 0
     ) {
 
-        const welcome =
-            document.createElement(
-                "div"
-            );
+        messagesEl.innerHTML = `
+            <div class="empty">
 
-        welcome.className =
-            "welcome";
+                <div class="empty-inner">
 
-        welcome.innerHTML = `
-            <h1>Alicia</h1>
-            <p>
-                Estoy acá. Hablame.
-            </p>
+                    <div class="empty-orb">
+                        <span class="orb-letter">A</span>
+                    </div>
+
+                    <h1>ALICIA</h1>
+
+                    <p>
+                        Sistema de inteligencia artificial
+                        conectado.<br>
+                        Podés hablar conmigo, preguntarme cosas,
+                        mandarme imágenes o archivos.
+                    </p>
+
+                </div>
+
+            </div>
         `;
-
-        messagesElement.appendChild(
-            welcome
-        );
 
         return;
     }
 
-    conversation.messages.forEach(
-        message => {
+    for (
+        const message
+        of conversation.messages
+    ) {
 
-            addMessageToDOM(
-                message.role,
-                message.content,
-                false
-            );
-        }
-    );
+        addMessageToDOM(
+            message.role,
+            message.content
+        );
+    }
 
     scrollToBottom();
 }
 
 
+/* =========================================================
+   AGREGAR MENSAJE
+========================================================= */
+
 function addMessageToDOM(
     role,
-    content,
-    scroll = true
+    content
 ) {
 
     const wrapper =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     wrapper.className =
         "message " +
@@ -1158,110 +1381,35 @@ function addMessageToDOM(
                 : "assistant"
         );
 
-    const inner =
-        document.createElement(
-            "div"
-        );
+    const box =
+        document.createElement("div");
+
+    box.className =
+        "message-content";
 
     const label =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     label.className =
         "message-label";
 
     label.textContent =
         role === "user"
-            ? "Vos"
-            : "Alicia";
+            ? "YOU"
+            : "ALICIA";
 
-    const bubble =
-        document.createElement(
-            "div"
-        );
+    const text =
+        document.createElement("div");
 
-    bubble.className =
-        "message-bubble";
-
-    bubble.textContent =
+    text.textContent =
         content;
 
-    inner.appendChild(
-        label
-    );
+    box.appendChild(label);
+    box.appendChild(text);
 
-    inner.appendChild(
-        bubble
-    );
+    wrapper.appendChild(box);
 
-    wrapper.appendChild(
-        inner
-    );
-
-    messagesElement.appendChild(
-        wrapper
-    );
-
-    if (scroll) {
-        scrollToBottom();
-    }
-}
-
-
-/* =========================================================
-   TYPING
-========================================================= */
-
-function showTyping() {
-
-    const wrapper =
-        document.createElement(
-            "div"
-        );
-
-    wrapper.className =
-        "message assistant";
-
-    wrapper.id =
-        "typingMessage";
-
-    wrapper.innerHTML = `
-        <div>
-            <div class="message-label">
-                Alicia
-            </div>
-
-            <div class="message-bubble">
-
-                <div class="typing">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-
-            </div>
-        </div>
-    `;
-
-    messagesElement.appendChild(
-        wrapper
-    );
-
-    scrollToBottom();
-}
-
-
-function hideTyping() {
-
-    const typing =
-        document.getElementById(
-            "typingMessage"
-        );
-
-    if (typing) {
-        typing.remove();
-    }
+    messagesEl.appendChild(wrapper);
 }
 
 
@@ -1271,51 +1419,104 @@ function hideTyping() {
 
 function scrollToBottom() {
 
-    messagesElement.scrollTop =
-        messagesElement.scrollHeight;
+    requestAnimationFrame(() => {
+
+        messagesEl.scrollTop =
+            messagesEl.scrollHeight;
+
+    });
 }
 
 
 /* =========================================================
-   ENVIAR MENSAJE
+   ENVIAR
 ========================================================= */
 
 async function sendMessage() {
 
+    if (isSending) {
+        return;
+    }
+
     const text =
-        messageInput.value.trim();
+        input.value.trim();
 
     if (
         !text &&
-        !selectedFile &&
-        !selectedImage
+        !selectedFile
     ) {
         return;
     }
 
-    const conversation =
+    let conversation =
         getActiveConversation();
 
     if (!conversation) {
-        return;
+
+        createConversation();
+
+        conversation =
+            getActiveConversation();
     }
 
-    const userContent =
-        text ||
-        (
-            selectedFile
-                ? `[Archivo: ${selectedFile.name}]`
-                : "[Imagen]"
-        );
+    isSending = true;
+
+    sendButton.disabled = true;
+
+    connectionStatus.textContent =
+        "CONNECTING...";
+
+
+    /* =========================
+       ARCHIVO
+    ========================= */
+
+    let imageData = null;
+
+    if (selectedFile) {
+
+        if (
+            selectedFile.type.startsWith(
+                "image/"
+            )
+        ) {
+
+            imageData =
+                await fileToDataURL(
+                    selectedFile
+                );
+        }
+    }
+
+
+    /* =========================
+       MENSAJE
+    ========================= */
+
+    let finalText = text;
+
+    if (
+        selectedFile &&
+        !selectedFile.type.startsWith("image/")
+    ) {
+
+        finalText +=
+            "\n\n[Archivo adjunto: " +
+            selectedFile.name +
+            "]";
+    }
+
+    if (!finalText.trim()) {
+        finalText =
+            "Analizá esta imagen.";
+    }
+
 
     conversation.messages.push({
         role: "user",
-        content: userContent
+        content: finalText
     });
 
-    /*
-     * Título automático.
-     */
 
     if (
         conversation.title ===
@@ -1323,57 +1524,36 @@ async function sendMessage() {
     ) {
 
         conversation.title =
-            text
-                ? text.substring(
-                    0,
-                    35
-                )
-                : "Nueva conversación";
-
-        renderConversations();
+            finalText
+                .slice(0, 35)
+                .trim() +
+            (
+                finalText.length > 35
+                    ? "..."
+                    : ""
+            );
     }
 
-    saveConversations();
+    saveState();
+
+    renderConversations();
 
     renderMessages();
 
-    const finalText =
-        text ||
-        "Analizá el archivo o imagen que te envié.";
+    input.value = "";
 
-    const imageToSend =
-        selectedImage;
+    autoResize();
 
-    /*
-     * Guardamos la historia ANTERIOR.
-     * El mensaje actual no se duplica.
-     */
+
+    /* =========================
+       HISTORIAL
+    ========================= */
 
     const history =
         conversation.messages
             .slice(0, -1)
-            .map(message => ({
-                role:
-                    message.role,
+            .slice(-30);
 
-                content:
-                    message.content
-            }));
-
-    messageInput.value = "";
-
-    resetFile();
-
-    messageInput.style.height =
-        "42px";
-
-    sendButton.disabled =
-        true;
-
-    headerStatus.textContent =
-        "Pensando...";
-
-    showTyping();
 
     try {
 
@@ -1394,7 +1574,7 @@ async function sendMessage() {
                                 finalText,
 
                             image:
-                                imageToSend,
+                                imageData,
 
                             history:
                                 history
@@ -1402,366 +1582,70 @@ async function sendMessage() {
                 }
             );
 
+
         const data =
             await response.json();
 
-        hideTyping();
 
-        if (
-            !response.ok ||
-            !data.ok
-        ) {
+        if (!response.ok || !data.ok) {
 
             throw new Error(
-                data?.error ||
-                "Error desconocido."
+                data.error ||
+                "Error de conexión."
             );
         }
 
+
         const answer =
             data.response ||
-            "No recibí respuesta.";
+            "No recibí una respuesta.";
+
 
         conversation.messages.push({
             role: "assistant",
             content: answer
         });
 
-        saveConversations();
+        saveState();
 
-        addMessageToDOM(
-            "assistant",
-            answer
-        );
+        renderMessages();
 
-        headerStatus.textContent =
-            "En línea";
-
-        /*
-         * Como hubo una conversación nueva,
-         * reiniciamos el momento desde el cual
-         * Alicia puede volver a tener iniciativa.
-         */
-
-        aliciaLastInitiative =
-            Date.now();
-
-        scheduleNextAliciaCheck();
-
-    }
-
-    catch (error) {
-
-        hideTyping();
-
-        console.error(
-            "ALICIA ERROR:",
-            error
-        );
-
-        const errorMessage =
-            "No pude conectarme con mi cerebro ahora mismo.\n\n" +
-            "Detalle: " +
-            error.message;
-
-        addMessageToDOM(
-            "assistant",
-            errorMessage
-        );
-
-        headerStatus.textContent =
-            "Error de conexión";
-    }
-
-    finally {
-
-        sendButton.disabled =
-            false;
-
-        messageInput.focus();
-    }
-}
+        connectionStatus.textContent =
+            "GEMINI LINK · ONLINE";
 
 
-/* =========================================================
-   INICIATIVA AUTÓNOMA
-========================================================= */
+    } catch (error) {
 
-async function checkAliciaInitiative() {
-
-    if (
-        aliciaInitiativeRunning
-    ) {
-        return;
-    }
-
-    const conversation =
-        getActiveConversation();
-
-    if (!conversation) {
-        return;
-    }
-
-    /*
-     * Alicia necesita tener algo de contexto.
-     */
-
-    if (
-        !conversation.messages ||
-        conversation.messages.length === 0
-    ) {
-        scheduleNextAliciaCheck();
-        return;
-    }
-
-    /*
-     * No permitir iniciativas
-     * demasiado seguidas.
-     */
-
-    const now =
-        Date.now();
-
-    if (
-        aliciaLastInitiative &&
-        now -
-            aliciaLastInitiative <
-            5 * 60 * 1000
-    ) {
-
-        scheduleNextAliciaCheck();
-
-        return;
-    }
-
-    aliciaInitiativeRunning =
-        true;
-
-    try {
-
-        /*
-         * Solamente enviamos las últimas
-         * conversaciones para no desperdiciar
-         * contexto.
-         */
-
-        const history =
-            conversation.messages
-                .slice(-30)
-                .map(message => ({
-                    role:
-                        message.role,
-
-                    content:
-                        message.content
-                }));
-
-        const response =
-            await fetch(
-                WORKER_URL,
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-                            initiative:
-                                true,
-
-                            history:
-                                history
-                        })
-                }
-            );
-
-        const data =
-            await response.json();
-
-        if (
-            !response.ok ||
-            !data.ok
-        ) {
-
-            console.error(
-                "Initiative error:",
-                data?.error
-            );
-
-            return;
-        }
-
-        /*
-         * Alicia decidió quedarse callada.
-         */
-
-        if (
-            data.initiative !== true ||
-            !data.response
-        ) {
-
-            return;
-        }
-
-        const message =
-            data.response.trim();
-
-        if (!message) {
-            return;
-        }
-
-        /*
-         * Evitar repetir un mensaje.
-         */
-
-        const alreadyExists =
-            conversation.messages.some(
-                item =>
-                    item.role ===
-                        "assistant" &&
-                    item.content.trim() ===
-                        message
-            );
-
-        if (alreadyExists) {
-            return;
-        }
-
-        /*
-         * Mostrar que Alicia está escribiendo.
-         */
-
-        showTyping();
-
-        headerStatus.textContent =
-            "Alicia está escribiendo...";
-
-        /*
-         * Pequeño retraso natural.
-         */
-
-        const typingDelay =
-            Math.min(
-                3500,
-                Math.max(
-                    700,
-                    message.length * 18
-                )
-            );
-
-        await sleep(
-            typingDelay
-        );
-
-        hideTyping();
-
-        /*
-         * Agregar mensaje.
-         */
+        console.error(error);
 
         conversation.messages.push({
             role: "assistant",
-            content: message
+            content:
+                "No pude conectarme con mi cerebro ahora mismo.\n\nDetalle: " +
+                error.message
         });
 
-        saveConversations();
+        saveState();
 
-        addMessageToDOM(
-            "assistant",
-            message
-        );
+        renderMessages();
 
-        headerStatus.textContent =
-            "En línea";
-
-        aliciaLastInitiative =
-            Date.now();
-
+        connectionStatus.textContent =
+            "CONNECTION ERROR";
     }
 
-    catch (error) {
 
-        console.error(
-            "Alicia initiative error:",
-            error
-        );
+    selectedFile = null;
 
-    }
+    fileInput.value = "";
 
-    finally {
+    filePreview.style.display =
+        "none";
 
-        aliciaInitiativeRunning =
-            false;
+    filePreview.textContent = "";
 
-        scheduleNextAliciaCheck();
-    }
-}
+    isSending = false;
 
-
-/* =========================================================
-   TEMPORIZADOR AUTÓNOMO
-========================================================= */
-
-function scheduleNextAliciaCheck() {
-
-    if (
-        aliciaInitiativeTimer
-    ) {
-
-        clearTimeout(
-            aliciaInitiativeTimer
-        );
-    }
-
-    /*
-     * Tiempo aleatorio entre
-     * 1 y 4 minutos.
-     */
-
-    const minimum =
-        60 * 1000;
-
-    const maximum =
-        4 * 60 * 1000;
-
-    const delay =
-        Math.floor(
-            minimum +
-            Math.random() *
-                (
-                    maximum -
-                    minimum
-                )
-        );
-
-    aliciaInitiativeTimer =
-        setTimeout(
-            async () => {
-
-                await checkAliciaInitiative();
-
-            },
-            delay
-        );
-}
-
-
-/* =========================================================
-   SLEEP
-========================================================= */
-
-function sleep(ms) {
-
-    return new Promise(
-        resolve =>
-            setTimeout(
-                resolve,
-                ms
-            )
-    );
+    sendButton.disabled = false;
 }
 
 
@@ -1769,200 +1653,83 @@ function sleep(ms) {
    ARCHIVOS
 ========================================================= */
 
-fileButton.onclick =
-    () => {
+fileButton.onclick = () => {
 
-        fileInput.click();
+    fileInput.click();
 
-    };
+};
 
+fileInput.onchange = () => {
 
-fileInput.onchange =
-    async () => {
+    const file =
+        fileInput.files?.[0];
 
-        const file =
-            fileInput.files[0];
-
-        if (!file) {
-            return;
-        }
-
-        selectedFile =
-            file;
-
-        fileName.textContent =
-            file.name;
-
-        filePreview.classList.add(
-            "visible"
-        );
-
-        /*
-         * Imagen
-         */
-
-        if (
-            file.type.startsWith(
-                "image/"
-            )
-        ) {
-
-            selectedImage =
-                await readFileAsDataURL(
-                    file
-                );
-
-            return;
-        }
-
-        /*
-         * Para archivos de texto
-         */
-
-        try {
-
-            const text =
-                await readTextFile(
-                    file
-                );
-
-            if (text) {
-
-                messageInput.value =
-                    `Analizá este archivo:\n\n${text.substring(
-                        0,
-                        30000
-                    )}`;
-
-                messageInput.dispatchEvent(
-                    new Event(
-                        "input"
-                    )
-                );
-            }
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Error leyendo archivo:",
-                error
-            );
-        }
-    };
-
-
-removeFile.onclick =
-    () => {
-
-        resetFile();
-
-    };
-
-
-function resetFile() {
-
-    selectedFile =
-        null;
-
-    selectedImage =
-        null;
-
-    fileInput.value =
-        "";
-
-    filePreview.classList.remove(
-        "visible"
-    );
-}
-
-
-/* =========================================================
-   LECTURA DE ARCHIVOS
-========================================================= */
-
-function readFileAsDataURL(
-    file
-) {
-
-    return new Promise(
-        (
-            resolve,
-            reject
-        ) => {
-
-            const reader =
-                new FileReader();
-
-            reader.onload =
-                () =>
-                    resolve(
-                        reader.result
-                    );
-
-            reader.onerror =
-                reject;
-
-            reader.readAsDataURL(
-                file
-            );
-        }
-    );
-}
-
-
-function readTextFile(
-    file
-) {
-
-    return new Promise(
-        (
-            resolve,
-            reject
-        ) => {
-
-            const reader =
-                new FileReader();
-
-            reader.onload =
-                () =>
-                    resolve(
-                        reader.result
-                    );
-
-            reader.onerror =
-                reject;
-
-            reader.readAsText(
-                file
-            );
-        }
-    );
-}
-
-
-/* =========================================================
-   INPUT
-========================================================= */
-
-messageInput.addEventListener(
-    "input",
-    () => {
-
-        messageInput.style.height =
-            "42px";
-
-        messageInput.style.height =
-            Math.min(
-                messageInput.scrollHeight,
-                160
-            ) + "px";
+    if (!file) {
+        return;
     }
+
+    selectedFile = file;
+
+    filePreview.style.display =
+        "block";
+
+    filePreview.textContent =
+        "ARCHIVO: " +
+        file.name;
+};
+
+
+/* =========================================================
+   DATA URL
+========================================================= */
+
+function fileToDataURL(file) {
+
+    return new Promise(
+        (resolve, reject) => {
+
+            const reader =
+                new FileReader();
+
+            reader.onload = () =>
+                resolve(reader.result);
+
+            reader.onerror =
+                reject;
+
+            reader.readAsDataURL(file);
+        }
+    );
+}
+
+
+/* =========================================================
+   TEXTAREA
+========================================================= */
+
+function autoResize() {
+
+    input.style.height =
+        "auto";
+
+    input.style.height =
+        Math.min(
+            input.scrollHeight,
+            180
+        ) + "px";
+}
+
+input.addEventListener(
+    "input",
+    autoResize
 );
 
 
-messageInput.addEventListener(
+/* =========================================================
+   ENTER
+========================================================= */
+
+input.addEventListener(
     "keydown",
     event => {
 
@@ -1979,36 +1746,260 @@ messageInput.addEventListener(
 );
 
 
+/* =========================================================
+   SEND BUTTON
+========================================================= */
+
 sendButton.onclick =
     sendMessage;
 
 
 /* =========================================================
-   NUEVA CONVERSACIÓN
+   NEW CHAT
 ========================================================= */
 
 newChatButton.onclick =
-    () => {
-
-        createConversation();
-
-        messageInput.focus();
-
-    };
+    createConversation;
 
 
 /* =========================================================
-   INICIAR
+   VOZ
 ========================================================= */
 
-loadConversations();
+let recognition = null;
 
-/*
- * Alicia queda habilitada para iniciar
- * conversaciones por sí misma.
- */
+if (
+    "webkitSpeechRecognition"
+    in window ||
+    "SpeechRecognition"
+    in window
+) {
 
-scheduleNextAliciaCheck();
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+    recognition =
+        new SpeechRecognition();
+
+    recognition.lang =
+        "es-AR";
+
+    recognition.interimResults =
+        false;
+
+    recognition.continuous =
+        false;
+
+    recognition.onresult =
+        event => {
+
+            input.value =
+                event.results[0][0].transcript;
+
+            autoResize();
+        };
+
+    recognition.onstart =
+        () => {
+
+            micButton.style.color =
+                "#5ee7ff";
+
+            micButton.style.boxShadow =
+                "0 0 18px rgba(94,231,255,.25)";
+        };
+
+    recognition.onend =
+        () => {
+
+            micButton.style.color =
+                "";
+
+            micButton.style.boxShadow =
+                "";
+        };
+}
+
+micButton.onclick = () => {
+
+    if (!recognition) {
+
+        alert(
+            "El reconocimiento de voz no está disponible en este navegador."
+        );
+
+        return;
+    }
+
+    recognition.start();
+};
+
+
+/* =========================================================
+   INICIATIVA DE ALICIA
+========================================================= */
+
+let initiativeTimer = null;
+
+let initiativeRunning = false;
+
+let lastInitiative =
+    Date.now();
+
+
+function scheduleInitiative() {
+
+    clearTimeout(
+        initiativeTimer
+    );
+
+    const delay =
+        120000 +
+        Math.random() * 180000;
+
+    initiativeTimer =
+        setTimeout(
+            checkInitiative,
+            delay
+        );
+}
+
+
+async function checkInitiative() {
+
+    if (initiativeRunning) {
+        scheduleInitiative();
+        return;
+    }
+
+    const conversation =
+        getActiveConversation();
+
+    if (
+        !conversation ||
+        conversation.messages.length < 2
+    ) {
+
+        scheduleInitiative();
+        return;
+    }
+
+    if (
+        Date.now() -
+        lastInitiative <
+        120000
+    ) {
+
+        scheduleInitiative();
+        return;
+    }
+
+    initiativeRunning = true;
+
+    try {
+
+        const history =
+            conversation.messages
+                .slice(-30);
+
+        const response =
+            await fetch(
+                WORKER_URL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            initiative: true,
+                            history: history
+                        })
+                }
+            );
+
+        const data =
+            await response.json();
+
+
+        if (
+            data?.ok &&
+            data?.response
+        ) {
+
+            const answer =
+                data.response.trim();
+
+
+            if (
+                answer &&
+                answer !==
+                "NO_INITIATIVE"
+            ) {
+
+                conversation.messages.push({
+                    role: "assistant",
+                    content: answer
+                });
+
+                saveState();
+
+                renderMessages();
+
+                lastInitiative =
+                    Date.now();
+            }
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Alicia initiative:",
+            error
+        );
+
+    } finally {
+
+        initiativeRunning = false;
+
+        scheduleInitiative();
+    }
+}
+
+
+/* =========================================================
+   INICIALIZACIÓN
+========================================================= */
+
+if (
+    conversations.length === 0
+) {
+
+    createConversation();
+
+} else {
+
+    if (
+        !activeConversationId ||
+        !getActiveConversation()
+    ) {
+
+        activeConversationId =
+            conversations[0].id;
+
+        saveState();
+    }
+
+    renderConversations();
+
+    renderMessages();
+}
+
+scheduleInitiative();
 
 </script>
 
