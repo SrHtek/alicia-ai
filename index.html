@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -10,41 +11,106 @@ content="width=device-width, initial-scale=1.0">
 
 <title>Alicia AI</title>
 
+<!-- PDF.js -->
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs"
+    type="module">
+</script>
+
+<!-- Mammoth.js -->
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js">
+</script>
 
 <style>
 
+/* =====================================================
+   RESET
+   ===================================================== */
+
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+
+    box-sizing:
+        border-box;
+
+    margin:
+        0;
+
+    padding:
+        0;
+
 }
 
 
-body {
+/* =====================================================
+   TIPOGRAFÍAS
+   ===================================================== */
 
-    background: #05070a;
+:root {
 
-    color: #eafcff;
-
-    font-family:
+    --font-main:
+        "Segoe UI",
         Arial,
         Helvetica,
         sans-serif;
 
-    height: 100vh;
+    --font-futuristic:
+        "Trebuchet MS",
+        "Segoe UI",
+        sans-serif;
 
-    overflow: hidden;
+    --font-tech:
+        "Courier New",
+        monospace;
+
+    --font-clean:
+        Verdana,
+        Arial,
+        sans-serif;
 
 }
 
 
+/* =====================================================
+   BODY
+   ===================================================== */
+
+body {
+
+    background:
+        #05070a;
+
+    color:
+        #eafcff;
+
+    font-family:
+        var(--font-main);
+
+    height:
+        100vh;
+
+    overflow:
+        hidden;
+
+}
+
+
+/* =====================================================
+   APP
+   ===================================================== */
+
 .app {
 
-    width: 100%;
+    width:
+        100%;
 
-    height: 100vh;
+    height:
+        100vh;
 
-    display: flex;
+    display:
+        flex;
 
 }
 
@@ -55,34 +121,107 @@ body {
 
 .sidebar {
 
-    width: 260px;
+    width:
+        260px;
 
-    background: #080d12;
+    background:
+        linear-gradient(
+            180deg,
+            #080d12 0%,
+            #070b10 100%
+        );
 
     border-right:
         1px solid
         rgba(0, 220, 255, 0.15);
 
-    display: flex;
+    display:
+        flex;
 
-    flex-direction: column;
+    flex-direction:
+        column;
+
+    position:
+        relative;
+
+    overflow:
+        hidden;
 
 }
 
+
+/* línea futurista */
+
+.sidebar::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    top:
+        0;
+
+    right:
+        0;
+
+    width:
+        1px;
+
+    height:
+        100%;
+
+    background:
+        linear-gradient(
+            transparent,
+            rgba(99,234,255,.5),
+            transparent
+        );
+
+    opacity:
+        .25;
+
+    pointer-events:
+        none;
+
+}
+
+
+/* =====================================================
+   LOGO
+   ===================================================== */
 
 .logo {
 
     padding:
         25px 25px 15px;
 
-    font-size: 25px;
+    font-family:
+        var(--font-futuristic);
 
-    font-weight: bold;
+    font-size:
+        25px;
 
-    color: #63eaff;
+    font-weight:
+        bold;
+
+    letter-spacing:
+        4px;
+
+    color:
+        #63eaff;
+
+    text-shadow:
+        0 0 18px
+        rgba(99,234,255,.25);
 
 }
 
+
+/* =====================================================
+   NUEVO CHAT
+   ===================================================== */
 
 .new-chat {
 
@@ -92,7 +231,8 @@ body {
     padding:
         11px 13px;
 
-    border-radius: 10px;
+    border-radius:
+        10px;
 
     border:
         1px solid
@@ -109,6 +249,9 @@ body {
 
     cursor:
         pointer;
+
+    font-family:
+        var(--font-clean);
 
     transition:
         .2s;
@@ -127,14 +270,24 @@ body {
     color:
         #63eaff;
 
+    box-shadow:
+        0 0 18px
+        rgba(0,220,255,.06);
+
 }
 
 
+/* =====================================================
+   CONVERSACIONES
+   ===================================================== */
+
 .conversations {
 
-    flex: 1;
+    flex:
+        1;
 
-    overflow-y: auto;
+    overflow-y:
+        auto;
 
     padding:
         0 10px 10px;
@@ -144,11 +297,14 @@ body {
 
 .conversation {
 
-    display: flex;
+    display:
+        flex;
 
-    align-items: center;
+    align-items:
+        center;
 
-    gap: 6px;
+    gap:
+        6px;
 
     padding:
         10px 9px;
@@ -190,20 +346,32 @@ body {
     color:
         #63eaff;
 
+    box-shadow:
+        inset 2px 0 0
+        #63eaff;
+
 }
 
 
 .conversation-name {
 
-    flex: 1;
+    flex:
+        1;
 
-    min-width: 0;
+    min-width:
+        0;
 
-    overflow: hidden;
+    overflow:
+        hidden;
 
-    text-overflow: ellipsis;
+    text-overflow:
+        ellipsis;
 
-    white-space: nowrap;
+    white-space:
+        nowrap;
+
+    font-family:
+        var(--font-clean);
 
     font-size:
         13px;
@@ -257,6 +425,10 @@ body {
 }
 
 
+/* =====================================================
+   INFO SIDEBAR
+   ===================================================== */
+
 .sidebar-info {
 
     padding:
@@ -265,11 +437,14 @@ body {
     color:
         #7d8b94;
 
+    font-family:
+        var(--font-tech);
+
     font-size:
-        12px;
+        11px;
 
     line-height:
-        1.6;
+        1.7;
 
     border-top:
         1px solid
@@ -284,18 +459,24 @@ body {
 
 .main {
 
-    flex: 1;
+    flex:
+        1;
 
-    display: flex;
+    display:
+        flex;
 
-    flex-direction: column;
+    flex-direction:
+        column;
 
-    min-width: 0;
+    min-width:
+        0;
 
 }
 
 
-/* HEADER */
+/* =====================================================
+   HEADER
+   ===================================================== */
 
 .header {
 
@@ -335,6 +516,15 @@ body {
     color:
         #b9c9d0;
 
+    font-family:
+        var(--font-tech);
+
+    font-size:
+        13px;
+
+    letter-spacing:
+        .5px;
+
 }
 
 
@@ -355,6 +545,36 @@ body {
     box-shadow:
         0 0 12px
         rgba(77, 231, 255, .8);
+
+    animation:
+        statusPulse 2.5s infinite;
+
+}
+
+
+@keyframes statusPulse {
+
+    0%,100% {
+
+        opacity:
+            .65;
+
+        box-shadow:
+            0 0 8px
+            rgba(77,231,255,.4);
+
+    }
+
+    50% {
+
+        opacity:
+            1;
+
+        box-shadow:
+            0 0 18px
+            rgba(77,231,255,.9);
+
+    }
 
 }
 
@@ -385,6 +605,34 @@ body {
     margin-bottom:
         25px;
 
+    animation:
+        messageAppear .25s ease;
+
+}
+
+
+@keyframes messageAppear {
+
+    from {
+
+        opacity:
+            0;
+
+        transform:
+            translateY(5px);
+
+    }
+
+    to {
+
+        opacity:
+            1;
+
+        transform:
+            translateY(0);
+
+    }
+
 }
 
 
@@ -412,6 +660,9 @@ body {
 
     white-space:
         pre-wrap;
+
+    font-family:
+        var(--font-main);
 
 }
 
@@ -462,14 +713,24 @@ body {
 
 .welcome h1 {
 
+    font-family:
+        var(--font-futuristic);
+
     font-size:
         48px;
+
+    letter-spacing:
+        3px;
 
     color:
         #63eaff;
 
     margin-bottom:
         15px;
+
+    text-shadow:
+        0 0 30px
+        rgba(99,234,255,.18);
 
 }
 
@@ -481,6 +742,9 @@ body {
 
     line-height:
         1.6;
+
+    font-family:
+        var(--font-clean);
 
 }
 
@@ -533,6 +797,12 @@ body {
     transition:
         .2s;
 
+    font-family:
+        var(--font-clean);
+
+    font-size:
+        13px;
+
 }
 
 
@@ -543,6 +813,9 @@ body {
 
     color:
         #63eaff;
+
+    transform:
+        translateY(-1px);
 
 }
 
@@ -627,7 +900,7 @@ body {
 
 
 /* =====================================================
-   INPUT
+   INPUT AREA
    ===================================================== */
 
 .input-area {
@@ -644,6 +917,203 @@ body {
 
 }
 
+
+/* =====================================================
+   ARCHIVO SELECCIONADO
+   ===================================================== */
+
+.file-preview {
+
+    display:
+        none;
+
+    align-items:
+        center;
+
+    gap:
+        12px;
+
+    margin-bottom:
+        10px;
+
+    padding:
+        10px 13px;
+
+    max-width:
+        600px;
+
+    border:
+        1px solid
+        rgba(0,220,255,.18);
+
+    border-radius:
+        11px;
+
+    background:
+        rgba(11,17,23,.95);
+
+    animation:
+        messageAppear .2s ease;
+
+}
+
+
+.file-icon {
+
+    width:
+        35px;
+
+    height:
+        35px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border-radius:
+        8px;
+
+    background:
+        rgba(99,234,255,.08);
+
+    color:
+        #63eaff;
+
+    font-family:
+        var(--font-tech);
+
+    font-size:
+        11px;
+
+    font-weight:
+        bold;
+
+}
+
+
+.file-info {
+
+    flex:
+        1;
+
+    min-width:
+        0;
+
+}
+
+
+.file-name {
+
+    color:
+        #d9faff;
+
+    font-size:
+        13px;
+
+    overflow:
+        hidden;
+
+    text-overflow:
+        ellipsis;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.file-size {
+
+    margin-top:
+        2px;
+
+    color:
+        #71838c;
+
+    font-family:
+        var(--font-tech);
+
+    font-size:
+        10px;
+
+}
+
+
+.remove-file {
+
+    width:
+        28px;
+
+    height:
+        28px;
+
+    border-radius:
+        7px;
+
+    background:
+        transparent;
+
+    color:
+        #7d8b94;
+
+    font-size:
+        18px;
+
+}
+
+
+.remove-file:hover {
+
+    color:
+        #ff6f7d;
+
+    background:
+        rgba(255,80,100,.08);
+
+}
+
+
+/* =====================================================
+   IMAGEN PREVIEW
+   ===================================================== */
+
+.image-preview {
+
+    display:
+        none;
+
+    margin-bottom:
+        10px;
+
+}
+
+
+.image-preview img {
+
+    max-width:
+        180px;
+
+    max-height:
+        120px;
+
+    border-radius:
+        10px;
+
+    border:
+        1px solid
+        rgba(99,234,255,.18);
+
+}
+
+
+/* =====================================================
+   INPUT WRAPPER
+   ===================================================== */
 
 .input-wrapper {
 
@@ -669,8 +1139,27 @@ body {
     padding:
         10px;
 
+    transition:
+        .2s;
+
 }
 
+
+.input-wrapper:focus-within {
+
+    border-color:
+        rgba(99,234,255,.45);
+
+    box-shadow:
+        0 0 22px
+        rgba(0,220,255,.05);
+
+}
+
+
+/* =====================================================
+   TEXTAREA
+   ===================================================== */
 
 textarea {
 
@@ -692,6 +1181,9 @@ textarea {
     color:
         white;
 
+    font-family:
+        var(--font-main);
+
     font-size:
         15px;
 
@@ -701,8 +1193,23 @@ textarea {
     max-height:
         140px;
 
+    line-height:
+        1.5;
+
 }
 
+
+textarea::placeholder {
+
+    color:
+        #60717a;
+
+}
+
+
+/* =====================================================
+   BOTONES GENERALES
+   ===================================================== */
 
 button {
 
@@ -715,36 +1222,9 @@ button {
 }
 
 
-.send {
-
-    width:
-        42px;
-
-    height:
-        42px;
-
-    border-radius:
-        10px;
-
-    background:
-        #63eaff;
-
-    color:
-        #031014;
-
-    font-weight:
-        bold;
-
-}
-
-
-.send:hover {
-
-    filter:
-        brightness(1.1);
-
-}
-
+/* =====================================================
+   BOTÓN +
+   ===================================================== */
 
 .image-button {
 
@@ -753,6 +1233,57 @@ button {
 
     height:
         42px;
+
+    flex-shrink:
+        0;
+
+    border-radius:
+        10px;
+
+    background:
+        transparent;
+
+    color:
+        #63eaff;
+
+    font-family:
+        var(--font-tech);
+
+    font-size:
+        22px;
+
+    transition:
+        .2s;
+
+}
+
+
+.image-button:hover {
+
+    background:
+        rgba(99,234,255,.08);
+
+    box-shadow:
+        0 0 15px
+        rgba(99,234,255,.08);
+
+}
+
+
+/* =====================================================
+   MICRÓFONO
+   ===================================================== */
+
+.mic-button {
+
+    width:
+        42px;
+
+    height:
+        42px;
+
+    flex-shrink:
+        0;
 
     border-radius:
         10px;
@@ -764,32 +1295,111 @@ button {
         #63eaff;
 
     font-size:
-        20px;
+        19px;
+
+    transition:
+        .2s;
 
 }
 
 
-.image-preview {
+.mic-button:hover {
 
-    display:
-        none;
-
-    margin-bottom:
-        10px;
+    background:
+        rgba(99,234,255,.08);
 
 }
 
 
-.image-preview img {
+.mic-button.listening {
 
-    max-width:
-        180px;
+    color:
+        #ff7180;
 
-    max-height:
-        120px;
+    background:
+        rgba(255,80,100,.10);
+
+    box-shadow:
+        0 0 18px
+        rgba(255,80,100,.15);
+
+    animation:
+        micPulse 1.1s infinite;
+
+}
+
+
+@keyframes micPulse {
+
+    0%,100% {
+
+        box-shadow:
+            0 0 8px
+            rgba(255,80,100,.12);
+
+    }
+
+    50% {
+
+        box-shadow:
+            0 0 22px
+            rgba(255,80,100,.3);
+
+    }
+
+}
+
+
+/* =====================================================
+   ENVIAR
+   ===================================================== */
+
+.send {
+
+    width:
+        42px;
+
+    height:
+        42px;
+
+    flex-shrink:
+        0;
 
     border-radius:
         10px;
+
+    background:
+        #63eaff;
+
+    color:
+        #031014;
+
+    font-family:
+        var(--font-tech);
+
+    font-size:
+        18px;
+
+    font-weight:
+        bold;
+
+    transition:
+        .2s;
+
+}
+
+
+.send:hover {
+
+    filter:
+        brightness(1.1);
+
+    box-shadow:
+        0 0 18px
+        rgba(99,234,255,.18);
+
+    transform:
+        translateY(-1px);
 
 }
 
@@ -849,164 +1459,282 @@ button {
 
 }
 
+
+/* =====================================================
+   SCROLLBARS
+   ===================================================== */
+
+::-webkit-scrollbar {
+
+    width:
+        6px;
+
+}
+
+
+::-webkit-scrollbar-track {
+
+    background:
+        transparent;
+
+}
+
+
+::-webkit-scrollbar-thumb {
+
+    background:
+        rgba(99,234,255,.12);
+
+    border-radius:
+        20px;
+
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+
+    background:
+        rgba(99,234,255,.25);
+
+}
+
 </style>
 
 </head>
 
-
 <body>
-
 
 <div class="app">
 
+```
+<!-- =================================================
+     SIDEBAR
+     ================================================= -->
 
-    <!-- =================================================
-         SIDEBAR
-         ================================================= -->
-
-    <aside class="sidebar">
+<aside class="sidebar">
 
 
-        <div class="logo">
+    <div class="logo">
 
-            ALICIA
+        ALICIA
+
+    </div>
+
+
+    <button
+        class="new-chat"
+        onclick="createConversation()"
+    >
+
+        + Nueva conversación
+
+    </button>
+
+
+    <div
+        class="conversations"
+        id="conversationList"
+    ></div>
+
+
+    <div class="sidebar-info">
+
+        Inteligencia artificial
+        conversacional.
+
+        <br><br>
+
+        Alicia puede conversar,
+        analizar imágenes,
+        documentos y tomar
+        iniciativa.
+
+        <br><br>
+
+        Doble click en una
+        conversación para
+        cambiarle el nombre.
+
+    </div>
+
+
+</aside>
+
+
+<!-- =================================================
+     MAIN
+     ================================================= -->
+
+<main class="main">
+
+
+    <header class="header">
+
+        <div class="status">
+
+            <span class="status-dot"></span>
+
+            Alicia está conectada
 
         </div>
 
+    </header>
 
-        <button
-            class="new-chat"
-            onclick="createConversation()"
-        >
 
-            + Nueva conversación
+    <section
+        class="chat"
+        id="chat"
+    ></section>
 
-        </button>
 
+    <div class="input-area">
+
+
+        <!-- IMAGEN -->
 
         <div
-            class="conversations"
-            id="conversationList"
-        ></div>
+            class="image-preview"
+            id="imagePreview"
+        >
 
-
-        <div class="sidebar-info">
-
-            Inteligencia artificial
-            conversacional.
-
-            <br><br>
-
-            Alicia puede conversar,
-            analizar imágenes y
-            tomar iniciativa.
-
-            <br><br>
-
-            Doble click en una
-            conversación para
-            cambiarle el nombre.
-
-        </div>
-
-
-    </aside>
-
-
-    <!-- =================================================
-         MAIN
-         ================================================= -->
-
-    <main class="main">
-
-
-        <header class="header">
-
-            <div class="status">
-
-                <span class="status-dot"></span>
-
-                Alicia está conectada
-
-            </div>
-
-        </header>
-
-
-        <section
-            class="chat"
-            id="chat"
-        ></section>
-
-
-        <div class="input-area">
-
-
-            <div
-                class="image-preview"
-                id="imagePreview"
+            <img
+                id="previewImage"
+                alt="Vista previa"
             >
 
-                <img
-                    id="previewImage"
+        </div>
+
+
+        <!-- ARCHIVO -->
+
+        <div
+            class="file-preview"
+            id="filePreview"
+        >
+
+            <div
+                class="file-icon"
+                id="fileIcon"
+            >
+                FILE
+            </div>
+
+
+            <div class="file-info">
+
+                <div
+                    class="file-name"
+                    id="fileName"
                 >
+                </div>
+
+                <div
+                    class="file-size"
+                    id="fileSize"
+                >
+                </div>
 
             </div>
 
 
-            <div class="input-wrapper">
+            <button
+                class="remove-file"
+                onclick="clearSelectedFile()"
+                title="Quitar archivo"
+            >
 
+                ×
 
-                <input
-                    type="file"
-                    id="imageInput"
-                    accept="image/*"
-                    hidden
-                >
-
-
-                <button
-                    class="image-button"
-                    onclick="
-                        document
-                        .getElementById('imageInput')
-                        .click()
-                    "
-                >
-
-                    +
-
-                </button>
-
-
-                <textarea
-                    id="messageInput"
-                    placeholder="Escribile a Alicia..."
-                    rows="1"
-                ></textarea>
-
-
-                <button
-                    class="send"
-                    onclick="sendMessage()"
-                >
-
-                    ↑
-
-                </button>
-
-
-            </div>
+            </button>
 
         </div>
 
 
-    </main>
+        <div class="input-wrapper">
 
+
+            <!-- INPUT DE ARCHIVOS -->
+
+            <input
+                type="file"
+                id="fileInput"
+                accept="
+                    image/*,
+                    .pdf,
+                    .doc,
+                    .docx,
+                    .txt,
+                    .md,
+                    .csv,
+                    .json,
+                    .html
+                "
+                hidden
+            >
+
+
+            <!-- BOTÓN + -->
+
+            <button
+                class="image-button"
+                onclick="
+                    document
+                    .getElementById('fileInput')
+                    .click()
+                "
+                title="Insertar archivo"
+            >
+
+                +
+
+            </button>
+
+
+            <!-- TEXTO -->
+
+            <textarea
+                id="messageInput"
+                placeholder="Escribile a Alicia..."
+                rows="1"
+            ></textarea>
+
+
+            <!-- MICRÓFONO -->
+
+            <button
+                class="mic-button"
+                id="micButton"
+                onclick="toggleSpeechRecognition()"
+                title="Hablar con Alicia"
+            >
+
+                🎙
+
+            </button>
+
+
+            <!-- ENVIAR -->
+
+            <button
+                class="send"
+                onclick="sendMessage()"
+                title="Enviar"
+            >
+
+                ↑
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+
+</main>
+```
 
 </div>
-
-
 
 <script>
 
@@ -1023,16 +1751,6 @@ const STORAGE_KEY =
     "alicia_conversations_v4";
 
 
-/*
-    Alicia NO consulta al servidor cada pocos minutos.
-
-    Primero espera bastante tiempo desde la última
-    actividad del usuario.
-
-    Esto evita gastar innecesariamente el límite
-    gratuito de OpenRouter.
-*/
-
 const INITIATIVE_MIN_DELAY =
     15 * 60 * 1000;
 
@@ -1045,15 +1763,28 @@ const MIN_USER_IDLE =
     5 * 60 * 1000;
 
 
+
+/* =====================================================
+   ESTADO
+   ===================================================== */
+
 let conversations = {};
 
 let activeConversationId = null;
 
 let selectedImage = null;
 
+let selectedFile = null;
+
+let selectedFileText = null;
+
 let initiativeTimer = null;
 
 let initiativeChecking = false;
+
+let recognition = null;
+
+let isListening = false;
 
 
 
@@ -1075,7 +1806,7 @@ function generateId() {
 
 
 /* =====================================================
-   GUARDAR TODO
+   GUARDAR
    ===================================================== */
 
 function saveAll() {
@@ -1114,7 +1845,7 @@ function saveAll() {
 
 
 /* =====================================================
-   CARGAR TODO
+   CARGAR
    ===================================================== */
 
 function loadAll() {
@@ -1323,7 +2054,7 @@ function switchConversation(
 
 
 /* =====================================================
-   ELIMINAR CONVERSACIÓN
+   ELIMINAR
    ===================================================== */
 
 function deleteConversation(
@@ -1834,12 +2565,6 @@ function addMessage(
     }
 
 
-    /*
-        Si es el primer mensaje del usuario,
-        usamos automáticamente una parte del
-        mensaje como nombre.
-    */
-
     if (
         role === "user" &&
         conversation.messages.filter(
@@ -1868,7 +2593,7 @@ function addMessage(
 
 
 /* =====================================================
-   ENVIAR MENSAJE
+   ENVIAR
    ===================================================== */
 
 async function sendMessage() {
@@ -1885,7 +2610,8 @@ async function sendMessage() {
 
     if (
         !text &&
-        !selectedImage
+        !selectedImage &&
+        !selectedFileText
     ) {
 
         return;
@@ -1897,6 +2623,61 @@ async function sendMessage() {
         selectedImage;
 
 
+    let finalText =
+        text;
+
+
+    /*
+        Si existe un archivo de texto,
+        lo incorporamos al mensaje.
+
+        De esta manera el Worker actual
+        puede seguir funcionando sin
+        necesitar cambios.
+    */
+
+    if (
+        selectedFileText
+    ) {
+
+        const fileName =
+            selectedFile
+                ? selectedFile.name
+                : "archivo";
+
+
+        finalText +=
+            (
+                finalText
+                    ? "\n\n"
+                    : ""
+            ) +
+            `\n[ARCHIVO ADJUNTO: ${fileName}]\n` +
+            selectedFileText +
+            `\n[FIN DEL ARCHIVO]`;
+
+    }
+
+
+    /*
+        Para imágenes sin texto,
+        mantenemos el comportamiento
+        anterior.
+    */
+
+    const displayText =
+        text ||
+        (
+            imageToSend
+                ? "[Imagen enviada]"
+                : `[Archivo: ${
+                    selectedFile
+                        ? selectedFile.name
+                        : "archivo"
+                  }]`
+        );
+
+
     input.value =
         "";
 
@@ -1905,26 +2686,13 @@ async function sendMessage() {
         "auto";
 
 
-    if (text) {
-
-        addMessage(
-            "user",
-            text
-        );
-
-    }
-
-    else {
-
-        addMessage(
-            "user",
-            "[Imagen enviada]"
-        );
-
-    }
+    addMessage(
+        "user",
+        displayText
+    );
 
 
-    clearImage();
+    clearSelectedFile();
 
 
     const thinking =
@@ -1977,14 +2745,6 @@ async function sendMessage() {
 
     try {
 
-        /*
-            AbortController:
-            evitamos que una petición quede
-            colgada indefinidamente.
-
-            Le damos 90 segundos.
-        */
-
         const controller =
             new AbortController();
 
@@ -2024,7 +2784,7 @@ async function sendMessage() {
                         JSON.stringify({
 
                             message:
-                                text,
+                                finalText,
 
                             image:
                                 imageToSend
@@ -2192,16 +2952,144 @@ function useSuggestion(
 
 
 /* =====================================================
-   IMÁGENES
+   FORMATEAR TAMAÑO
+   ===================================================== */
+
+function formatFileSize(
+    bytes
+) {
+
+    if (
+        bytes < 1024
+    ) {
+
+        return bytes + " B";
+
+    }
+
+
+    if (
+        bytes < 1024 * 1024
+    ) {
+
+        return (
+            bytes / 1024
+        ).toFixed(1) + " KB";
+
+    }
+
+
+    return (
+        bytes /
+        (1024 * 1024)
+    ).toFixed(2) + " MB";
+
+}
+
+
+
+/* =====================================================
+   TIPO DE ARCHIVO
+   ===================================================== */
+
+function getFileTypeLabel(
+    file
+) {
+
+    const name =
+        file.name.toLowerCase();
+
+
+    if (
+        name.endsWith(".pdf")
+    ) {
+
+        return "PDF";
+
+    }
+
+
+    if (
+        name.endsWith(".doc") ||
+        name.endsWith(".docx")
+    ) {
+
+        return "DOC";
+
+    }
+
+
+    if (
+        name.endsWith(".txt")
+    ) {
+
+        return "TXT";
+
+    }
+
+
+    if (
+        name.endsWith(".csv")
+    ) {
+
+        return "CSV";
+
+    }
+
+
+    if (
+        name.endsWith(".json")
+    ) {
+
+        return "JSON";
+
+    }
+
+
+    if (
+        name.endsWith(".md")
+    ) {
+
+        return "MD";
+
+    }
+
+
+    if (
+        name.endsWith(".html")
+    ) {
+
+        return "HTML";
+
+    }
+
+
+    if (
+        file.type.startsWith("image/")
+    ) {
+
+        return "IMG";
+
+    }
+
+
+    return "FILE";
+
+}
+
+
+
+/* =====================================================
+   PROCESAR ARCHIVO
    ===================================================== */
 
 document
-    .getElementById("imageInput")
+    .getElementById("fileInput")
     .addEventListener(
 
         "change",
 
-        function(event) {
+        async function(event) {
 
             const file =
                 event.target.files[0];
@@ -2214,13 +3102,18 @@ document
             }
 
 
+            /*
+                Límite de 15 MB para
+                documentos.
+            */
+
             if (
                 file.size >
-                6 * 1024 * 1024
+                15 * 1024 * 1024
             ) {
 
                 alert(
-                    "La imagen es demasiado grande. Máximo 6 MB."
+                    "El archivo es demasiado grande. Máximo 15 MB."
                 );
 
 
@@ -2233,38 +3126,181 @@ document
             }
 
 
-            const reader =
-                new FileReader();
+            selectedFile =
+                file;
 
 
-            reader.onload =
-                function(e) {
-
-                    selectedImage =
-                        e.target.result;
+            selectedFileText =
+                null;
 
 
-                    document
-                        .getElementById(
-                            "previewImage"
-                        )
-                        .src =
-                            selectedImage;
+            const type =
+                getFileTypeLabel(
+                    file
+                );
 
 
-                    document
-                        .getElementById(
-                            "imagePreview"
-                        )
-                        .style.display =
-                            "block";
-
-                };
+            document
+                .getElementById(
+                    "fileIcon"
+                )
+                .textContent =
+                    type;
 
 
-            reader.readAsDataURL(
-                file
-            );
+            document
+                .getElementById(
+                    "fileName"
+                )
+                .textContent =
+                    file.name;
+
+
+            document
+                .getElementById(
+                    "fileSize"
+                )
+                .textContent =
+                    formatFileSize(
+                        file.size
+                    );
+
+
+            document
+                .getElementById(
+                    "filePreview"
+                )
+                .style.display =
+                    "flex";
+
+
+            /*
+                Si es imagen,
+                usamos la imagen directamente
+                como antes.
+            */
+
+            if (
+                file.type.startsWith(
+                    "image/"
+                )
+            ) {
+
+                if (
+                    file.size >
+                    6 * 1024 * 1024
+                ) {
+
+                    alert(
+                        "La imagen es demasiado grande. Máximo 6 MB."
+                    );
+
+
+                    clearSelectedFile();
+
+                    return;
+
+                }
+
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload =
+                    function(e) {
+
+                        selectedImage =
+                            e.target.result;
+
+
+                        document
+                            .getElementById(
+                                "previewImage"
+                            )
+                            .src =
+                                selectedImage;
+
+
+                        document
+                            .getElementById(
+                                "imagePreview"
+                            )
+                            .style.display =
+                                "block";
+
+                    };
+
+
+                reader.readAsDataURL(
+                    file
+                );
+
+
+                return;
+
+            }
+
+
+            /*
+                Documentos.
+            */
+
+            try {
+
+                selectedFileText =
+                    await extractFileText(
+                        file
+                    );
+
+
+                if (
+                    !selectedFileText ||
+                    !selectedFileText.trim()
+                ) {
+
+                    throw new Error(
+                        "No se pudo extraer texto de este archivo."
+                    );
+
+                }
+
+
+                document
+                    .getElementById(
+                        "fileSize"
+                    )
+                    .textContent =
+                        formatFileSize(
+                            file.size
+                        ) +
+                        " • texto listo";
+
+            }
+
+            catch(error) {
+
+                console.error(
+                    "Error procesando archivo:",
+                    error
+                );
+
+
+                selectedFileText =
+                    `[No se pudo extraer automáticamente el texto de "${file.name}".]`;
+
+
+                document
+                    .getElementById(
+                        "fileSize"
+                    )
+                    .textContent =
+                        formatFileSize(
+                            file.size
+                        ) +
+                        " • adjunto";
+
+            }
 
         }
 
@@ -2272,10 +3308,261 @@ document
 
 
 
-function clearImage() {
+/* =====================================================
+   EXTRAER TEXTO
+   ===================================================== */
+
+async function extractFileText(
+    file
+) {
+
+    const name =
+        file.name.toLowerCase();
+
+
+    /*
+        TXT / CSV / JSON / MD / HTML
+    */
+
+    if (
+        name.endsWith(".txt") ||
+        name.endsWith(".csv") ||
+        name.endsWith(".json") ||
+        name.endsWith(".md") ||
+        name.endsWith(".html")
+    ) {
+
+        return await file.text();
+
+    }
+
+
+    /*
+        DOCX
+    */
+
+    if (
+        name.endsWith(".docx")
+    ) {
+
+        if (
+            typeof mammoth ===
+            "undefined"
+        ) {
+
+            throw new Error(
+                "Mammoth no está disponible."
+            );
+
+        }
+
+
+        const arrayBuffer =
+            await file.arrayBuffer();
+
+
+        const result =
+            await mammoth.extractRawText({
+                arrayBuffer:
+                    arrayBuffer
+            });
+
+
+        return result.value || "";
+
+    }
+
+
+    /*
+        PDF
+    */
+
+    if (
+        name.endsWith(".pdf")
+    ) {
+
+        return await extractPDFText(
+            file
+        );
+
+    }
+
+
+    /*
+        DOC antiguo.
+        Los .doc binarios no se pueden
+        interpretar de forma segura
+        directamente desde el navegador.
+    */
+
+    if (
+        name.endsWith(".doc")
+    ) {
+
+        return (
+            "[El formato .doc antiguo no puede ser leído directamente por el navegador. Convertí el archivo a .docx o .pdf.]"
+        );
+
+    }
+
+
+    throw new Error(
+        "Tipo de archivo no compatible."
+    );
+
+}
+
+
+
+/* =====================================================
+   PDF → TEXTO
+   ===================================================== */
+
+async function extractPDFText(
+    file
+) {
+
+    if (
+        typeof pdfjsLib ===
+        "undefined"
+    ) {
+
+        /*
+            Esperamos brevemente a que
+            PDF.js termine de cargar.
+        */
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    1000
+                )
+        );
+
+    }
+
+
+    if (
+        typeof pdfjsLib ===
+        "undefined"
+    ) {
+
+        throw new Error(
+            "PDF.js no está disponible."
+        );
+
+    }
+
+
+    const arrayBuffer =
+        await file.arrayBuffer();
+
+
+    const loadingTask =
+        pdfjsLib.getDocument({
+            data:
+                arrayBuffer
+        });
+
+
+    const pdf =
+        await loadingTask.promise;
+
+
+    let fullText =
+        "";
+
+
+    /*
+        Límite preventivo para evitar
+        mandar documentos gigantes
+        al modelo.
+    */
+
+    const maxCharacters =
+        80000;
+
+
+    for (
+        let pageNumber = 1;
+        pageNumber <= pdf.numPages;
+        pageNumber++
+    ) {
+
+        const page =
+            await pdf.getPage(
+                pageNumber
+            );
+
+
+        const textContent =
+            await page.getTextContent();
+
+
+        const pageText =
+            textContent.items
+                .map(
+                    item =>
+                        item.str
+                )
+                .join(" ");
+
+
+        fullText +=
+            `\n\n--- Página ${pageNumber} ---\n\n` +
+            pageText;
+
+
+        if (
+            fullText.length >=
+            maxCharacters
+        ) {
+
+            fullText =
+                fullText.substring(
+                    0,
+                    maxCharacters
+                ) +
+                "\n\n[DOCUMENTO RECORTADO POR LONGITUD]";
+
+            break;
+
+        }
+
+    }
+
+
+    return fullText.trim();
+
+}
+
+
+
+/* =====================================================
+   LIMPIAR ARCHIVO
+   ===================================================== */
+
+function clearSelectedFile() {
+
+    selectedFile =
+        null;
+
+
+    selectedFileText =
+        null;
+
 
     selectedImage =
         null;
+
+
+    document
+        .getElementById(
+            "filePreview"
+        )
+        .style.display =
+            "none";
 
 
     document
@@ -2296,10 +3583,351 @@ function clearImage() {
 
     document
         .getElementById(
-            "imageInput"
+            "fileInput"
         )
         .value =
             "";
+
+}
+
+
+
+/* =====================================================
+   RECONOCIMIENTO DE VOZ
+   ===================================================== */
+
+function setupSpeechRecognition() {
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    if (
+        !SpeechRecognition
+    ) {
+
+        recognition =
+            null;
+
+        return;
+
+    }
+
+
+    recognition =
+        new SpeechRecognition();
+
+
+    recognition.lang =
+        "es-AR";
+
+
+    recognition.continuous =
+        true;
+
+
+    recognition.interimResults =
+        true;
+
+
+    recognition.maxAlternatives =
+        1;
+
+
+    recognition.onstart =
+        function() {
+
+            isListening =
+                true;
+
+
+            const button =
+                document.getElementById(
+                    "micButton"
+                );
+
+
+            button.classList.add(
+                "listening"
+            );
+
+
+            button.title =
+                "Dejar de escuchar";
+
+        };
+
+
+    recognition.onresult =
+        function(event) {
+
+            const input =
+                document.getElementById(
+                    "messageInput"
+                );
+
+
+            /*
+                Conservamos el texto que
+                ya estaba escrito antes
+                de empezar a hablar.
+            */
+
+            let finalTranscript =
+                "";
+
+
+            let interimTranscript =
+                "";
+
+
+            for (
+                let i =
+                    event.resultIndex;
+                i <
+                    event.results.length;
+                i++
+            ) {
+
+                const result =
+                    event.results[i];
+
+
+                if (
+                    result.isFinal
+                ) {
+
+                    finalTranscript +=
+                        result[0].transcript;
+
+                }
+
+                else {
+
+                    interimTranscript +=
+                        result[0].transcript;
+
+                }
+
+            }
+
+
+            /*
+                Guardamos el texto base
+                cuando empezamos a escuchar.
+            */
+
+            if (
+                typeof recognition.baseText !==
+                "string"
+            ) {
+
+                recognition.baseText =
+                    input.value;
+
+            }
+
+
+            const base =
+                recognition.baseText
+                    ? recognition.baseText.trimEnd() +
+                      " "
+                    : "";
+
+
+            input.value =
+                (
+                    base +
+                    finalTranscript +
+                    interimTranscript
+                ).trim();
+
+
+            input.style.height =
+                "auto";
+
+
+            input.style.height =
+                Math.min(
+                    input.scrollHeight,
+                    140
+                ) + "px";
+
+        };
+
+
+    recognition.onerror =
+        function(event) {
+
+            console.log(
+                "Reconocimiento de voz:",
+                event.error
+            );
+
+
+            if (
+                event.error ===
+                "not-allowed"
+            ) {
+
+                alert(
+                    "El navegador bloqueó el micrófono. Permití el acceso al micrófono para usar esta función."
+                );
+
+            }
+
+        };
+
+
+    recognition.onend =
+        function() {
+
+            /*
+                Si sigue activado,
+                Chrome puede cortar una sesión
+                larga. La reanudamos.
+            */
+
+            if (
+                isListening
+            ) {
+
+                try {
+
+                    recognition.start();
+
+                }
+
+                catch(error) {
+
+                    console.log(
+                        "No se pudo reanudar el micrófono:",
+                        error
+                    );
+
+                }
+
+            }
+
+            else {
+
+                const button =
+                    document.getElementById(
+                        "micButton"
+                    );
+
+
+                button.classList.remove(
+                    "listening"
+                );
+
+
+                button.title =
+                    "Hablar con Alicia";
+
+            }
+
+        };
+
+}
+
+
+
+function toggleSpeechRecognition() {
+
+    if (!recognition) {
+
+        alert(
+            "Tu navegador no soporta reconocimiento de voz. Probá con Google Chrome o Microsoft Edge."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        isListening
+    ) {
+
+        stopSpeechRecognition();
+
+    }
+
+    else {
+
+        const input =
+            document.getElementById(
+                "messageInput"
+            );
+
+
+        recognition.baseText =
+            input.value;
+
+
+        try {
+
+            recognition.start();
+
+        }
+
+        catch(error) {
+
+            console.log(
+                "No se pudo iniciar el micrófono:",
+                error
+            );
+
+        }
+
+    }
+
+}
+
+
+
+function stopSpeechRecognition() {
+
+    isListening =
+        false;
+
+
+    if (
+        recognition
+    ) {
+
+        try {
+
+            recognition.stop();
+
+        }
+
+        catch(error) {
+
+            console.log(
+                error
+            );
+
+        }
+
+    }
+
+
+    const button =
+        document.getElementById(
+            "micButton"
+        );
+
+
+    button.classList.remove(
+        "listening"
+    );
+
+
+    button.title =
+        "Hablar con Alicia";
 
 }
 
@@ -2452,12 +4080,6 @@ async function checkInitiative() {
     }
 
 
-    /*
-        No tiene sentido preguntarle a Alicia
-        si quiere hablar si el usuario acaba
-        de hablar hace unos segundos.
-    */
-
     const idleTime =
         Date.now() -
         conversation.lastUserActivity;
@@ -2567,14 +4189,6 @@ async function checkInitiative() {
             data.reply.trim()
         ) {
 
-            /*
-                Verificamos que siga siendo
-                la misma conversación.
-
-                Esto evita que una respuesta
-                atrasada aparezca en otra conversación.
-            */
-
             if (
                 conversation.id ===
                 activeConversationId
@@ -2608,13 +4222,6 @@ async function checkInitiative() {
         initiativeChecking =
             false;
 
-
-        /*
-            No hacemos consultas constantes.
-
-            Alicia volverá a evaluar después
-            de otro intervalo largo.
-        */
 
         scheduleInitiative();
 
@@ -2652,6 +4259,8 @@ document.addEventListener(
 /* =====================================================
    INICIO
    ===================================================== */
+
+setupSpeechRecognition();
 
 loadAll();
 
