@@ -1,857 +1,684 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Alicia AI</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #07090d;
+    --panel: #0c1017;
+    --panel2: #10151e;
+    --border: #1d2733;
+    --cyan: #5ee7ff;
+    --cyan2: #2dbedb;
+    --text: #e9f1f5;
+    --muted: #7e8b96;
+    --danger: #ff5555;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+}
 
-    <title>Alicia AI</title>
+body {
+    overflow: hidden;
+}
 
-    <!-- PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs"
-            type="module"></script>
+/* =========================
+   APP
+========================= */
+
+.app {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    width: 280px;
+    min-width: 280px;
+    height: 100vh;
+
+    background:
+        linear-gradient(
+            180deg,
+            #0a0e14 0%,
+            #070a0f 100%
+        );
+
+    border-right:
+        1px solid var(--border);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    padding: 25px 22px 20px;
+
+    font-size: 23px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: var(--cyan);
+}
 
-    <!-- DOCX -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
+.new-chat {
+    margin: 0 15px 15px;
+
+    padding: 12px 14px;
+
+    border: 1px solid #24323f;
+    border-radius: 10px;
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    background: #101721;
+    color: var(--text);
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-          rel="stylesheet">
+    cursor: pointer;
 
-    <style>
+    transition: .2s;
+}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+.new-chat:hover {
+    border-color: var(--cyan2);
+    background: #131e29;
+}
 
-        :root {
-            --bg: #07090d;
-            --bg2: #0b0f15;
-            --panel: rgba(13, 18, 26, 0.88);
-            --panel2: rgba(18, 24, 34, 0.94);
+.conversations {
+    flex: 1;
 
-            --border: rgba(150, 220, 255, 0.10);
-            --border2: rgba(150, 220, 255, 0.18);
+    overflow-y: auto;
 
-            --cyan: #7de7ff;
-            --cyan2: #46cfff;
+    padding: 5px 10px 15px;
+}
 
-            --text: #f0f5f8;
-            --muted: #7e8a95;
+.conversation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-            --danger: #ff5364;
+    padding: 11px 12px;
+    margin-bottom: 5px;
 
-            --radius: 18px;
-        }
+    border-radius: 8px;
 
-        body {
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
+    color: #bac5cc;
 
-            background:
-                radial-gradient(circle at 70% 15%, rgba(60, 190, 255, 0.055), transparent 30%),
-                radial-gradient(circle at 20% 80%, rgba(80, 150, 255, 0.035), transparent 30%),
-                var(--bg);
+    cursor: pointer;
 
-            color: var(--text);
+    transition: .2s;
+}
 
-            font-family: "Inter", sans-serif;
-        }
+.conversation:hover {
+    background: #101720;
+}
 
-        button,
-        input,
-        textarea {
-            font-family: inherit;
-        }
+.conversation.active {
+    background: #111d27;
+    color: var(--cyan);
+}
 
-        button {
-            border: none;
-            cursor: pointer;
-        }
+.conversation-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
-        /* ================================
-           APP
-        ================================= */
+    flex: 1;
+}
 
-        .app {
-            display: flex;
-            width: 100%;
-            height: 100vh;
-        }
+.conversation-actions {
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+}
 
-        /* ================================
-           SIDEBAR
-        ================================= */
+.conversation:hover .conversation-actions {
+    opacity: 1;
+}
 
-        .sidebar {
-            width: 280px;
-            min-width: 280px;
-            height: 100%;
+.conversation-actions button {
+    border: none;
+    background: transparent;
+    color: #77838c;
+    cursor: pointer;
+}
 
-            display: flex;
-            flex-direction: column;
+.conversation-actions button:hover {
+    color: var(--cyan);
+}
 
-            background:
-                linear-gradient(
-                    180deg,
-                    rgba(12, 17, 24, 0.97),
-                    rgba(7, 10, 15, 0.97)
-                );
+/* =========================
+   MAIN
+========================= */
 
-            border-right: 1px solid var(--border);
-        }
+.main {
+    flex: 1;
 
-        .brand {
-            padding: 24px 22px 20px;
+    height: 100vh;
 
-            display: flex;
-            align-items: center;
-            gap: 12px;
+    display: flex;
+    flex-direction: column;
 
-            border-bottom: 1px solid var(--border);
-        }
+    min-width: 0;
+}
 
-        .brand-icon {
-            width: 38px;
-            height: 38px;
+/* =========================
+   HEADER
+========================= */
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+.header {
+    height: 65px;
+    min-height: 65px;
 
-            border: 1px solid rgba(125, 231, 255, .35);
-            border-radius: 12px;
+    display: flex;
+    align-items: center;
 
-            color: var(--cyan);
+    padding: 0 24px;
 
-            font-family: "Orbitron", sans-serif;
-            font-size: 15px;
+    border-bottom:
+        1px solid var(--border);
 
-            box-shadow:
-                0 0 20px rgba(70, 207, 255, .08);
-        }
+    background:
+        rgba(8, 11, 16, .88);
 
-        .brand-name {
-            font-family: "Orbitron", sans-serif;
-            font-size: 18px;
-            letter-spacing: 1px;
-        }
+    backdrop-filter: blur(12px);
+}
 
-        .new-chat {
-            margin: 16px;
+.header-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
-            padding: 12px 14px;
+    font-weight: 600;
+}
 
-            border: 1px solid var(--border2);
-            border-radius: 13px;
+.status-dot {
+    width: 8px;
+    height: 8px;
 
-            background: rgba(125, 231, 255, .04);
-            color: var(--text);
+    border-radius: 50%;
 
-            display: flex;
-            align-items: center;
-            gap: 10px;
+    background: var(--cyan);
 
-            transition: .2s;
-        }
+    box-shadow:
+        0 0 10px rgba(94,231,255,.7);
+}
 
-        .new-chat:hover {
-            background: rgba(125, 231, 255, .09);
-            border-color: rgba(125, 231, 255, .28);
-        }
+.header-status {
+    color: var(--muted);
+    font-size: 12px;
+}
 
-        .new-chat span:first-child {
-            color: var(--cyan);
-            font-size: 20px;
-        }
+/* =========================
+   MESSAGES
+========================= */
 
-        .conversation-title {
-            padding: 0 18px 8px;
+.messages {
+    flex: 1;
 
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 11px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
+    overflow-y: auto;
 
-            color: var(--muted);
-        }
+    padding: 30px 7%;
+}
 
-        .conversations {
-            flex: 1;
-            overflow-y: auto;
-            padding: 0 9px 15px;
-        }
+.message {
+    width: 100%;
 
-        .conversation {
-            position: relative;
+    display: flex;
 
-            display: flex;
-            align-items: center;
+    margin-bottom: 22px;
+}
 
-            width: 100%;
-            min-height: 46px;
+.message.user {
+    justify-content: flex-end;
+}
 
-            margin-bottom: 5px;
-            padding: 0 11px;
+.message.assistant {
+    justify-content: flex-start;
+}
 
-            border-radius: 11px;
+.message-bubble {
+    max-width: min(760px, 85%);
 
-            color: #aab4bd;
+    padding: 13px 16px;
 
-            cursor: pointer;
+    border-radius: 13px;
 
-            transition: .18s;
-        }
+    line-height: 1.55;
 
-        .conversation:hover {
-            background: rgba(255,255,255,.035);
-            color: white;
-        }
+    font-size: 15px;
 
-        .conversation.active {
-            background: rgba(125,231,255,.07);
-            color: white;
-        }
+    white-space: pre-wrap;
 
-        .conversation-name {
-            flex: 1;
+    word-break: break-word;
+}
 
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
+.message.user .message-bubble {
+    background: #14212b;
 
-            font-size: 13px;
-        }
+    border:
+        1px solid #1e3542;
+}
 
-        .conversation-menu {
-            width: 28px;
-            height: 28px;
+.message.assistant .message-bubble {
+    background: #0d131b;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+    border:
+        1px solid #18232d;
+}
 
-            border-radius: 8px;
+.message-label {
+    font-size: 11px;
 
-            background: transparent;
-            color: #66727c;
+    color: var(--muted);
 
-            opacity: 0;
+    margin-bottom: 5px;
+}
 
-            transition: .15s;
-        }
+.message.user .message-label {
+    text-align: right;
+}
 
-        .conversation:hover .conversation-menu,
-        .conversation.active .conversation-menu {
-            opacity: 1;
-        }
+/* =========================
+   WELCOME
+========================= */
 
-        .conversation-menu:hover {
-            color: white;
-            background: rgba(255,255,255,.06);
-        }
+.welcome {
+    height: 100%;
 
-        /* ================================
-           MAIN
-        ================================= */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        .main {
-            flex: 1;
-            min-width: 0;
-            height: 100%;
+    flex-direction: column;
 
-            display: flex;
-            flex-direction: column;
+    text-align: center;
 
-            position: relative;
-        }
+    color: var(--muted);
+}
 
-        .topbar {
-            height: 68px;
-            min-height: 68px;
+.welcome h1 {
+    color: var(--cyan);
 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+    font-size: 38px;
 
-            padding: 0 25px;
+    margin: 0 0 8px;
+}
 
-            border-bottom: 1px solid var(--border);
+.welcome p {
+    margin: 0;
 
-            background: rgba(7,10,15,.62);
-            backdrop-filter: blur(16px);
-        }
+    max-width: 500px;
+}
 
-        .topbar-title {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-        }
+/* =========================
+   INPUT
+========================= */
 
-        .status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+.input-area {
+    padding: 14px 7% 20px;
 
-            font-size: 11px;
-            color: var(--muted);
-        }
+    border-top:
+        1px solid var(--border);
 
-        .status-dot {
-            width: 7px;
-            height: 7px;
+    background:
+        rgba(7, 9, 13, .94);
+}
 
-            border-radius: 50%;
+.input-wrapper {
+    max-width: 900px;
 
-            background: var(--cyan);
+    margin: auto;
 
-            box-shadow: 0 0 12px var(--cyan);
-        }
+    display: flex;
+    align-items: flex-end;
 
-        /* ================================
-           CHAT
-        ================================= */
+    gap: 8px;
 
-        .chat {
-            flex: 1;
-            overflow-y: auto;
+    padding: 9px;
 
-            padding: 30px 20px 150px;
-        }
+    background: #0d131a;
 
-        .messages {
-            width: min(900px, 100%);
-            margin: auto;
-        }
+    border:
+        1px solid #202c37;
 
-        .welcome {
-            min-height: calc(100vh - 250px);
+    border-radius: 14px;
+}
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+#messageInput {
+    flex: 1;
 
-            flex-direction: column;
+    resize: none;
 
-            text-align: center;
-        }
+    min-height: 42px;
+    max-height: 160px;
 
-        .welcome-logo {
-            width: 76px;
-            height: 76px;
+    padding: 10px 11px;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+    border: none;
+    outline: none;
 
-            margin-bottom: 24px;
+    background: transparent;
 
-            border: 1px solid rgba(125,231,255,.3);
-            border-radius: 24px;
+    color: var(--text);
 
-            color: var(--cyan);
+    font-family: inherit;
+    font-size: 15px;
+}
 
-            font-family: "Orbitron", sans-serif;
-            font-size: 24px;
+#messageInput::placeholder {
+    color: #59656f;
+}
 
-            box-shadow:
-                0 0 40px rgba(70,207,255,.08);
-        }
+.input-button {
+    width: 42px;
+    height: 42px;
 
-        .welcome h1 {
-            margin-bottom: 9px;
+    border-radius: 10px;
 
-            font-family: "Orbitron", sans-serif;
-            font-size: clamp(25px, 4vw, 38px);
-            letter-spacing: 2px;
-        }
+    border: 1px solid #263744;
 
-        .welcome p {
-            max-width: 500px;
+    background: #111b24;
 
-            color: var(--muted);
-            font-size: 14px;
-            line-height: 1.6;
-        }
+    color: var(--cyan);
 
-        .message {
-            display: flex;
-            gap: 13px;
+    cursor: pointer;
 
-            margin-bottom: 26px;
-        }
+    transition: .2s;
+}
 
-        .message.user {
-            justify-content: flex-end;
-        }
+.input-button:hover {
+    background: #172733;
+    border-color: var(--cyan2);
+}
 
-        .avatar {
-            width: 34px;
-            min-width: 34px;
-            height: 34px;
+.input-button:disabled {
+    opacity: .4;
+    cursor: default;
+}
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+/* =========================
+   FILE
+========================= */
 
-            border-radius: 10px;
+.file-preview {
+    max-width: 900px;
 
-            font-family: "Orbitron", sans-serif;
-            font-size: 10px;
-        }
+    margin: 0 auto 8px;
 
-        .assistant .avatar {
-            border: 1px solid rgba(125,231,255,.25);
-            color: var(--cyan);
-            background: rgba(125,231,255,.035);
-        }
+    display: none;
 
-        .user .avatar {
-            order: 2;
+    padding: 8px 11px;
 
-            background: rgba(255,255,255,.07);
-            color: #dce3e8;
-        }
+    border:
+        1px solid #26343f;
 
-        .bubble {
-            max-width: min(720px, 82%);
+    border-radius: 9px;
 
-            padding: 13px 16px;
+    background: #0d131a;
 
-            border-radius: 15px;
+    font-size: 13px;
 
-            font-size: 14px;
-            line-height: 1.65;
+    color: var(--muted);
+}
 
-            white-space: pre-wrap;
-            overflow-wrap: anywhere;
-        }
+.file-preview.visible {
+    display: flex;
 
-        .assistant .bubble {
-            background: rgba(17,23,32,.72);
-            border: 1px solid var(--border);
-        }
+    align-items: center;
+    justify-content: space-between;
+}
 
-        .user .bubble {
-            background: rgba(125,231,255,.07);
-            border: 1px solid rgba(125,231,255,.11);
-        }
+.file-remove {
+    border: none;
 
-        .message-image {
-            max-width: 450px;
-            max-height: 400px;
+    background: transparent;
 
-            display: block;
+    color: var(--danger);
 
-            margin-top: 10px;
+    cursor: pointer;
+}
 
-            border-radius: 13px;
+/* =========================
+   TYPING
+========================= */
 
-            border: 1px solid var(--border);
-        }
+.typing {
+    display: flex;
 
-        .typing {
-            color: var(--muted);
-            font-size: 13px;
-        }
+    align-items: center;
 
-        /* ================================
-           INPUT
-        ================================= */
+    gap: 5px;
 
-        .input-area {
-            position: absolute;
+    padding: 4px 2px;
+}
 
-            left: 0;
-            right: 0;
-            bottom: 0;
+.typing span {
+    width: 6px;
+    height: 6px;
 
-            padding: 18px 20px 22px;
+    border-radius: 50%;
 
-            background:
-                linear-gradient(
-                    to top,
-                    rgba(7,9,13,1) 40%,
-                    rgba(7,9,13,.9),
-                    transparent
-                );
-        }
+    background: var(--cyan);
 
-        .input-wrap {
-            width: min(900px, 100%);
-            margin: auto;
+    animation:
+        typingAnimation 1.2s infinite;
+}
 
-            border: 1px solid var(--border2);
-            border-radius: 17px;
+.typing span:nth-child(2) {
+    animation-delay: .15s;
+}
 
-            background: rgba(13,18,26,.94);
+.typing span:nth-child(3) {
+    animation-delay: .3s;
+}
 
-            box-shadow:
-                0 15px 50px rgba(0,0,0,.28);
+@keyframes typingAnimation {
 
-            backdrop-filter: blur(15px);
-        }
+    0%,
+    60%,
+    100% {
+        opacity: .25;
+        transform: translateY(0);
+    }
 
-        .file-preview {
-            display: none;
+    30% {
+        opacity: 1;
+        transform: translateY(-3px);
+    }
+}
 
-            align-items: center;
-            gap: 10px;
+/* =========================
+   SCROLLBAR
+========================= */
 
-            padding: 10px 13px;
+::-webkit-scrollbar {
+    width: 7px;
+}
 
-            border-bottom: 1px solid var(--border);
+::-webkit-scrollbar-track {
+    background: transparent;
+}
 
-            color: #bac5cc;
-            font-size: 12px;
-        }
+::-webkit-scrollbar-thumb {
+    background: #202c36;
+    border-radius: 10px;
+}
 
-        .file-preview.visible {
-            display: flex;
-        }
+::-webkit-scrollbar-thumb:hover {
+    background: #2c3d49;
+}
 
-        .file-preview-name {
-            flex: 1;
+/* =========================
+   MOBILE
+========================= */
 
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
+@media (max-width: 700px) {
 
-        .remove-file {
-            color: #7c8790;
-            background: transparent;
+    .sidebar {
+        width: 220px;
+        min-width: 220px;
+    }
 
-            font-size: 18px;
-        }
+    .messages {
+        padding: 20px 4%;
+    }
 
-        .remove-file:hover {
-            color: var(--danger);
-        }
+    .input-area {
+        padding: 10px 4% 15px;
+    }
 
-        .input-row {
-            display: flex;
-            align-items: flex-end;
-
-            padding: 10px;
-            gap: 7px;
-        }
-
-        .icon-btn {
-            width: 39px;
-            height: 39px;
-
-            min-width: 39px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 11px;
-
-            background: transparent;
-            color: #84909a;
-
-            font-size: 20px;
-
-            transition: .18s;
-        }
-
-        .icon-btn:hover {
-            background: rgba(255,255,255,.055);
-            color: var(--cyan);
-        }
-
-        .icon-btn.listening {
-            color: #ff6978;
-            background: rgba(255,83,100,.08);
-
-            animation: pulseMic 1.1s infinite;
-        }
-
-        @keyframes pulseMic {
-            50% {
-                box-shadow: 0 0 0 6px rgba(255,83,100,.04);
-            }
-        }
-
-        textarea {
-            flex: 1;
-
-            min-height: 39px;
-            max-height: 160px;
-
-            resize: none;
-
-            padding: 9px 4px;
-
-            background: transparent;
-            border: none;
-            outline: none;
-
-            color: var(--text);
-
-            font-size: 14px;
-            line-height: 1.45;
-        }
-
-        textarea::placeholder {
-            color: #59656f;
-        }
-
-        .send-btn {
-            width: 42px;
-            height: 42px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 12px;
-
-            background: rgba(125,231,255,.1);
-            color: var(--cyan);
-
-            font-size: 18px;
-
-            transition: .18s;
-        }
-
-        .send-btn:hover {
-            background: rgba(125,231,255,.17);
-            box-shadow: 0 0 20px rgba(70,207,255,.08);
-        }
-
-        .send-btn:disabled {
-            opacity: .4;
-            cursor: not-allowed;
-        }
-
-        /* ================================
-           SCROLLBAR
-        ================================= */
-
-        ::-webkit-scrollbar {
-            width: 7px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,.08);
-            border-radius: 20px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255,255,255,.13);
-        }
-
-        /* ================================
-           MOBILE
-        ================================= */
-
-        @media (max-width: 750px) {
-
-            .sidebar {
-                width: 225px;
-                min-width: 225px;
-            }
-
-            .bubble {
-                max-width: 86%;
-            }
-
-            .topbar {
-                padding: 0 15px;
-            }
-
-            .chat {
-                padding-left: 12px;
-                padding-right: 12px;
-            }
-
-            .input-area {
-                padding-left: 10px;
-                padding-right: 10px;
-            }
-        }
-
-        @media (max-width: 560px) {
-
-            .sidebar {
-                display: none;
-            }
-
-            .bubble {
-                max-width: 90%;
-            }
-
-            .welcome-logo {
-                width: 64px;
-                height: 64px;
-            }
-        }
-
-    </style>
+    .message-bubble {
+        max-width: 90%;
+    }
+}
+</style>
 </head>
 
 <body>
 
 <div class="app">
 
-    <!-- ================================
-         SIDEBAR
-    ================================= -->
+    <!-- SIDEBAR -->
 
     <aside class="sidebar">
 
-        <div class="brand">
-            <div class="brand-icon">A</div>
-            <div class="brand-name">ALICIA</div>
+        <div class="logo">
+            ALICIA
         </div>
 
-        <button class="new-chat" id="newChat">
-            <span>＋</span>
-            <span>Nueva conversación</span>
+        <button
+            class="new-chat"
+            id="newChatButton"
+        >
+            + Nueva conversación
         </button>
 
-        <div class="conversation-title">
-            Conversaciones
-        </div>
-
-        <div class="conversations" id="conversations"></div>
+        <div
+            class="conversations"
+            id="conversationList"
+        ></div>
 
     </aside>
 
 
-    <!-- ================================
-         MAIN
-    ================================= -->
+    <!-- MAIN -->
 
     <main class="main">
 
-        <header class="topbar">
+        <header class="header">
 
-            <div class="topbar-title" id="topbarTitle">
-                Alicia
-            </div>
+            <div class="header-title">
 
-            <div class="status">
-                <span class="status-dot"></span>
-                <span id="statusText">conectada</span>
+                <div class="status-dot"></div>
+
+                <div>
+                    Alicia
+                    <div
+                        class="header-status"
+                        id="headerStatus"
+                    >
+                        En línea
+                    </div>
+                </div>
+
             </div>
 
         </header>
 
 
-        <section class="chat" id="chat">
+        <!-- MESSAGES -->
 
-            <div class="messages" id="messages">
-
-                <div class="welcome" id="welcome">
-
-                    <div class="welcome-logo">
-                        A
-                    </div>
-
-                    <h1>Alicia</h1>
-
-                    <p>
-                        Una conversación que no tiene por qué sentirse como
-                        una conversación con un chatbot.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
+        <section
+            class="messages"
+            id="messages"
+        ></section>
 
 
-        <!-- ================================
-             INPUT
-        ================================= -->
+        <!-- INPUT -->
 
         <div class="input-area">
 
-            <div class="input-wrap">
+            <div
+                class="file-preview"
+                id="filePreview"
+            >
 
-                <div class="file-preview" id="filePreview">
+                <span id="fileName">
+                    Archivo
+                </span>
 
-                    <span>📎</span>
+                <button
+                    class="file-remove"
+                    id="removeFile"
+                >
+                    ×
+                </button>
 
-                    <span class="file-preview-name"
-                          id="filePreviewName">
-                    </span>
+            </div>
 
-                    <button class="remove-file"
-                            id="removeFile"
-                            title="Quitar archivo">
-                        ×
-                    </button>
+            <div class="input-wrapper">
 
-                </div>
+                <button
+                    class="input-button"
+                    id="fileButton"
+                    title="Adjuntar archivo"
+                >
+                    +
+                </button>
 
+                <input
+                    type="file"
+                    id="fileInput"
+                    hidden
+                    accept="
+                        image/*,
+                        .txt,
+                        .md,
+                        .json,
+                        .csv,
+                        .html,
+                        .pdf,
+                        .docx
+                    "
+                >
 
-                <div class="input-row">
+                <textarea
+                    id="messageInput"
+                    placeholder="Escribile a Alicia..."
+                    rows="1"
+                ></textarea>
 
-                    <button
-                        class="icon-btn"
-                        id="attachBtn"
-                        title="Adjuntar archivo">
-                        +
-                    </button>
-
-
-                    <input
-                        type="file"
-                        id="fileInput"
-                        accept="
-                            image/*,
-                            .pdf,
-                            .doc,
-                            .docx,
-                            .txt,
-                            .md,
-                            .csv,
-                            .json,
-                            .html
-                        "
-                        hidden
-                    >
-
-
-                    <textarea
-                        id="messageInput"
-                        rows="1"
-                        placeholder="Hablá con Alicia..."
-                        autocomplete="off">
-                    </textarea>
-
-
-                    <button
-                        class="icon-btn"
-                        id="micBtn"
-                        title="Hablar">
-                        🎙
-                    </button>
-
-
-                    <button
-                        class="send-btn"
-                        id="sendBtn"
-                        title="Enviar">
-                        ↑
-                    </button>
-
-                </div>
+                <button
+                    class="input-button"
+                    id="sendButton"
+                    title="Enviar"
+                >
+                    ↑
+                </button>
 
             </div>
 
@@ -862,19 +689,19 @@
 </div>
 
 
-<script type="module">
+<script>
 
-/* ============================================================
+/* =========================================================
    CONFIGURACIÓN
-============================================================ */
+========================================================= */
 
 const WORKER_URL =
     "https://alica-ai.hector-s-g-rivero.workers.dev/";
 
 
-/* ============================================================
+/* =========================================================
    ESTADO
-============================================================ */
+========================================================= */
 
 let conversations = [];
 
@@ -882,77 +709,97 @@ let activeConversationId = null;
 
 let selectedFile = null;
 
-let selectedFileText = null;
+let selectedImage = null;
 
-let recognition = null;
+let aliciaInitiativeRunning = false;
 
-let isListening = false;
+let aliciaInitiativeTimer = null;
+
+let aliciaLastInitiative = 0;
 
 
-/* ============================================================
+/* =========================================================
    ELEMENTOS
-============================================================ */
+========================================================= */
 
-const conversationsElement =
-    document.getElementById("conversations");
+const conversationList =
+    document.getElementById(
+        "conversationList"
+    );
 
 const messagesElement =
-    document.getElementById("messages");
-
-const welcomeElement =
-    document.getElementById("welcome");
+    document.getElementById(
+        "messages"
+    );
 
 const messageInput =
-    document.getElementById("messageInput");
+    document.getElementById(
+        "messageInput"
+    );
 
-const sendBtn =
-    document.getElementById("sendBtn");
+const sendButton =
+    document.getElementById(
+        "sendButton"
+    );
 
-const micBtn =
-    document.getElementById("micBtn");
-
-const attachBtn =
-    document.getElementById("attachBtn");
+const fileButton =
+    document.getElementById(
+        "fileButton"
+    );
 
 const fileInput =
-    document.getElementById("fileInput");
+    document.getElementById(
+        "fileInput"
+    );
 
 const filePreview =
-    document.getElementById("filePreview");
+    document.getElementById(
+        "filePreview"
+    );
 
-const filePreviewName =
-    document.getElementById("filePreviewName");
+const fileName =
+    document.getElementById(
+        "fileName"
+    );
 
 const removeFile =
-    document.getElementById("removeFile");
+    document.getElementById(
+        "removeFile"
+    );
 
-const newChatBtn =
-    document.getElementById("newChat");
+const newChatButton =
+    document.getElementById(
+        "newChatButton"
+    );
 
-const topbarTitle =
-    document.getElementById("topbarTitle");
-
-const statusText =
-    document.getElementById("statusText");
-
-const chatElement =
-    document.getElementById("chat");
+const headerStatus =
+    document.getElementById(
+        "headerStatus"
+    );
 
 
-/* ============================================================
+/* =========================================================
    STORAGE
-============================================================ */
-
-const STORAGE_KEY =
-    "alicia_conversations_v4";
-
+========================================================= */
 
 function saveConversations() {
 
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(conversations)
-    );
+    try {
+
+        localStorage.setItem(
+            "alicia_conversations",
+            JSON.stringify(
+                conversations
+            )
+        );
+
+    } catch (error) {
+
+        console.error(
+            "No se pudieron guardar las conversaciones:",
+            error
+        );
+    }
 }
 
 
@@ -961,74 +808,74 @@ function loadConversations() {
     try {
 
         const saved =
-            localStorage.getItem(STORAGE_KEY);
+            localStorage.getItem(
+                "alicia_conversations"
+            );
 
-        if (!saved) {
+        if (saved) {
 
-            createConversation();
+            conversations =
+                JSON.parse(saved);
 
-            return;
         }
 
-        conversations =
-            JSON.parse(saved);
+    } catch (error) {
 
-        if (
-            !Array.isArray(conversations) ||
-            conversations.length === 0
-        ) {
+        console.error(
+            "Error cargando conversaciones:",
+            error
+        );
 
-            createConversation();
+        conversations = [];
+    }
 
-            return;
-        }
+    if (
+        !Array.isArray(
+            conversations
+        )
+    ) {
+
+        conversations = [];
+    }
+
+    if (
+        conversations.length === 0
+    ) {
+
+        createConversation();
+
+    } else {
 
         activeConversationId =
             conversations[0].id;
 
         renderConversations();
-
-        renderActiveConversation();
-
-    } catch (error) {
-
-        console.error(error);
-
-        conversations = [];
-
-        createConversation();
+        renderMessages();
     }
 }
 
 
-/* ============================================================
+/* =========================================================
    CONVERSACIONES
-============================================================ */
+========================================================= */
 
 function createConversation() {
 
     const conversation = {
 
         id:
-            "chat_" +
-            Date.now() +
-            "_" +
-            Math.random()
-                .toString(36)
-                .substring(2, 8),
+            Date.now().toString(),
 
-        title: "Nueva conversación",
+        title:
+            "Nueva conversación",
 
-        messages: [],
-
-        createdAt: Date.now(),
-
-        updatedAt: Date.now()
+        messages: []
 
     };
 
-
-    conversations.unshift(conversation);
+    conversations.unshift(
+        conversation
+    );
 
     activeConversationId =
         conversation.id;
@@ -1036,28 +883,51 @@ function createConversation() {
     saveConversations();
 
     renderConversations();
-
-    renderActiveConversation();
+    renderMessages();
 }
 
 
 function getActiveConversation() {
 
     return conversations.find(
-        c => c.id === activeConversationId
+        conversation =>
+            conversation.id ===
+            activeConversationId
     );
 }
 
 
-function switchConversation(id) {
+function deleteConversation(id) {
 
-    activeConversationId = id;
+    conversations =
+        conversations.filter(
+            conversation =>
+                conversation.id !== id
+        );
 
-    clearSelectedFile();
+    if (
+        activeConversationId === id
+    ) {
+
+        if (
+            conversations.length > 0
+        ) {
+
+            activeConversationId =
+                conversations[0].id;
+
+        } else {
+
+            createConversation();
+
+            return;
+        }
+    }
+
+    saveConversations();
 
     renderConversations();
-
-    renderActiveConversation();
+    renderMessages();
 }
 
 
@@ -1068,299 +938,219 @@ function renameConversation(id) {
             c => c.id === id
         );
 
-    if (!conversation) return;
+    if (!conversation) {
+        return;
+    }
 
-
-    const newName =
+    const name =
         prompt(
             "Nombre de la conversación:",
             conversation.title
         );
 
-
     if (
-        newName === null ||
-        !newName.trim()
+        name &&
+        name.trim()
     ) {
-        return;
+
+        conversation.title =
+            name.trim();
+
+        saveConversations();
+
+        renderConversations();
     }
-
-
-    conversation.title =
-        newName.trim();
-
-    conversation.updatedAt =
-        Date.now();
-
-    saveConversations();
-
-    renderConversations();
-
-    renderActiveConversation();
 }
 
 
-function deleteConversation(id) {
-
-    const index =
-        conversations.findIndex(
-            c => c.id === id
-        );
-
-    if (index === -1) return;
-
-
-    const confirmed =
-        confirm(
-            "¿Eliminar esta conversación?"
-        );
-
-
-    if (!confirmed) return;
-
-
-    conversations.splice(index, 1);
-
-
-    if (conversations.length === 0) {
-
-        createConversation();
-
-        return;
-    }
-
-
-    if (activeConversationId === id) {
-
-        activeConversationId =
-            conversations[0].id;
-    }
-
-
-    saveConversations();
-
-    renderConversations();
-
-    renderActiveConversation();
-}
-
-
-/* ============================================================
-   SIDEBAR
-============================================================ */
+/* =========================================================
+   RENDER CONVERSACIONES
+========================================================= */
 
 function renderConversations() {
 
-    conversationsElement.innerHTML = "";
+    conversationList.innerHTML = "";
 
+    conversations.forEach(
+        conversation => {
 
-    for (const conversation of conversations) {
+            const item =
+                document.createElement(
+                    "div"
+                );
 
-        const item =
-            document.createElement("div");
+            item.className =
+                "conversation" +
+                (
+                    conversation.id ===
+                    activeConversationId
+                        ? " active"
+                        : ""
+                );
 
-        item.className =
-            "conversation" +
-            (
-                conversation.id ===
-                activeConversationId
-                    ? " active"
-                    : ""
+            item.onclick =
+                () => {
+
+                    activeConversationId =
+                        conversation.id;
+
+                    renderConversations();
+                    renderMessages();
+                };
+
+            const name =
+                document.createElement(
+                    "div"
+                );
+
+            name.className =
+                "conversation-name";
+
+            name.textContent =
+                conversation.title;
+
+            const actions =
+                document.createElement(
+                    "div"
+                );
+
+            actions.className =
+                "conversation-actions";
+
+            const rename =
+                document.createElement(
+                    "button"
+                );
+
+            rename.textContent =
+                "✎";
+
+            rename.title =
+                "Renombrar";
+
+            rename.onclick =
+                event => {
+
+                    event.stopPropagation();
+
+                    renameConversation(
+                        conversation.id
+                    );
+                };
+
+            const remove =
+                document.createElement(
+                    "button"
+                );
+
+            remove.textContent =
+                "×";
+
+            remove.title =
+                "Eliminar";
+
+            remove.onclick =
+                event => {
+
+                    event.stopPropagation();
+
+                    deleteConversation(
+                        conversation.id
+                    );
+                };
+
+            actions.appendChild(
+                rename
             );
 
+            actions.appendChild(
+                remove
+            );
 
-        const name =
-            document.createElement("div");
+            item.appendChild(
+                name
+            );
 
-        name.className =
-            "conversation-name";
+            item.appendChild(
+                actions
+            );
 
-        name.textContent =
-            conversation.title;
-
-
-        const menu =
-            document.createElement("button");
-
-        menu.className =
-            "conversation-menu";
-
-        menu.textContent =
-            "⋯";
-
-        menu.title =
-            "Opciones";
-
-
-        menu.addEventListener(
-            "click",
-            event => {
-
-                event.stopPropagation();
-
-                showConversationMenu(
-                    conversation.id
-                );
-            }
-        );
-
-
-        item.addEventListener(
-            "click",
-            () => {
-
-                switchConversation(
-                    conversation.id
-                );
-            }
-        );
-
-
-        item.appendChild(name);
-
-        item.appendChild(menu);
-
-        conversationsElement.appendChild(item);
-    }
+            conversationList.appendChild(
+                item
+            );
+        }
+    );
 }
 
 
-function showConversationMenu(id) {
-
-    const conversation =
-        conversations.find(
-            c => c.id === id
-        );
-
-    if (!conversation) return;
-
-
-    const action =
-        prompt(
-            "Escribí una opción:\n\n" +
-            "renombrar\n" +
-            "eliminar"
-        );
-
-
-    if (!action) return;
-
-
-    const normalized =
-        action
-            .trim()
-            .toLowerCase();
-
-
-    if (
-        normalized === "renombrar" ||
-        normalized === "r"
-    ) {
-
-        renameConversation(id);
-
-    } else if (
-        normalized === "eliminar" ||
-        normalized === "e"
-    ) {
-
-        deleteConversation(id);
-    }
-}
-
-
-/* ============================================================
+/* =========================================================
    RENDER MENSAJES
-============================================================ */
+========================================================= */
 
-function renderActiveConversation() {
+function renderMessages() {
+
+    messagesElement.innerHTML = "";
 
     const conversation =
         getActiveConversation();
 
-
-    if (!conversation) return;
-
-
-    topbarTitle.textContent =
-        conversation.title;
-
-
-    messagesElement.innerHTML = "";
-
+    if (!conversation) {
+        return;
+    }
 
     if (
-        !conversation.messages ||
         conversation.messages.length === 0
     ) {
 
+        const welcome =
+            document.createElement(
+                "div"
+            );
+
+        welcome.className =
+            "welcome";
+
+        welcome.innerHTML = `
+            <h1>Alicia</h1>
+            <p>
+                Estoy acá. Hablame.
+            </p>
+        `;
+
         messagesElement.appendChild(
-            createWelcome()
+            welcome
         );
 
         return;
     }
 
+    conversation.messages.forEach(
+        message => {
 
-    for (
-        const message of conversation.messages
-    ) {
-
-        renderMessage(
-            message.role,
-            message.content,
-            message.image || null
-        );
-    }
-
+            addMessageToDOM(
+                message.role,
+                message.content,
+                false
+            );
+        }
+    );
 
     scrollToBottom();
 }
 
 
-function createWelcome() {
-
-    const welcome =
-        document.createElement("div");
-
-    welcome.className =
-        "welcome";
-
-
-    welcome.innerHTML = `
-
-        <div class="welcome-logo">
-            A
-        </div>
-
-        <h1>Alicia</h1>
-
-        <p>
-            Una conversación que no tiene por qué sentirse
-            como una conversación con un chatbot.
-        </p>
-
-    `;
-
-
-    return welcome;
-}
-
-
-/* ============================================================
-   MOSTRAR MENSAJE
-============================================================ */
-
-function renderMessage(
+function addMessageToDOM(
     role,
     content,
-    image = null
+    scroll = true
 ) {
 
-    const message =
-        document.createElement("div");
+    const wrapper =
+        document.createElement(
+            "div"
+        );
 
-    message.className =
+    wrapper.className =
         "message " +
         (
             role === "user"
@@ -1368,312 +1158,229 @@ function renderMessage(
                 : "assistant"
         );
 
+    const inner =
+        document.createElement(
+            "div"
+        );
 
-    const avatar =
-        document.createElement("div");
+    const label =
+        document.createElement(
+            "div"
+        );
 
-    avatar.className =
-        "avatar";
+    label.className =
+        "message-label";
 
-    avatar.textContent =
+    label.textContent =
         role === "user"
-            ? "TÚ"
-            : "A";
-
+            ? "Vos"
+            : "Alicia";
 
     const bubble =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     bubble.className =
-        "bubble";
+        "message-bubble";
 
+    bubble.textContent =
+        content;
 
-    if (content) {
+    inner.appendChild(
+        label
+    );
 
-        const text =
-            document.createElement("div");
+    inner.appendChild(
+        bubble
+    );
 
-        text.textContent =
-            content;
-
-        bubble.appendChild(text);
-    }
-
-
-    if (image) {
-
-        const img =
-            document.createElement("img");
-
-        img.src =
-            image;
-
-        img.className =
-            "message-image";
-
-        img.alt =
-            "Imagen enviada a Alicia";
-
-        bubble.appendChild(img);
-    }
-
-
-    if (role === "user") {
-
-        message.appendChild(bubble);
-
-        message.appendChild(avatar);
-
-    } else {
-
-        message.appendChild(avatar);
-
-        message.appendChild(bubble);
-    }
-
+    wrapper.appendChild(
+        inner
+    );
 
     messagesElement.appendChild(
-        message
+        wrapper
     );
+
+    if (scroll) {
+        scrollToBottom();
+    }
 }
 
 
-/* ============================================================
+/* =========================================================
+   TYPING
+========================================================= */
+
+function showTyping() {
+
+    const wrapper =
+        document.createElement(
+            "div"
+        );
+
+    wrapper.className =
+        "message assistant";
+
+    wrapper.id =
+        "typingMessage";
+
+    wrapper.innerHTML = `
+        <div>
+            <div class="message-label">
+                Alicia
+            </div>
+
+            <div class="message-bubble">
+
+                <div class="typing">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+            </div>
+        </div>
+    `;
+
+    messagesElement.appendChild(
+        wrapper
+    );
+
+    scrollToBottom();
+}
+
+
+function hideTyping() {
+
+    const typing =
+        document.getElementById(
+            "typingMessage"
+        );
+
+    if (typing) {
+        typing.remove();
+    }
+}
+
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+function scrollToBottom() {
+
+    messagesElement.scrollTop =
+        messagesElement.scrollHeight;
+}
+
+
+/* =========================================================
    ENVIAR MENSAJE
-============================================================ */
+========================================================= */
 
 async function sendMessage() {
 
-    const rawText =
+    const text =
         messageInput.value.trim();
 
-
     if (
-        !rawText &&
-        !selectedFileText &&
-        !selectedFile
+        !text &&
+        !selectedFile &&
+        !selectedImage
     ) {
         return;
     }
 
-
     const conversation =
         getActiveConversation();
 
-
-    if (!conversation) return;
-
-
-    let finalText =
-        rawText;
-
-
-    let imageToSend =
-        null;
-
-
-    /*
-     * IMAGEN
-     */
-
-    if (
-        selectedFile &&
-        selectedFile.type.startsWith("image/")
-    ) {
-
-        imageToSend =
-            await fileToDataURL(
-                selectedFile
-            );
+    if (!conversation) {
+        return;
     }
 
-
-    /*
-     * ARCHIVO DE TEXTO
-     */
-
-    if (
-        selectedFileText
-    ) {
-
-        finalText +=
-            (
-                finalText
-                    ? "\n\n"
-                    : ""
-            ) +
-
-            `[ARCHIVO ADJUNTO: ${selectedFile.name}]\n` +
-
-            selectedFileText +
-
-            `\n[FIN DEL ARCHIVO]`;
-    }
-
-
-    /*
-     * MENSAJE VISUAL
-     */
-
-    renderMessage(
-        "user",
-        finalText,
-        imageToSend
-    );
-
-
-    /*
-     * GUARDAR HISTORIAL
-     */
+    const userContent =
+        text ||
+        (
+            selectedFile
+                ? `[Archivo: ${selectedFile.name}]`
+                : "[Imagen]"
+        );
 
     conversation.messages.push({
-
         role: "user",
-
-        content: finalText,
-
-        image:
-            imageToSend,
-
-        timestamp:
-            Date.now()
-
+        content: userContent
     });
 
+    /*
+     * Título automático.
+     */
 
     if (
-        conversation.messages.length === 1
+        conversation.title ===
+        "Nueva conversación"
     ) {
 
         conversation.title =
-            createConversationTitle(
-                rawText ||
-                selectedFile?.name ||
-                "Nueva conversación"
-            );
+            text
+                ? text.substring(
+                    0,
+                    35
+                )
+                : "Nueva conversación";
+
+        renderConversations();
     }
-
-
-    conversation.updatedAt =
-        Date.now();
-
 
     saveConversations();
 
-    renderConversations();
+    renderMessages();
+
+    const finalText =
+        text ||
+        "Analizá el archivo o imagen que te envié.";
+
+    const imageToSend =
+        selectedImage;
+
+    /*
+     * Guardamos la historia ANTERIOR.
+     * El mensaje actual no se duplica.
+     */
+
+    const history =
+        conversation.messages
+            .slice(0, -1)
+            .map(message => ({
+                role:
+                    message.role,
+
+                content:
+                    message.content
+            }));
 
     messageInput.value = "";
 
-    autoResizeTextarea();
+    resetFile();
 
-    clearSelectedFile();
+    messageInput.style.height =
+        "42px";
 
-    scrollToBottom();
+    sendButton.disabled =
+        true;
 
+    headerStatus.textContent =
+        "Pensando...";
 
-    /*
-     * INDICADOR
-     */
-
-    const typing =
-        document.createElement("div");
-
-    typing.className =
-        "message assistant";
-
-    typing.id =
-        "typingMessage";
-
-
-    typing.innerHTML = `
-
-        <div class="avatar">
-            A
-        </div>
-
-        <div class="bubble typing">
-            Alicia está pensando...
-        </div>
-
-    `;
-
-
-    messagesElement.appendChild(
-        typing
-    );
-
-    scrollToBottom();
-
-
-    sendBtn.disabled = true;
-
-    statusText.textContent =
-        "pensando";
-
+    showTyping();
 
     try {
-
-        /*
-         * IMPORTANTE:
-         * No enviamos el mensaje del usuario
-         * dos veces en history.
-         *
-         * history contiene los mensajes anteriores
-         * y message contiene el mensaje actual.
-         */
-
-        const history =
-            conversation.messages
-                .slice(0, -1)
-                .map(message => {
-
-                    if (
-                        message.image &&
-                        message.role === "user"
-                    ) {
-
-                        return {
-
-                            role: "user",
-
-                            content: [
-
-                                {
-                                    type: "text",
-                                    text:
-                                        message.content
-                                },
-
-                                {
-                                    type: "image_url",
-
-                                    image_url: {
-                                        url:
-                                            message.image
-                                    }
-                                }
-
-                            ]
-                        };
-                    }
-
-
-                    return {
-
-                        role:
-                            message.role,
-
-                        content:
-                            message.content
-                    };
-                });
-
 
         const response =
             await fetch(
                 WORKER_URL,
                 {
-
                     method: "POST",
 
                     headers: {
@@ -1683,7 +1390,6 @@ async function sendMessage() {
 
                     body:
                         JSON.stringify({
-
                             message:
                                 finalText,
 
@@ -1692,115 +1398,84 @@ async function sendMessage() {
 
                             history:
                                 history
-
                         })
                 }
             );
 
-
         const data =
             await response.json();
 
-
-        if (!response.ok) {
-
-            throw new Error(
-                data?.error ||
-                `Error HTTP ${response.status}`
-            );
-        }
-
-
-        /*
-         * EL WORKER DEVUELVE:
-         *
-         * {
-         *   ok: true,
-         *   response: "..."
-         * }
-         */
-
-        const aiResponse =
-            data?.response;
-
+        hideTyping();
 
         if (
-            typeof aiResponse !== "string" ||
-            !aiResponse.trim()
+            !response.ok ||
+            !data.ok
         ) {
 
             throw new Error(
-                "El Worker no devolvió el campo 'response'."
+                data?.error ||
+                "Error desconocido."
             );
         }
 
-
-        removeTyping();
-
+        const answer =
+            data.response ||
+            "No recibí respuesta.";
 
         conversation.messages.push({
-
             role: "assistant",
-
-            content:
-                aiResponse,
-
-            timestamp:
-                Date.now()
-
+            content: answer
         });
-
-
-        conversation.updatedAt =
-            Date.now();
-
 
         saveConversations();
 
-
-        renderMessage(
+        addMessageToDOM(
             "assistant",
-            aiResponse
+            answer
         );
 
+        headerStatus.textContent =
+            "En línea";
 
-        scrollToBottom();
+        /*
+         * Como hubo una conversación nueva,
+         * reiniciamos el momento desde el cual
+         * Alicia puede volver a tener iniciativa.
+         */
 
+        aliciaLastInitiative =
+            Date.now();
 
-        statusText.textContent =
-            "conectada";
+        scheduleNextAliciaCheck();
 
+    }
 
-    } catch (error) {
+    catch (error) {
+
+        hideTyping();
 
         console.error(
-            "ALICIA:",
+            "ALICIA ERROR:",
             error
         );
 
-
-        removeTyping();
-
-
-        const errorText =
+        const errorMessage =
             "No pude conectarme con mi cerebro ahora mismo.\n\n" +
             "Detalle: " +
             error.message;
 
-
-        renderMessage(
+        addMessageToDOM(
             "assistant",
-            errorText
+            errorMessage
         );
 
+        headerStatus.textContent =
+            "Error de conexión";
+    }
 
-        statusText.textContent =
-            "error de conexión";
+    finally {
 
-
-    } finally {
-
-        sendBtn.disabled =
+        sendButton.disabled =
             false;
 
         messageInput.focus();
@@ -1808,148 +1483,390 @@ async function sendMessage() {
 }
 
 
-/* ============================================================
-   TÍTULO AUTOMÁTICO
-============================================================ */
+/* =========================================================
+   INICIATIVA AUTÓNOMA
+========================================================= */
 
-function createConversationTitle(text) {
-
-    const clean =
-        text
-            .replace(
-                /\[ARCHIVO ADJUNTO:[^\]]+\]/gi,
-                ""
-            )
-            .trim();
-
-
-    if (!clean) {
-
-        return "Nueva conversación";
-    }
-
+async function checkAliciaInitiative() {
 
     if (
-        clean.length <= 32
+        aliciaInitiativeRunning
     ) {
-
-        return clean;
+        return;
     }
 
+    const conversation =
+        getActiveConversation();
 
-    return (
-        clean.substring(0, 32)
-        .trim() +
-        "..."
+    if (!conversation) {
+        return;
+    }
+
+    /*
+     * Alicia necesita tener algo de contexto.
+     */
+
+    if (
+        !conversation.messages ||
+        conversation.messages.length === 0
+    ) {
+        scheduleNextAliciaCheck();
+        return;
+    }
+
+    /*
+     * No permitir iniciativas
+     * demasiado seguidas.
+     */
+
+    const now =
+        Date.now();
+
+    if (
+        aliciaLastInitiative &&
+        now -
+            aliciaLastInitiative <
+            5 * 60 * 1000
+    ) {
+
+        scheduleNextAliciaCheck();
+
+        return;
+    }
+
+    aliciaInitiativeRunning =
+        true;
+
+    try {
+
+        /*
+         * Solamente enviamos las últimas
+         * conversaciones para no desperdiciar
+         * contexto.
+         */
+
+        const history =
+            conversation.messages
+                .slice(-30)
+                .map(message => ({
+                    role:
+                        message.role,
+
+                    content:
+                        message.content
+                }));
+
+        const response =
+            await fetch(
+                WORKER_URL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            initiative:
+                                true,
+
+                            history:
+                                history
+                        })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (
+            !response.ok ||
+            !data.ok
+        ) {
+
+            console.error(
+                "Initiative error:",
+                data?.error
+            );
+
+            return;
+        }
+
+        /*
+         * Alicia decidió quedarse callada.
+         */
+
+        if (
+            data.initiative !== true ||
+            !data.response
+        ) {
+
+            return;
+        }
+
+        const message =
+            data.response.trim();
+
+        if (!message) {
+            return;
+        }
+
+        /*
+         * Evitar repetir un mensaje.
+         */
+
+        const alreadyExists =
+            conversation.messages.some(
+                item =>
+                    item.role ===
+                        "assistant" &&
+                    item.content.trim() ===
+                        message
+            );
+
+        if (alreadyExists) {
+            return;
+        }
+
+        /*
+         * Mostrar que Alicia está escribiendo.
+         */
+
+        showTyping();
+
+        headerStatus.textContent =
+            "Alicia está escribiendo...";
+
+        /*
+         * Pequeño retraso natural.
+         */
+
+        const typingDelay =
+            Math.min(
+                3500,
+                Math.max(
+                    700,
+                    message.length * 18
+                )
+            );
+
+        await sleep(
+            typingDelay
+        );
+
+        hideTyping();
+
+        /*
+         * Agregar mensaje.
+         */
+
+        conversation.messages.push({
+            role: "assistant",
+            content: message
+        });
+
+        saveConversations();
+
+        addMessageToDOM(
+            "assistant",
+            message
+        );
+
+        headerStatus.textContent =
+            "En línea";
+
+        aliciaLastInitiative =
+            Date.now();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Alicia initiative error:",
+            error
+        );
+
+    }
+
+    finally {
+
+        aliciaInitiativeRunning =
+            false;
+
+        scheduleNextAliciaCheck();
+    }
+}
+
+
+/* =========================================================
+   TEMPORIZADOR AUTÓNOMO
+========================================================= */
+
+function scheduleNextAliciaCheck() {
+
+    if (
+        aliciaInitiativeTimer
+    ) {
+
+        clearTimeout(
+            aliciaInitiativeTimer
+        );
+    }
+
+    /*
+     * Tiempo aleatorio entre
+     * 1 y 4 minutos.
+     */
+
+    const minimum =
+        60 * 1000;
+
+    const maximum =
+        4 * 60 * 1000;
+
+    const delay =
+        Math.floor(
+            minimum +
+            Math.random() *
+                (
+                    maximum -
+                    minimum
+                )
+        );
+
+    aliciaInitiativeTimer =
+        setTimeout(
+            async () => {
+
+                await checkAliciaInitiative();
+
+            },
+            delay
+        );
+}
+
+
+/* =========================================================
+   SLEEP
+========================================================= */
+
+function sleep(ms) {
+
+    return new Promise(
+        resolve =>
+            setTimeout(
+                resolve,
+                ms
+            )
     );
 }
 
 
-/* ============================================================
-   TYPING
-============================================================ */
-
-function removeTyping() {
-
-    const typing =
-        document.getElementById(
-            "typingMessage"
-        );
-
-
-    if (typing) {
-
-        typing.remove();
-    }
-}
-
-
-/* ============================================================
+/* =========================================================
    ARCHIVOS
-============================================================ */
+========================================================= */
 
-attachBtn.addEventListener(
-    "click",
+fileButton.onclick =
     () => {
 
         fileInput.click();
-    }
-);
+
+    };
 
 
-fileInput.addEventListener(
-    "change",
-    async event => {
+fileInput.onchange =
+    async () => {
 
         const file =
-            event.target.files?.[0];
+            fileInput.files[0];
 
-
-        if (!file) return;
-
+        if (!file) {
+            return;
+        }
 
         selectedFile =
             file;
 
-
-        filePreviewName.textContent =
-            `${file.name} · ${formatFileSize(file.size)}`;
-
+        fileName.textContent =
+            file.name;
 
         filePreview.classList.add(
             "visible"
         );
 
-
         /*
-         * IMÁGENES
+         * Imagen
          */
 
         if (
-            file.type.startsWith("image/")
+            file.type.startsWith(
+                "image/"
+            )
         ) {
 
-            selectedFileText =
-                null;
+            selectedImage =
+                await readFileAsDataURL(
+                    file
+                );
 
             return;
         }
 
-
         /*
-         * TEXTO / PDF / DOCX
+         * Para archivos de texto
          */
 
         try {
 
-            selectedFileText =
-                await extractFileText(
+            const text =
+                await readTextFile(
                     file
                 );
 
-        } catch (error) {
+            if (text) {
 
-            console.error(error);
+                messageInput.value =
+                    `Analizá este archivo:\n\n${text.substring(
+                        0,
+                        30000
+                    )}`;
 
-            selectedFileText =
-                `[No pude extraer automáticamente el contenido de ${file.name}.]`;
+                messageInput.dispatchEvent(
+                    new Event(
+                        "input"
+                    )
+                );
+            }
+
         }
-    }
-);
+
+        catch (error) {
+
+            console.error(
+                "Error leyendo archivo:",
+                error
+            );
+        }
+    };
 
 
-removeFile.addEventListener(
-    "click",
-    clearSelectedFile
-);
+removeFile.onclick =
+    () => {
+
+        resetFile();
+
+    };
 
 
-function clearSelectedFile() {
+function resetFile() {
 
     selectedFile =
         null;
 
-    selectedFileText =
+    selectedImage =
         null;
 
     fileInput.value =
@@ -1958,190 +1875,34 @@ function clearSelectedFile() {
     filePreview.classList.remove(
         "visible"
     );
-
-    filePreviewName.textContent =
-        "";
 }
 
 
-/* ============================================================
-   EXTRAER ARCHIVOS
-============================================================ */
+/* =========================================================
+   LECTURA DE ARCHIVOS
+========================================================= */
 
-async function extractFileText(file) {
-
-    const name =
-        file.name.toLowerCase();
-
-
-    /*
-     * TXT / MD / CSV / JSON / HTML
-     */
-
-    if (
-        file.type.startsWith("text/") ||
-        name.endsWith(".txt") ||
-        name.endsWith(".md") ||
-        name.endsWith(".csv") ||
-        name.endsWith(".json") ||
-        name.endsWith(".html")
-    ) {
-
-        return await file.text();
-    }
-
-
-    /*
-     * DOCX
-     */
-
-    if (
-        name.endsWith(".docx")
-    ) {
-
-        if (
-            typeof mammoth ===
-            "undefined"
-        ) {
-
-            throw new Error(
-                "Mammoth no está disponible."
-            );
-        }
-
-
-        const arrayBuffer =
-            await file.arrayBuffer();
-
-
-        const result =
-            await mammoth.extractRawText({
-                arrayBuffer
-            });
-
-
-        return result.value;
-    }
-
-
-    /*
-     * DOC ANTIGUO
-     */
-
-    if (
-        name.endsWith(".doc")
-    ) {
-
-        return (
-            "El archivo .doc antiguo no puede ser leído directamente por el navegador. " +
-            "Convertí el archivo a .docx o PDF para que Alicia pueda analizarlo."
-        );
-    }
-
-
-    /*
-     * PDF
-     */
-
-    if (
-        name.endsWith(".pdf") ||
-        file.type === "application/pdf"
-    ) {
-
-        return await extractPDF(file);
-    }
-
-
-    return (
-        "Tipo de archivo no compatible para extracción de texto."
-    );
-}
-
-
-/* ============================================================
-   PDF
-============================================================ */
-
-async function extractPDF(file) {
-
-    const arrayBuffer =
-        await file.arrayBuffer();
-
-
-    const pdfjs =
-        await import(
-            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs"
-        );
-
-
-    pdfjs.GlobalWorkerOptions.workerSrc =
-        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
-
-
-    const pdf =
-        await pdfjs.getDocument({
-            data: arrayBuffer
-        }).promise;
-
-
-    let text =
-        "";
-
-
-    for (
-        let pageNumber = 1;
-        pageNumber <= pdf.numPages;
-        pageNumber++
-    ) {
-
-        const page =
-            await pdf.getPage(
-                pageNumber
-            );
-
-
-        const content =
-            await page.getTextContent();
-
-
-        const pageText =
-            content.items
-                .map(item => item.str)
-                .join(" ");
-
-
-        text +=
-            `\n\n--- Página ${pageNumber} ---\n\n` +
-            pageText;
-    }
-
-
-    return text.trim();
-}
-
-
-/* ============================================================
-   FILE → DATA URL
-============================================================ */
-
-function fileToDataURL(file) {
+function readFileAsDataURL(
+    file
+) {
 
     return new Promise(
-        (resolve, reject) => {
+        (
+            resolve,
+            reject
+        ) => {
 
             const reader =
                 new FileReader();
 
-
             reader.onload =
-                () => resolve(
-                    reader.result
-                );
-
+                () =>
+                    resolve(
+                        reader.result
+                    );
 
             reader.onerror =
                 reject;
-
 
             reader.readAsDataURL(
                 file
@@ -2151,218 +1912,54 @@ function fileToDataURL(file) {
 }
 
 
-/* ============================================================
-   TAMAÑO ARCHIVO
-============================================================ */
+function readTextFile(
+    file
+) {
 
-function formatFileSize(bytes) {
+    return new Promise(
+        (
+            resolve,
+            reject
+        ) => {
 
-    if (bytes < 1024) {
+            const reader =
+                new FileReader();
 
-        return bytes + " B";
-    }
+            reader.onload =
+                () =>
+                    resolve(
+                        reader.result
+                    );
 
+            reader.onerror =
+                reject;
 
-    if (bytes < 1024 * 1024) {
-
-        return (
-            (bytes / 1024)
-                .toFixed(1) +
-            " KB"
-        );
-    }
-
-
-    return (
-        (bytes / (1024 * 1024))
-            .toFixed(1) +
-        " MB"
+            reader.readAsText(
+                file
+            );
+        }
     );
 }
 
 
-/* ============================================================
-   MICROFONO
-============================================================ */
-
-function setupSpeechRecognition() {
-
-    const SpeechRecognition =
-        window.SpeechRecognition ||
-        window.webkitSpeechRecognition;
-
-
-    if (!SpeechRecognition) {
-
-        micBtn.title =
-            "Tu navegador no admite reconocimiento de voz";
-
-        return;
-    }
-
-
-    recognition =
-        new SpeechRecognition();
-
-
-    recognition.lang =
-        "es-AR";
-
-
-    recognition.continuous =
-        true;
-
-
-    recognition.interimResults =
-        true;
-
-
-    recognition.onstart =
-        () => {
-
-            isListening =
-                true;
-
-            micBtn.classList.add(
-                "listening"
-            );
-
-            micBtn.title =
-                "Detener micrófono";
-
-            statusText.textContent =
-                "escuchando";
-        };
-
-
-    recognition.onresult =
-        event => {
-
-            let transcript =
-                "";
-
-
-            for (
-                let i =
-                    event.resultIndex;
-
-                i < event.results.length;
-
-                i++
-            ) {
-
-                transcript +=
-                    event.results[i][0].transcript;
-            }
-
-
-            const existing =
-                messageInput.value.trim();
-
-
-            if (existing) {
-
-                messageInput.value =
-                    existing +
-                    " " +
-                    transcript;
-
-            } else {
-
-                messageInput.value =
-                    transcript;
-            }
-
-
-            autoResizeTextarea();
-        };
-
-
-    recognition.onerror =
-        event => {
-
-            console.error(
-                "Speech Recognition:",
-                event.error
-            );
-        };
-
-
-    recognition.onend =
-        () => {
-
-            isListening =
-                false;
-
-            micBtn.classList.remove(
-                "listening"
-            );
-
-            micBtn.title =
-                "Hablar";
-
-            statusText.textContent =
-                "conectada";
-        };
-}
-
-
-micBtn.addEventListener(
-    "click",
-    () => {
-
-        if (!recognition) {
-
-            alert(
-                "Tu navegador no admite reconocimiento de voz."
-            );
-
-            return;
-        }
-
-
-        if (isListening) {
-
-            recognition.stop();
-
-        } else {
-
-            try {
-
-                recognition.start();
-
-            } catch (error) {
-
-                console.error(error);
-            }
-        }
-    }
-);
-
-
-/* ============================================================
-   TEXTAREA
-============================================================ */
+/* =========================================================
+   INPUT
+========================================================= */
 
 messageInput.addEventListener(
     "input",
-    autoResizeTextarea
+    () => {
+
+        messageInput.style.height =
+            "42px";
+
+        messageInput.style.height =
+            Math.min(
+                messageInput.scrollHeight,
+                160
+            ) + "px";
+    }
 );
-
-
-function autoResizeTextarea() {
-
-    messageInput.style.height =
-        "auto";
-
-
-    messageInput.style.height =
-        Math.min(
-            messageInput.scrollHeight,
-            160
-        ) +
-        "px";
-}
 
 
 messageInput.addEventListener(
@@ -2382,247 +1979,36 @@ messageInput.addEventListener(
 );
 
 
-/* ============================================================
-   SEND BUTTON
-============================================================ */
-
-sendBtn.addEventListener(
-    "click",
-    sendMessage
-);
+sendButton.onclick =
+    sendMessage;
 
 
-/* ============================================================
+/* =========================================================
    NUEVA CONVERSACIÓN
-============================================================ */
+========================================================= */
 
-newChatBtn.addEventListener(
-    "click",
+newChatButton.onclick =
     () => {
 
         createConversation();
 
         messageInput.focus();
-    }
-);
 
+    };
 
-/* ============================================================
-   SCROLL
-============================================================ */
 
-function scrollToBottom() {
-
-    requestAnimationFrame(
-        () => {
-
-            chatElement.scrollTo({
-
-                top:
-                    chatElement.scrollHeight,
-
-                behavior:
-                    "smooth"
-            });
-        }
-    );
-}
-
-
-/* ============================================================
-   INICIATIVA DE ALICIA
-============================================================ */
-
-async function checkAliciaInitiative() {
-
-    const conversation =
-        getActiveConversation();
-
-
-    if (!conversation) return;
-
-
-    if (
-        !conversation.messages ||
-        conversation.messages.length === 0
-    ) {
-
-        return;
-    }
-
-
-    /*
-     * No hacemos una iniciativa
-     * inmediatamente después de responder.
-     */
-
-    const history =
-        conversation.messages.map(
-            message => {
-
-                if (
-                    message.image &&
-                    message.role === "user"
-                ) {
-
-                    return {
-
-                        role:
-                            "user",
-
-                        content: [
-
-                            {
-                                type: "text",
-                                text:
-                                    message.content
-                            },
-
-                            {
-                                type: "image_url",
-
-                                image_url: {
-                                    url:
-                                        message.image
-                                }
-                            }
-
-                        ]
-                    };
-                }
-
-
-                return {
-
-                    role:
-                        message.role,
-
-                    content:
-                        message.content
-                };
-            }
-        );
-
-
-    try {
-
-        const response =
-            await fetch(
-                WORKER_URL,
-                {
-
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            initiative:
-                                true,
-
-                            history:
-                                history
-
-                        })
-                }
-            );
-
-
-        if (!response.ok) {
-
-            return;
-        }
-
-
-        const data =
-            await response.json();
-
-
-        const initiative =
-            data?.response?.trim();
-
-
-        if (
-            !initiative ||
-            initiative ===
-                "NO_INITIATIVE"
-        ) {
-
-            return;
-        }
-
-
-        /*
-         * Evitamos duplicados.
-         */
-
-        const last =
-            conversation.messages[
-                conversation.messages.length - 1
-            ];
-
-
-        if (
-            last &&
-            last.role === "assistant" &&
-            last.content === initiative
-        ) {
-
-            return;
-        }
-
-
-        conversation.messages.push({
-
-            role:
-                "assistant",
-
-            content:
-                initiative,
-
-            timestamp:
-                Date.now()
-        });
-
-
-        conversation.updatedAt =
-            Date.now();
-
-
-        saveConversations();
-
-
-        renderMessage(
-            "assistant",
-            initiative
-        );
-
-
-        scrollToBottom();
-
-    } catch (error) {
-
-        console.error(
-            "Initiative error:",
-            error
-        );
-    }
-}
-
-
-/* ============================================================
+/* =========================================================
    INICIAR
-============================================================ */
-
-setupSpeechRecognition();
+========================================================= */
 
 loadConversations();
 
-messageInput.focus();
+/*
+ * Alicia queda habilitada para iniciar
+ * conversaciones por sí misma.
+ */
+
+scheduleNextAliciaCheck();
 
 </script>
 
