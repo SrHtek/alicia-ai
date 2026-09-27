@@ -1,32 +1,57 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>Alicia AI</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+>
+
 
 <style>
+
 :root {
+
     --bg: #05070a;
+
     --bg2: #080c11;
+
     --panel: rgba(10, 15, 22, .82);
+
     --panel2: rgba(14, 20, 29, .9);
 
     --cyan: #5ee7ff;
+
     --cyan2: #1fb8ff;
+
     --cyan3: #8df1ff;
 
     --text: #e8f7ff;
+
     --muted: #70818e;
+
     --border: rgba(94, 231, 255, .13);
 
     --user: rgba(25, 45, 58, .75);
+
     --ai: rgba(8, 15, 22, .92);
 
     --shadow:
@@ -34,55 +59,89 @@
         inset 0 0 30px rgba(94, 231, 255, .015);
 }
 
+
 * {
     box-sizing: border-box;
 }
 
+
 html,
 body {
+
     width: 100%;
+
     height: 100%;
+
     margin: 0;
 }
 
+
 body {
+
     overflow: hidden;
+
     background:
-        radial-gradient(circle at 70% 15%, rgba(31,184,255,.07), transparent 25%),
-        radial-gradient(circle at 20% 80%, rgba(94,231,255,.035), transparent 25%),
+        radial-gradient(
+            circle at 70% 15%,
+            rgba(31,184,255,.07),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 20% 80%,
+            rgba(94,231,255,.035),
+            transparent 25%
+        ),
         var(--bg);
 
     color: var(--text);
-    font-family: Inter, sans-serif;
+
+    font-family:
+        Inter,
+        sans-serif;
 }
 
-/* =========================
-   BACKGROUND
-========================= */
 
 .background-grid {
+
     position: fixed;
+
     inset: 0;
+
     pointer-events: none;
+
     opacity: .22;
 
     background-image:
-        linear-gradient(rgba(94,231,255,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(94,231,255,.025) 1px, transparent 1px);
+        linear-gradient(
+            rgba(94,231,255,.025) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(94,231,255,.025) 1px,
+            transparent 1px
+        );
 
-    background-size: 55px 55px;
+    background-size:
+        55px 55px;
 
-    mask-image: linear-gradient(
-        to bottom,
-        black,
-        transparent 90%
-    );
+    mask-image:
+        linear-gradient(
+            to bottom,
+            black,
+            transparent 90%
+        );
 }
 
+
 .scanline {
+
     position: fixed;
+
     inset: 0;
+
     pointer-events: none;
+
     z-index: 100;
 
     background:
@@ -94,27 +153,33 @@ body {
         );
 }
 
-/* =========================
-   APP
-========================= */
 
 .app {
+
     position: relative;
+
     display: flex;
+
     width: 100%;
+
     height: 100%;
 }
+
 
 /* =========================
    SIDEBAR
 ========================= */
 
 .sidebar {
+
     position: relative;
+
     width: 290px;
+
     height: 100%;
 
     display: flex;
+
     flex-direction: column;
 
     background:
@@ -124,80 +189,126 @@ body {
             rgba(4,7,11,.98)
         );
 
-    border-right: 1px solid var(--border);
+    border-right:
+        1px solid var(--border);
 
-    backdrop-filter: blur(25px);
+    backdrop-filter:
+        blur(25px);
 
     z-index: 20;
 }
 
+
 .brand {
+
     height: 92px;
 
     display: flex;
+
     align-items: center;
+
     gap: 14px;
 
-    padding: 0 24px;
+    padding:
+        0 24px;
 
-    border-bottom: 1px solid rgba(94,231,255,.08);
+    border-bottom:
+        1px solid
+        rgba(94,231,255,.08);
 }
 
+
 .logo {
+
     width: 43px;
+
     height: 43px;
 
     display: grid;
+
     place-items: center;
 
-    border: 1px solid rgba(94,231,255,.5);
+    border:
+        1px solid
+        rgba(94,231,255,.5);
+
     border-radius: 12px;
 
-    color: var(--cyan);
+    color:
+        var(--cyan);
 
-    font-family: Orbitron, sans-serif;
+    font-family:
+        Orbitron,
+        sans-serif;
+
     font-size: 17px;
 
     box-shadow:
-        0 0 20px rgba(94,231,255,.14),
-        inset 0 0 14px rgba(94,231,255,.06);
+        0 0 20px
+        rgba(94,231,255,.14),
+        inset 0 0 14px
+        rgba(94,231,255,.06);
 
     position: relative;
 }
 
+
 .logo::after {
+
     content: "";
+
     position: absolute;
+
     inset: -5px;
 
-    border: 1px solid rgba(94,231,255,.08);
+    border:
+        1px solid
+        rgba(94,231,255,.08);
+
     border-radius: 15px;
 }
 
+
 .brand-name {
-    font-family: Orbitron, sans-serif;
+
+    font-family:
+        Orbitron,
+        sans-serif;
+
     font-size: 18px;
+
     letter-spacing: 3px;
 }
 
+
 .brand-sub {
+
     margin-top: 4px;
 
     font-size: 9px;
+
     letter-spacing: 2px;
-    color: var(--muted);
+
+    color:
+        var(--muted);
 }
+
 
 /* =========================
    NEW CHAT
 ========================= */
 
 .new-chat {
-    margin: 20px;
+
+    margin:
+        20px;
 
     height: 48px;
 
-    border: 1px solid rgba(94,231,255,.24);
+    border:
+        1px solid
+        rgba(94,231,255,.24);
+
     border-radius: 10px;
 
     background:
@@ -207,9 +318,13 @@ body {
             rgba(94,231,255,.02)
         );
 
-    color: var(--cyan3);
+    color:
+        var(--cyan3);
 
-    font-family: Inter, sans-serif;
+    font-family:
+        Inter,
+        sans-serif;
+
     font-weight: 600;
 
     cursor: pointer;
@@ -217,8 +332,11 @@ body {
     transition: .25s;
 }
 
+
 .new-chat:hover {
-    border-color: rgba(94,231,255,.55);
+
+    border-color:
+        rgba(94,231,255,.55);
 
     background:
         linear-gradient(
@@ -228,70 +346,100 @@ body {
         );
 
     box-shadow:
-        0 0 25px rgba(94,231,255,.08);
+        0 0 25px
+        rgba(94,231,255,.08);
 
-    transform: translateY(-1px);
+    transform:
+        translateY(-1px);
 }
 
+
 /* =========================
-   CONVERSATIONS
+   CONVERSACIONES
 ========================= */
 
 .section-title {
-    padding: 4px 22px 12px;
 
-    color: #50616d;
+    padding:
+        4px 22px 12px;
+
+    color:
+        #50616d;
 
     font-size: 9px;
+
     font-weight: 700;
 
     letter-spacing: 2px;
 }
 
+
 .conversations {
+
     flex: 1;
+
     overflow-y: auto;
 
-    padding: 0 10px 20px;
+    padding:
+        0 10px 20px;
 }
+
 
 .conversations::-webkit-scrollbar,
 .messages::-webkit-scrollbar {
+
     width: 5px;
 }
 
+
 .conversations::-webkit-scrollbar-thumb,
 .messages::-webkit-scrollbar-thumb {
-    background: rgba(94,231,255,.12);
+
+    background:
+        rgba(94,231,255,.12);
+
     border-radius: 10px;
 }
 
+
 .conversation {
+
     position: relative;
 
     display: flex;
+
     align-items: center;
 
     min-height: 48px;
 
-    padding: 0 13px;
+    padding:
+        0 13px;
+
     margin-bottom: 4px;
 
     border-radius: 8px;
 
-    color: #7f929f;
+    color:
+        #7f929f;
 
     cursor: pointer;
 
     transition: .2s;
 }
 
+
 .conversation:hover {
-    background: rgba(94,231,255,.045);
-    color: #cceef7;
+
+    background:
+        rgba(94,231,255,.045);
+
+    color:
+        #cceef7;
 }
 
+
 .conversation.active {
+
     background:
         linear-gradient(
             90deg,
@@ -299,85 +447,125 @@ body {
             rgba(94,231,255,.025)
         );
 
-    color: var(--cyan3);
+    color:
+        var(--cyan3);
 
-    border-left: 2px solid var(--cyan);
+    border-left:
+        2px solid
+        var(--cyan);
 }
 
+
 .conversation-name {
+
     overflow: hidden;
 
     white-space: nowrap;
+
     text-overflow: ellipsis;
 
     font-size: 13px;
 }
 
+
 .conversation-actions {
+
     margin-left: auto;
 
     display: flex;
+
     gap: 3px;
 
     opacity: 0;
 }
 
-.conversation:hover .conversation-actions {
+
+.conversation:hover
+.conversation-actions {
+
     opacity: 1;
 }
 
+
 .small-action {
+
     width: 25px;
+
     height: 25px;
 
     border: 0;
+
     border-radius: 6px;
 
-    background: rgba(255,255,255,.04);
-    color: #80929e;
+    background:
+        rgba(255,255,255,.04);
+
+    color:
+        #80929e;
 
     cursor: pointer;
 }
 
+
 .small-action:hover {
+
     color: white;
-    background: rgba(255,255,255,.09);
+
+    background:
+        rgba(255,255,255,.09);
 }
+
 
 /* =========================
    STATUS
 ========================= */
 
 .system-status {
-    padding: 17px 21px;
 
-    border-top: 1px solid rgba(94,231,255,.07);
+    padding:
+        17px 21px;
+
+    border-top:
+        1px solid
+        rgba(94,231,255,.07);
 
     display: flex;
+
     align-items: center;
+
     gap: 9px;
 
-    color: #657984;
+    color:
+        #657984;
 
     font-size: 10px;
+
     letter-spacing: 1px;
 }
 
+
 .status-dot {
+
     width: 7px;
+
     height: 7px;
 
     border-radius: 50%;
 
-    background: #3fffb0;
+    background:
+        #3fffb0;
 
     box-shadow:
-        0 0 8px #3fffb0;
+        0 0 8px
+        #3fffb0;
 
-    animation: pulse 2s infinite;
+    animation:
+        pulse 2s infinite;
 }
 
+
 @keyframes pulse {
+
     0%,100% {
         opacity: .45;
     }
@@ -387,11 +575,13 @@ body {
     }
 }
 
+
 /* =========================
    MAIN
 ========================= */
 
 .main {
+
     position: relative;
 
     flex: 1;
@@ -399,67 +589,95 @@ body {
     min-width: 0;
 
     display: flex;
+
     flex-direction: column;
 }
+
 
 /* =========================
    HEADER
 ========================= */
 
 .header {
+
     height: 78px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
-    padding: 0 30px;
+    padding:
+        0 30px;
 
-    border-bottom: 1px solid rgba(94,231,255,.07);
+    border-bottom:
+        1px solid
+        rgba(94,231,255,.07);
 
-    background: rgba(5,8,12,.6);
+    background:
+        rgba(5,8,12,.6);
 
-    backdrop-filter: blur(20px);
+    backdrop-filter:
+        blur(20px);
 
     z-index: 10;
 }
 
+
 .header-left {
+
     display: flex;
+
     align-items: center;
+
     gap: 14px;
 }
 
+
 .core {
+
     position: relative;
 
     width: 11px;
+
     height: 11px;
 
     border-radius: 50%;
 
-    background: var(--cyan);
+    background:
+        var(--cyan);
 
     box-shadow:
-        0 0 8px var(--cyan),
-        0 0 22px rgba(94,231,255,.55);
+        0 0 8px
+        var(--cyan),
+        0 0 22px
+        rgba(94,231,255,.55);
 }
+
 
 .core::before,
 .core::after {
+
     content: "";
 
     position: absolute;
 
     inset: -7px;
 
-    border: 1px solid rgba(94,231,255,.25);
+    border:
+        1px solid
+        rgba(94,231,255,.25);
+
     border-radius: 50%;
 
-    animation: orbit 3s linear infinite;
+    animation:
+        orbit 3s linear infinite;
 }
 
+
 .core::after {
+
     inset: -12px;
 
     opacity: .35;
@@ -467,106 +685,247 @@ body {
     animation-duration: 5s;
 }
 
+
 @keyframes orbit {
+
     from {
-        transform: rotate(0deg);
+        transform:
+            rotate(0deg);
     }
 
     to {
-        transform: rotate(360deg);
+        transform:
+            rotate(360deg);
     }
 }
 
+
 .header-title {
-    font-family: Orbitron, sans-serif;
+
+    font-family:
+        Orbitron,
+        sans-serif;
 
     font-size: 14px;
+
     letter-spacing: 2px;
 }
 
+
 .header-state {
+
     margin-top: 4px;
 
     font-size: 9px;
-    color: #5d7480;
+
+    color:
+        #5d7480;
 
     letter-spacing: 1.5px;
 }
 
+
 .header-right {
+
     display: flex;
+
     align-items: center;
+
     gap: 20px;
 
-    color: #5e727e;
+    color:
+        #5e727e;
 
     font-size: 10px;
+
     letter-spacing: 1px;
 }
+
+
+/* =========================
+   VOZ
+========================= */
+
+.voice-control {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color:
+        #5e727e;
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+}
+
+
+.voice-toggle {
+
+    width: 34px;
+
+    height: 18px;
+
+    position: relative;
+
+    border:
+        1px solid
+        rgba(94,231,255,.2);
+
+    border-radius: 20px;
+
+    background:
+        rgba(94,231,255,.03);
+
+    cursor: pointer;
+}
+
+
+.voice-toggle::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: 3px;
+
+    left: 3px;
+
+    width: 10px;
+
+    height: 10px;
+
+    border-radius: 50%;
+
+    background:
+        #54636c;
+
+    transition: .2s;
+}
+
+
+.voice-toggle.active {
+
+    border-color:
+        rgba(94,231,255,.5);
+
+    box-shadow:
+        0 0 12px
+        rgba(94,231,255,.12);
+}
+
+
+.voice-toggle.active::after {
+
+    left: 19px;
+
+    background:
+        var(--cyan);
+
+    box-shadow:
+        0 0 8px
+        var(--cyan);
+}
+
 
 /* =========================
    CHAT
 ========================= */
 
 .messages {
+
     flex: 1;
 
     overflow-y: auto;
 
-    padding: 35px clamp(20px, 7vw, 100px) 30px;
+    padding:
+        35px
+        clamp(20px, 7vw, 100px)
+        30px;
 
     scroll-behavior: smooth;
 }
 
+
 .message {
+
     display: flex;
 
     width: 100%;
 
     margin-bottom: 27px;
 
-    animation: messageIn .25s ease;
+    animation:
+        messageIn .25s ease;
 }
 
+
 @keyframes messageIn {
+
     from {
+
         opacity: 0;
-        transform: translateY(7px);
+
+        transform:
+            translateY(7px);
     }
 
     to {
+
         opacity: 1;
-        transform: translateY(0);
+
+        transform:
+            translateY(0);
     }
 }
 
+
 .message.user {
-    justify-content: flex-end;
+
+    justify-content:
+        flex-end;
 }
+
 
 .message.assistant {
-    justify-content: flex-start;
+
+    justify-content:
+        flex-start;
 }
 
-.message-content {
-    max-width: min(760px, 80%);
 
-    padding: 16px 19px;
+.message-content {
+
+    max-width:
+        min(760px, 80%);
+
+    padding:
+        16px 19px;
 
     line-height: 1.65;
 
     font-size: 14px;
 
-    border: 1px solid rgba(94,231,255,.07);
+    border:
+        1px solid
+        rgba(94,231,255,.07);
 
     border-radius: 14px;
 
-    white-space: pre-wrap;
+    white-space:
+        pre-wrap;
 
-    box-shadow: var(--shadow);
+    box-shadow:
+        var(--shadow);
 }
 
-.message.user .message-content {
+
+.message.user
+.message-content {
+
     background:
         linear-gradient(
             135deg,
@@ -574,10 +933,14 @@ body {
             rgba(12,25,33,.85)
         );
 
-    border-bottom-right-radius: 4px;
+    border-bottom-right-radius:
+        4px;
 }
 
-.message.assistant .message-content {
+
+.message.assistant
+.message-content {
+
     background:
         linear-gradient(
             135deg,
@@ -585,130 +948,296 @@ body {
             rgba(7,12,18,.75)
         );
 
-    border-left: 2px solid rgba(94,231,255,.45);
+    border-left:
+        2px solid
+        rgba(94,231,255,.45);
 
-    border-bottom-left-radius: 4px;
+    border-bottom-left-radius:
+        4px;
 }
 
+
 .message-label {
+
     margin-bottom: 7px;
 
-    color: #55717e;
+    color:
+        #55717e;
 
-    font-family: Orbitron, sans-serif;
+    font-family:
+        Orbitron,
+        sans-serif;
 
     font-size: 8px;
 
     letter-spacing: 2px;
 }
 
+
+.message-tools {
+
+    display: flex;
+
+    justify-content:
+        flex-start;
+
+    gap: 5px;
+
+    margin-top: 8px;
+}
+
+
+.speak-message {
+
+    width: 25px;
+
+    height: 25px;
+
+    border:
+        1px solid
+        rgba(94,231,255,.1);
+
+    border-radius: 6px;
+
+    background:
+        rgba(94,231,255,.025);
+
+    color:
+        #59747f;
+
+    cursor: pointer;
+
+    font-size: 10px;
+}
+
+
+.speak-message:hover {
+
+    color:
+        var(--cyan);
+
+    border-color:
+        rgba(94,231,255,.35);
+}
+
+
 /* =========================
-   EMPTY STATE
+   EMPTY
 ========================= */
 
 .empty {
+
     height: 100%;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     text-align: center;
 }
 
+
 .empty-inner {
-    max-width: 580px;
+
+    max-width:
+        620px;
 }
 
+
 .empty-orb {
+
     width: 110px;
+
     height: 110px;
 
-    margin: 0 auto 30px;
+    margin:
+        0 auto 30px;
 
     display: grid;
+
     place-items: center;
 
-    border: 1px solid rgba(94,231,255,.25);
+    border:
+        1px solid
+        rgba(94,231,255,.25);
 
     border-radius: 50%;
 
     box-shadow:
-        0 0 35px rgba(94,231,255,.06),
-        inset 0 0 35px rgba(94,231,255,.05);
+        0 0 35px
+        rgba(94,231,255,.06),
+        inset 0 0 35px
+        rgba(94,231,255,.05);
 
     position: relative;
 
-    animation: floating 4s ease-in-out infinite;
+    animation:
+        floating 4s
+        ease-in-out
+        infinite;
 }
+
 
 .empty-orb::before,
 .empty-orb::after {
+
     content: "";
 
     position: absolute;
 
     border-radius: 50%;
 
-    border: 1px solid rgba(94,231,255,.16);
+    border:
+        1px solid
+        rgba(94,231,255,.16);
 }
 
+
 .empty-orb::before {
+
     inset: -13px;
 }
 
+
 .empty-orb::after {
+
     inset: 13px;
 }
 
+
 .orb-letter {
-    font-family: Orbitron, sans-serif;
+
+    font-family:
+        Orbitron,
+        sans-serif;
 
     font-size: 35px;
 
-    color: var(--cyan);
+    color:
+        var(--cyan);
 
     text-shadow:
-        0 0 25px rgba(94,231,255,.55);
+        0 0 25px
+        rgba(94,231,255,.55);
 }
 
+
 @keyframes floating {
+
     0%,100% {
-        transform: translateY(0);
+        transform:
+            translateY(0);
     }
 
     50% {
-        transform: translateY(-7px);
+        transform:
+            translateY(-7px);
     }
 }
 
+
 .empty h1 {
+
     margin: 0;
 
-    font-family: Orbitron, sans-serif;
+    font-family:
+        Orbitron,
+        sans-serif;
 
     font-size: 27px;
+
     font-weight: 500;
 
     letter-spacing: 4px;
 }
 
+
 .empty p {
+
     margin-top: 14px;
 
-    color: #647985;
+    color:
+        #647985;
 
     font-size: 13px;
 
     line-height: 1.7;
 }
 
+
 /* =========================
-   INPUT AREA
+   INICIADORES
+========================= */
+
+.start-options {
+
+    display: flex;
+
+    justify-content:
+        center;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin:
+        0 auto 18px;
+}
+
+
+.start-option {
+
+    padding:
+        9px 13px;
+
+    border:
+        1px solid
+        rgba(94,231,255,.12);
+
+    border-radius: 8px;
+
+    background:
+        rgba(94,231,255,.025);
+
+    color:
+        #71909c;
+
+    font-size: 10px;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+
+.start-option:hover {
+
+    color:
+        var(--cyan3);
+
+    border-color:
+        rgba(94,231,255,.35);
+
+    background:
+        rgba(94,231,255,.07);
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================
+   INPUT
 ========================= */
 
 .input-area {
-    padding: 15px clamp(20px, 7vw, 100px) 22px;
+
+    padding:
+        15px
+        clamp(20px, 7vw, 100px)
+        22px;
 
     background:
         linear-gradient(
@@ -717,24 +1246,33 @@ body {
             rgba(5,7,10,.75)
         );
 
-    border-top: 1px solid rgba(94,231,255,.06);
+    border-top:
+        1px solid
+        rgba(94,231,255,.06);
 }
 
+
 .input-shell {
+
     position: relative;
 
     display: flex;
+
     align-items: flex-end;
 
     gap: 9px;
 
-    max-width: 950px;
+    max-width:
+        950px;
 
-    margin: auto;
+    margin:
+        auto;
 
     padding: 9px;
 
-    border: 1px solid rgba(94,231,255,.14);
+    border:
+        1px solid
+        rgba(94,231,255,.14);
 
     border-radius: 15px;
 
@@ -746,61 +1284,87 @@ body {
         );
 
     box-shadow:
-        0 0 35px rgba(94,231,255,.035),
-        inset 0 0 25px rgba(94,231,255,.015);
+        0 0 35px
+        rgba(94,231,255,.035),
+        inset 0 0 25px
+        rgba(94,231,255,.015);
 
     transition: .25s;
 }
 
+
 .input-shell:focus-within {
-    border-color: rgba(94,231,255,.38);
+
+    border-color:
+        rgba(94,231,255,.38);
 
     box-shadow:
-        0 0 35px rgba(94,231,255,.08),
-        inset 0 0 20px rgba(94,231,255,.025);
+        0 0 35px
+        rgba(94,231,255,.08),
+        inset 0 0 20px
+        rgba(94,231,255,.025);
 }
 
+
 textarea {
+
     flex: 1;
 
     min-height: 44px;
+
     max-height: 180px;
 
     resize: none;
 
-    padding: 12px 10px;
+    padding:
+        12px 10px;
 
     border: 0;
+
     outline: 0;
 
-    background: transparent;
+    background:
+        transparent;
 
-    color: #e8f7ff;
+    color:
+        #e8f7ff;
 
-    font-family: Inter, sans-serif;
+    font-family:
+        Inter,
+        sans-serif;
 
     font-size: 14px;
 
     line-height: 1.5;
 }
 
+
 textarea::placeholder {
-    color: #536773;
+
+    color:
+        #536773;
 }
 
+
 .input-button {
+
     flex-shrink: 0;
 
     width: 42px;
+
     height: 42px;
 
-    border: 1px solid rgba(94,231,255,.16);
+    border:
+        1px solid
+        rgba(94,231,255,.16);
 
     border-radius: 10px;
 
-    background: rgba(94,231,255,.045);
+    background:
+        rgba(94,231,255,.045);
 
-    color: #75909d;
+    color:
+        #75909d;
 
     cursor: pointer;
 
@@ -809,14 +1373,22 @@ textarea::placeholder {
     font-size: 16px;
 }
 
-.input-button:hover {
-    color: var(--cyan);
-    border-color: rgba(94,231,255,.4);
 
-    background: rgba(94,231,255,.1);
+.input-button:hover {
+
+    color:
+        var(--cyan);
+
+    border-color:
+        rgba(94,231,255,.4);
+
+    background:
+        rgba(94,231,255,.1);
 }
 
+
 .send-button {
+
     background:
         linear-gradient(
             135deg,
@@ -824,50 +1396,193 @@ textarea::placeholder {
             rgba(31,184,255,.08)
         );
 
-    color: var(--cyan3);
+    color:
+        var(--cyan3);
 
-    border-color: rgba(94,231,255,.3);
+    border-color:
+        rgba(94,231,255,.3);
 }
+
 
 .send-button:hover {
+
     box-shadow:
-        0 0 20px rgba(94,231,255,.15);
+        0 0 20px
+        rgba(94,231,255,.15);
 }
+
+
+/* =========================
+   FILE PREVIEW
+========================= */
 
 .file-preview {
+
     display: none;
 
-    max-width: 950px;
+    max-width:
+        950px;
 
-    margin: 0 auto 8px;
+    margin:
+        0 auto 8px;
 
-    padding: 8px 13px;
+    padding: 9px;
 
-    border: 1px solid rgba(94,231,255,.1);
+    border:
+        1px solid
+        rgba(94,231,255,.14);
 
-    border-radius: 8px;
+    border-radius: 10px;
 
-    color: #77919d;
+    background:
+        rgba(7,13,19,.85);
 
-    font-size: 11px;
+    align-items:
+        center;
+
+    gap: 10px;
 }
 
-.footer-info {
-    max-width: 950px;
 
-    margin: 8px auto 0;
+.file-preview.visible {
 
-    text-align: center;
+    display: flex;
+}
 
-    color: #334852;
+
+.file-preview-image {
+
+    width: 48px;
+
+    height: 48px;
+
+    object-fit: cover;
+
+    border-radius: 7px;
+
+    border:
+        1px solid
+        rgba(94,231,255,.2);
+}
+
+
+.file-preview-icon {
+
+    width: 48px;
+
+    height: 48px;
+
+    display: grid;
+
+    place-items: center;
+
+    border:
+        1px solid
+        rgba(94,231,255,.15);
+
+    border-radius: 7px;
+
+    color:
+        var(--cyan);
+
+    font-family:
+        Orbitron,
+        sans-serif;
+
+    font-size: 12px;
+}
+
+
+.file-info {
+
+    min-width: 0;
+
+    flex: 1;
+}
+
+
+.file-name {
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+    color:
+        #cceef7;
+
+    font-size: 12px;
+}
+
+
+.file-meta {
+
+    margin-top: 4px;
+
+    color:
+        #58717d;
 
     font-size: 9px;
 
     letter-spacing: .5px;
 }
 
+
+.remove-file {
+
+    width: 30px;
+
+    height: 30px;
+
+    border:
+        1px solid
+        rgba(94,231,255,.08);
+
+    border-radius: 7px;
+
+    background:
+        rgba(255,255,255,.02);
+
+    color:
+        #647984;
+
+    cursor: pointer;
+}
+
+
+.remove-file:hover {
+
+    color:
+        #ff7180;
+
+    border-color:
+        rgba(255,113,128,.25);
+}
+
+
+.footer-info {
+
+    max-width:
+        950px;
+
+    margin:
+        8px auto 0;
+
+    text-align:
+        center;
+
+    color:
+        #334852;
+
+    font-size: 9px;
+
+    letter-spacing: .5px;
+}
+
+
 /* =========================
-   MOBILE
+   RESPONSIVE
 ========================= */
 
 @media (max-width: 800px) {
@@ -877,185 +1592,303 @@ textarea::placeholder {
     }
 
     .messages {
-        padding-left: 20px;
-        padding-right: 20px;
+
+        padding-left:
+            20px;
+
+        padding-right:
+            20px;
     }
 
     .input-area {
-        padding-left: 15px;
-        padding-right: 15px;
+
+        padding-left:
+            15px;
+
+        padding-right:
+            15px;
     }
 
     .header {
-        padding: 0 18px;
+
+        padding:
+            0 18px;
     }
 
     .header-right {
+
+        gap: 8px;
+    }
+
+    .voice-control span {
+
         display: none;
     }
 }
+
 
 @media (max-width: 600px) {
 
     .sidebar {
+
         display: none;
     }
 
     .message-content {
+
         max-width: 92%;
     }
+
+    .header-right > span:last-child {
+
+        display: none;
+    }
 }
+
 </style>
+
 </head>
+
 
 <body>
 
 <div class="background-grid"></div>
+
 <div class="scanline"></div>
+
 
 <div class="app">
 
-    <!-- =========================
-         SIDEBAR
-    ========================== -->
 
-    <aside class="sidebar">
+<!-- =====================================================
+     SIDEBAR
+====================================================== -->
 
-        <div class="brand">
+<aside class="sidebar">
 
-            <div class="logo">A</div>
 
-            <div>
-                <div class="brand-name">ALICIA</div>
-                <div class="brand-sub">AI SYSTEM</div>
+    <div class="brand">
+
+        <div class="logo">
+            A
+        </div>
+
+        <div>
+
+            <div class="brand-name">
+                ALICIA
+            </div>
+
+            <div class="brand-sub">
+                AI SYSTEM
             </div>
 
         </div>
 
-        <button class="new-chat" id="newChat">
-            + NUEVA CONVERSACIÓN
-        </button>
-
-        <div class="section-title">
-            CONVERSACIONES
-        </div>
-
-        <div class="conversations" id="conversations"></div>
-
-        <div class="system-status">
-            <span class="status-dot"></span>
-            SISTEMA ONLINE
-        </div>
-
-    </aside>
+    </div>
 
 
-    <!-- =========================
-         MAIN
-    ========================== -->
+    <button
+        class="new-chat"
+        id="newChat"
+    >
+        + NUEVA CONVERSACIÓN
+    </button>
 
-    <main class="main">
 
-        <header class="header">
+    <div class="section-title">
+        CONVERSACIONES
+    </div>
 
-            <div class="header-left">
 
-                <div class="core"></div>
+    <div
+        class="conversations"
+        id="conversations"
+    ></div>
 
-                <div>
-                    <div class="header-title">
-                        ALICIA
-                    </div>
 
-                    <div class="header-state">
-                        INTELLIGENCE CORE · ACTIVE
-                    </div>
-                </div>
+    <div class="system-status">
 
+        <span class="status-dot"></span>
+
+        SISTEMA ONLINE
+
+    </div>
+
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN
+====================================================== -->
+
+<main class="main">
+
+
+<header class="header">
+
+
+    <div class="header-left">
+
+        <div class="core"></div>
+
+        <div>
+
+            <div class="header-title">
+                ALICIA
             </div>
 
-            <div class="header-right">
-                <span id="connectionStatus">
-                    GEMINI LINK
-                </span>
-
-                <span>
-                    v1.0
-                </span>
+            <div class="header-state">
+                ALICIA · SISTEMA AUTÓNOMO ACTIVO
             </div>
 
-        </header>
+        </div>
+
+    </div>
 
 
-        <!-- =========================
-             MESSAGES
-        ========================== -->
-
-        <section
-            class="messages"
-            id="messages"
-        ></section>
+    <div class="header-right">
 
 
-        <!-- =========================
-             INPUT
-        ========================== -->
+        <div class="voice-control">
 
-        <div class="input-area">
+            <span>
+                VOZ
+            </span>
 
             <div
-                class="file-preview"
-                id="filePreview"
+                class="voice-toggle"
+                id="voiceToggle"
+                title="Activar o desactivar la voz de Alicia"
             ></div>
-
-            <div class="input-shell">
-
-                <button
-                    class="input-button"
-                    id="fileButton"
-                    title="Adjuntar archivo"
-                >
-                    +
-                </button>
-
-                <input
-                    type="file"
-                    id="fileInput"
-                    hidden
-                    accept="image/*,.txt,.md,.json,.csv,.html,.pdf,.docx"
-                >
-
-                <button
-                    class="input-button"
-                    id="micButton"
-                    title="Hablar"
-                >
-                    ◉
-                </button>
-
-                <textarea
-                    id="messageInput"
-                    placeholder="Escribile a Alicia..."
-                    rows="1"
-                ></textarea>
-
-                <button
-                    class="input-button send-button"
-                    id="sendButton"
-                    title="Enviar"
-                >
-                    ➤
-                </button>
-
-            </div>
-
-            <div class="footer-info">
-                ALICIA · GEMINI CORE · CONVERSACIÓN PRIVADA
-            </div>
 
         </div>
 
-    </main>
+
+        <span>
+            ALICIA ES ÚNICA
+        </span>
+
+
+        <span>
+            v1.0
+        </span>
+
+
+    </div>
+
+
+</header>
+
+
+<!-- =====================================================
+     MESSAGES
+====================================================== -->
+
+<section
+    class="messages"
+    id="messages"
+></section>
+
+
+<!-- =====================================================
+     INPUT
+====================================================== -->
+
+<div class="input-area">
+
+
+    <div
+        class="file-preview"
+        id="filePreview"
+    >
+
+        <div id="filePreviewVisual"></div>
+
+        <div class="file-info">
+
+            <div
+                class="file-name"
+                id="fileName"
+            ></div>
+
+            <div
+                class="file-meta"
+                id="fileMeta"
+            ></div>
+
+        </div>
+
+
+        <button
+            class="remove-file"
+            id="removeFile"
+            title="Quitar archivo"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div class="input-shell">
+
+
+        <button
+            class="input-button"
+            id="fileButton"
+            title="Adjuntar archivo"
+        >
+            +
+        </button>
+
+
+        <input
+            type="file"
+            id="fileInput"
+            hidden
+            accept="image/*,.txt,.md,.json,.csv,.html,.pdf,.docx"
+        >
+
+
+        <button
+            class="input-button"
+            id="micButton"
+            title="Hablar"
+        >
+            ◉
+        </button>
+
+
+        <textarea
+            id="messageInput"
+            placeholder="Escribile a Alicia..."
+            rows="1"
+        ></textarea>
+
+
+        <button
+            class="input-button send-button"
+            id="sendButton"
+            title="Enviar"
+        >
+            ➤
+        </button>
+
+
+    </div>
+
+
+    <div class="footer-info">
+        ALICIA · UNA PRESENCIA PROPIA · CONVERSACIÓN PRIVADA
+    </div>
+
+
+</div>
+
+
+</main>
 
 </div>
 
@@ -1075,34 +1908,74 @@ const WORKER_URL =
 ========================================================= */
 
 const messagesEl =
-    document.getElementById("messages");
+    document.getElementById(
+        "messages"
+    );
 
 const input =
-    document.getElementById("messageInput");
+    document.getElementById(
+        "messageInput"
+    );
 
 const sendButton =
-    document.getElementById("sendButton");
+    document.getElementById(
+        "sendButton"
+    );
 
 const newChatButton =
-    document.getElementById("newChat");
+    document.getElementById(
+        "newChat"
+    );
 
 const conversationsEl =
-    document.getElementById("conversations");
+    document.getElementById(
+        "conversations"
+    );
 
 const fileButton =
-    document.getElementById("fileButton");
+    document.getElementById(
+        "fileButton"
+    );
 
 const fileInput =
-    document.getElementById("fileInput");
+    document.getElementById(
+        "fileInput"
+    );
 
 const filePreview =
-    document.getElementById("filePreview");
+    document.getElementById(
+        "filePreview"
+    );
+
+const filePreviewVisual =
+    document.getElementById(
+        "filePreviewVisual"
+    );
+
+const fileName =
+    document.getElementById(
+        "fileName"
+    );
+
+const fileMeta =
+    document.getElementById(
+        "fileMeta"
+    );
+
+const removeFile =
+    document.getElementById(
+        "removeFile"
+    );
 
 const micButton =
-    document.getElementById("micButton");
+    document.getElementById(
+        "micButton"
+    );
 
-const connectionStatus =
-    document.getElementById("connectionStatus");
+const voiceToggle =
+    document.getElementById(
+        "voiceToggle"
+    );
 
 
 /* =========================================================
@@ -1111,39 +1984,283 @@ const connectionStatus =
 
 let conversations =
     JSON.parse(
-        localStorage.getItem("alicia_conversations") || "[]"
+        localStorage.getItem(
+            "alicia_conversations"
+        ) || "[]"
     );
 
+
 let activeConversationId =
-    localStorage.getItem("alicia_active") || null;
+    localStorage.getItem(
+        "alicia_active"
+    ) || null;
+
 
 let selectedFile = null;
 
 let isSending = false;
 
+let initiativeTimer = null;
+
+let initiativeRunning = false;
+
+let lastInitiative =
+    Date.now();
+
 
 /* =========================================================
-   CREAR CONVERSACIÓN
+   VOZ
 ========================================================= */
 
-function createConversation() {
+let voiceEnabled =
+    localStorage.getItem(
+        "alicia_voice"
+    ) === "true";
 
-    const conversation = {
-        id: Date.now().toString(),
-        title: "Nueva conversación",
-        messages: []
-    };
 
-    conversations.unshift(conversation);
+function updateVoiceInterface() {
 
-    activeConversationId =
-        conversation.id;
+    voiceToggle.classList.toggle(
+        "active",
+        voiceEnabled
+    );
+}
 
-    saveState();
 
-    renderConversations();
+updateVoiceInterface();
 
-    renderMessages();
+
+voiceToggle.onclick = () => {
+
+    voiceEnabled =
+        !voiceEnabled;
+
+    localStorage.setItem(
+        "alicia_voice",
+        voiceEnabled
+    );
+
+    updateVoiceInterface();
+
+
+    if (!voiceEnabled) {
+
+        stopSpeaking();
+    }
+};
+
+
+/* =========================================================
+   SELECCIÓN DE VOZ
+========================================================= */
+
+function getAliciaVoice() {
+
+    if (
+        !("speechSynthesis" in window)
+    ) {
+        return null;
+    }
+
+
+    const voices =
+        speechSynthesis.getVoices();
+
+
+    if (!voices.length) {
+        return null;
+    }
+
+
+    const spanish =
+        voices.filter(
+            voice =>
+                voice.lang
+                    ?.toLowerCase()
+                    .startsWith("es")
+        );
+
+
+    if (!spanish.length) {
+
+        return voices[0];
+    }
+
+
+    /*
+       Intentamos primero voces que
+       suelen corresponder a voces
+       femeninas en sistemas comunes.
+    */
+
+    const femaleNames = [
+
+        "helena",
+
+        "sabrina",
+
+        "sabina",
+
+        "elena",
+
+        "paulina",
+
+        "monica",
+
+        "monica",
+
+        "luciana",
+
+        "sofia",
+
+        "isabela",
+
+        "isabella",
+
+        "female",
+
+        "mujer"
+
+    ];
+
+
+    const femaleVoice =
+        spanish.find(
+            voice => {
+
+                const name =
+                    voice.name
+                        .toLowerCase();
+
+                return femaleNames.some(
+                    key =>
+                        name.includes(
+                            key
+                        )
+                );
+            }
+        );
+
+
+    if (femaleVoice) {
+
+        return femaleVoice;
+    }
+
+
+    /*
+       Si no podemos identificar
+       el género por nombre,
+       priorizamos una voz
+       española/argentina.
+    */
+
+    const argentina =
+        spanish.find(
+            voice =>
+                voice.lang
+                    ?.toLowerCase()
+                    === "es-ar"
+        );
+
+
+    if (argentina) {
+        return argentina;
+    }
+
+
+    return spanish[0];
+}
+
+
+if (
+    "speechSynthesis"
+    in window
+) {
+
+    speechSynthesis.onvoiceschanged =
+        () => {
+            getAliciaVoice();
+        };
+}
+
+
+function speakAlicia(text) {
+
+    if (!voiceEnabled) {
+        return;
+    }
+
+
+    if (
+        !("speechSynthesis" in window)
+    ) {
+        return;
+    }
+
+
+    if (!text?.trim()) {
+        return;
+    }
+
+
+    stopSpeaking();
+
+
+    const utterance =
+        new SpeechSynthesisUtterance(
+            text
+        );
+
+
+    const voice =
+        getAliciaVoice();
+
+
+    if (voice) {
+
+        utterance.voice =
+            voice;
+
+        utterance.lang =
+            voice.lang;
+    } else {
+
+        utterance.lang =
+            "es-AR";
+    }
+
+
+    /*
+       Valores pensados para que
+       no suene como un GPS.
+    */
+
+    utterance.rate =
+        0.94;
+
+    utterance.pitch =
+        1.03;
+
+    utterance.volume =
+        1;
+
+
+    speechSynthesis.speak(
+        utterance
+    );
+}
+
+
+function stopSpeaking() {
+
+    if (
+        "speechSynthesis"
+        in window
+    ) {
+
+        speechSynthesis.cancel();
+    }
 }
 
 
@@ -1155,7 +2272,9 @@ function saveState() {
 
     localStorage.setItem(
         "alicia_conversations",
-        JSON.stringify(conversations)
+        JSON.stringify(
+            conversations
+        )
     );
 
     localStorage.setItem(
@@ -1166,132 +2285,224 @@ function saveState() {
 
 
 /* =========================================================
-   CONVERSACIÓN ACTIVA
+   CREAR CONVERSACIÓN
+========================================================= */
+
+function createConversation() {
+
+    const conversation = {
+
+        id:
+            Date.now().toString(),
+
+        title:
+            "Nueva conversación",
+
+        messages: []
+    };
+
+
+    conversations.unshift(
+        conversation
+    );
+
+
+    activeConversationId =
+        conversation.id;
+
+
+    saveState();
+
+    renderConversations();
+
+    renderMessages();
+}
+
+
+/* =========================================================
+   ACTIVA
 ========================================================= */
 
 function getActiveConversation() {
 
     return conversations.find(
-        c => c.id === activeConversationId
+        c =>
+            c.id ===
+            activeConversationId
     );
 }
 
 
 /* =========================================================
-   RENDER SIDEBAR
+   SIDEBAR
 ========================================================= */
 
 function renderConversations() {
 
-    conversationsEl.innerHTML = "";
+    conversationsEl.innerHTML =
+        "";
 
-    for (const conversation of conversations) {
+
+    for (
+        const conversation
+        of conversations
+    ) {
 
         const item =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
 
         item.className =
             "conversation" +
             (
-                conversation.id === activeConversationId
+                conversation.id ===
+                activeConversationId
                     ? " active"
                     : ""
             );
 
+
         const name =
-            document.createElement("span");
+            document.createElement(
+                "span"
+            );
+
 
         name.className =
             "conversation-name";
 
+
         name.textContent =
             conversation.title;
 
+
         const actions =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
 
         actions.className =
             "conversation-actions";
 
+
         const rename =
-            document.createElement("button");
+            document.createElement(
+                "button"
+            );
+
 
         rename.className =
             "small-action";
 
+
         rename.textContent =
             "✎";
 
-        rename.onclick = event => {
 
-            event.stopPropagation();
+        rename.onclick =
+            event => {
 
-            const newName =
-                prompt(
-                    "Nombre de la conversación:",
-                    conversation.title
-                );
+                event.stopPropagation();
 
-            if (
-                newName &&
-                newName.trim()
-            ) {
 
-                conversation.title =
-                    newName.trim();
+                const newName =
+                    prompt(
+                        "Nombre de la conversación:",
+                        conversation.title
+                    );
 
-                saveState();
 
-                renderConversations();
-            }
-        };
+                if (
+                    newName &&
+                    newName.trim()
+                ) {
+
+                    conversation.title =
+                        newName.trim();
+
+
+                    saveState();
+
+                    renderConversations();
+                }
+            };
+
 
         const remove =
-            document.createElement("button");
+            document.createElement(
+                "button"
+            );
+
 
         remove.className =
             "small-action";
 
+
         remove.textContent =
             "×";
 
-        remove.onclick = event => {
 
-            event.stopPropagation();
+        remove.onclick =
+            event => {
 
-            conversations =
-                conversations.filter(
-                    c =>
-                        c.id !== conversation.id
-                );
+                event.stopPropagation();
 
-            if (
-                activeConversationId ===
-                conversation.id
-            ) {
 
-                activeConversationId =
-                    conversations[0]?.id || null;
-            }
+                conversations =
+                    conversations.filter(
+                        c =>
+                            c.id !==
+                            conversation.id
+                    );
 
-            saveState();
 
-            renderConversations();
+                if (
+                    activeConversationId ===
+                    conversation.id
+                ) {
 
-            renderMessages();
-        };
+                    activeConversationId =
+                        conversations[0]
+                            ?.id ||
+                        null;
+                }
 
-        actions.appendChild(rename);
-        actions.appendChild(remove);
 
-        item.appendChild(name);
-        item.appendChild(actions);
+                saveState();
+
+                renderConversations();
+
+                renderMessages();
+            };
+
+
+        actions.appendChild(
+            rename
+        );
+
+        actions.appendChild(
+            remove
+        );
+
+
+        item.appendChild(
+            name
+        );
+
+        item.appendChild(
+            actions
+        );
+
 
         item.onclick = () => {
 
             activeConversationId =
                 conversation.id;
 
+
             saveState();
 
             renderConversations();
@@ -1299,21 +2510,27 @@ function renderConversations() {
             renderMessages();
         };
 
-        conversationsEl.appendChild(item);
+
+        conversationsEl.appendChild(
+            item
+        );
     }
 }
 
 
 /* =========================================================
-   RENDER MENSAJES
+   MENSAJES
 ========================================================= */
 
 function renderMessages() {
 
-    messagesEl.innerHTML = "";
+    messagesEl.innerHTML =
+        "";
+
 
     const conversation =
         getActiveConversation();
+
 
     if (
         !conversation ||
@@ -1321,30 +2538,100 @@ function renderMessages() {
     ) {
 
         messagesEl.innerHTML = `
+
             <div class="empty">
 
                 <div class="empty-inner">
 
+
                     <div class="empty-orb">
-                        <span class="orb-letter">A</span>
+
+                        <span class="orb-letter">
+                            A
+                        </span>
+
                     </div>
 
-                    <h1>ALICIA</h1>
+
+                    <h1>
+                        ALICIA
+                    </h1>
+
+
+                    <div class="start-options">
+
+
+                        <button
+                            class="start-option"
+                            data-start="Contame algo interesante."
+                        >
+                            Contame algo
+                        </button>
+
+
+                        <button
+                            class="start-option"
+                            data-start="Tengo una idea y quiero desarrollarla con vos."
+                        >
+                            Tengo una idea
+                        </button>
+
+
+                        <button
+                            class="start-option"
+                            data-start="Quiero conocer tu opinión sobre algo."
+                        >
+                            Necesito una opinión
+                        </button>
+
+
+                        <button
+                            class="start-option"
+                            data-start="Sorprendeme con algo que creas que me puede interesar."
+                        >
+                            Sorprendeme
+                        </button>
+
+
+                    </div>
+
 
                     <p>
-                        Sistema de inteligencia artificial
-                        conectado.<br>
-                        Podés hablar conmigo, preguntarme cosas,
-                        mandarme imágenes o archivos.
+                        Sistema de inteligencia artificial conectado.<br>
+                        Podés hablar conmigo, preguntarme cosas, mandarme imágenes o archivos.
                     </p>
+
 
                 </div>
 
             </div>
         `;
 
+
+        document
+            .querySelectorAll(
+                ".start-option"
+            )
+            .forEach(
+                button => {
+
+                    button.onclick =
+                        () => {
+
+                            input.value =
+                                button.dataset.start;
+
+                            autoResize();
+
+                            input.focus();
+                        };
+                }
+            );
+
+
         return;
     }
+
 
     for (
         const message
@@ -1357,12 +2644,13 @@ function renderMessages() {
         );
     }
 
+
     scrollToBottom();
 }
 
 
 /* =========================================================
-   AGREGAR MENSAJE
+   MENSAJE DOM
 ========================================================= */
 
 function addMessageToDOM(
@@ -1371,7 +2659,10 @@ function addMessageToDOM(
 ) {
 
     const wrapper =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     wrapper.className =
         "message " +
@@ -1381,35 +2672,113 @@ function addMessageToDOM(
                 : "assistant"
         );
 
+
     const box =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     box.className =
         "message-content";
 
+
     const label =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     label.className =
         "message-label";
+
 
     label.textContent =
         role === "user"
             ? "YOU"
             : "ALICIA";
 
+
     const text =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     text.textContent =
         content;
 
-    box.appendChild(label);
-    box.appendChild(text);
 
-    wrapper.appendChild(box);
+    box.appendChild(
+        label
+    );
 
-    messagesEl.appendChild(wrapper);
+
+    box.appendChild(
+        text
+    );
+
+
+    if (
+        role === "assistant"
+    ) {
+
+        const tools =
+            document.createElement(
+                "div"
+            );
+
+
+        tools.className =
+            "message-tools";
+
+
+        const speakButton =
+            document.createElement(
+                "button"
+            );
+
+
+        speakButton.className =
+            "speak-message";
+
+
+        speakButton.textContent =
+            "🔊";
+
+
+        speakButton.title =
+            "Escuchar a Alicia";
+
+
+        speakButton.onclick =
+            () => {
+
+                speakAlicia(
+                    content
+                );
+            };
+
+
+        tools.appendChild(
+            speakButton
+        );
+
+
+        box.appendChild(
+            tools
+        );
+    }
+
+
+    wrapper.appendChild(
+        box
+    );
+
+
+    messagesEl.appendChild(
+        wrapper
+    );
 }
 
 
@@ -1419,12 +2788,13 @@ function addMessageToDOM(
 
 function scrollToBottom() {
 
-    requestAnimationFrame(() => {
+    requestAnimationFrame(
+        () => {
 
-        messagesEl.scrollTop =
-            messagesEl.scrollHeight;
-
-    });
+            messagesEl.scrollTop =
+                messagesEl.scrollHeight;
+        }
+    );
 }
 
 
@@ -1438,8 +2808,10 @@ async function sendMessage() {
         return;
     }
 
+
     const text =
         input.value.trim();
+
 
     if (
         !text &&
@@ -1448,8 +2820,10 @@ async function sendMessage() {
         return;
     }
 
+
     let conversation =
         getActiveConversation();
+
 
     if (!conversation) {
 
@@ -1459,62 +2833,87 @@ async function sendMessage() {
             getActiveConversation();
     }
 
+
     isSending = true;
 
-    sendButton.disabled = true;
+    sendButton.disabled =
+        true;
 
-    connectionStatus.textContent =
-        "CONNECTING...";
+
+    let imageData =
+        null;
 
 
     /* =========================
-       ARCHIVO
+       IMAGEN
     ========================= */
 
-    let imageData = null;
+    if (
+        selectedFile &&
+        selectedFile.type
+            .startsWith("image/")
+    ) {
 
-    if (selectedFile) {
-
-        if (
-            selectedFile.type.startsWith(
-                "image/"
-            )
-        ) {
-
-            imageData =
-                await fileToDataURL(
-                    selectedFile
-                );
-        }
+        imageData =
+            await fileToDataURL(
+                selectedFile
+            );
     }
 
 
     /* =========================
-       MENSAJE
+       TEXTO DEL ARCHIVO
     ========================= */
 
-    let finalText = text;
+    let finalText =
+        text;
+
 
     if (
         selectedFile &&
-        !selectedFile.type.startsWith("image/")
+        !selectedFile.type
+            .startsWith("image/")
     ) {
 
+        /*
+           De momento le informamos
+           a Alicia qué archivo recibió.
+           La previsualización ocurre
+           antes del envío.
+        */
+
         finalText +=
-            "\n\n[Archivo adjunto: " +
+            (
+                finalText
+                    ? "\n\n"
+                    : ""
+            ) +
+            "[Archivo adjunto: " +
             selectedFile.name +
             "]";
     }
 
-    if (!finalText.trim()) {
+
+    if (
+        !finalText.trim() &&
+        imageData
+    ) {
+
         finalText =
             "Analizá esta imagen.";
     }
 
 
+    /* =========================
+       MENSAJE USUARIO
+    ========================= */
+
     conversation.messages.push({
+
         role: "user",
-        content: finalText
+
+        content:
+            finalText
     });
 
 
@@ -1534,20 +2933,28 @@ async function sendMessage() {
             );
     }
 
+
     saveState();
 
     renderConversations();
 
     renderMessages();
 
+
     input.value = "";
 
     autoResize();
 
 
-    /* =========================
-       HISTORIAL
-    ========================= */
+    /*
+       Evitamos que Alicia
+       inicie inmediatamente
+       después del mensaje.
+    */
+
+    lastInitiative =
+        Date.now();
+
 
     const history =
         conversation.messages
@@ -1561,15 +2968,19 @@ async function sendMessage() {
             await fetch(
                 WORKER_URL,
                 {
-                    method: "POST",
+
+                    method:
+                        "POST",
 
                     headers: {
+
                         "Content-Type":
                             "application/json"
                     },
 
                     body:
                         JSON.stringify({
+
                             message:
                                 finalText,
 
@@ -1587,7 +2998,10 @@ async function sendMessage() {
             await response.json();
 
 
-        if (!response.ok || !data.ok) {
+        if (
+            !response.ok ||
+            !data.ok
+        ) {
 
             throw new Error(
                 data.error ||
@@ -1602,50 +3016,66 @@ async function sendMessage() {
 
 
         conversation.messages.push({
-            role: "assistant",
-            content: answer
+
+            role:
+                "assistant",
+
+            content:
+                answer
         });
+
 
         saveState();
 
         renderMessages();
 
-        connectionStatus.textContent =
-            "GEMINI LINK · ONLINE";
+
+        /*
+           Si la voz está activa,
+           Alicia habla automáticamente.
+        */
+
+        speakAlicia(
+            answer
+        );
 
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
+
+
+        const errorMessage =
+            "No pude conectarme con mi cerebro ahora mismo.\n\nDetalle: " +
+            error.message;
+
 
         conversation.messages.push({
-            role: "assistant",
+
+            role:
+                "assistant",
+
             content:
-                "No pude conectarme con mi cerebro ahora mismo.\n\nDetalle: " +
-                error.message
+                errorMessage
         });
+
 
         saveState();
 
         renderMessages();
-
-        connectionStatus.textContent =
-            "CONNECTION ERROR";
     }
 
 
-    selectedFile = null;
+    clearSelectedFile();
 
-    fileInput.value = "";
 
-    filePreview.style.display =
-        "none";
+    isSending =
+        false;
 
-    filePreview.textContent = "";
-
-    isSending = false;
-
-    sendButton.disabled = false;
+    sendButton.disabled =
+        false;
 }
 
 
@@ -1653,51 +3083,266 @@ async function sendMessage() {
    ARCHIVOS
 ========================================================= */
 
-fileButton.onclick = () => {
+fileButton.onclick =
+    () => {
 
-    fileInput.click();
+        fileInput.click();
+    };
 
-};
 
-fileInput.onchange = () => {
+fileInput.onchange =
+    () => {
 
-    const file =
-        fileInput.files?.[0];
+        const file =
+            fileInput.files?.[0];
 
-    if (!file) {
-        return;
+
+        if (!file) {
+            return;
+        }
+
+
+        selectedFile =
+            file;
+
+
+        showFilePreview(
+            file
+        );
+    };
+
+
+/* =========================================================
+   PREVISUALIZACIÓN
+========================================================= */
+
+function showFilePreview(
+    file
+) {
+
+    filePreviewVisual.innerHTML =
+        "";
+
+
+    fileName.textContent =
+        file.name;
+
+
+    fileMeta.textContent =
+        formatFileSize(
+            file.size
+        ) +
+        " · " +
+        (
+            file.type ||
+            "Archivo"
+        );
+
+
+    if (
+        file.type.startsWith(
+            "image/"
+        )
+    ) {
+
+        const image =
+            document.createElement(
+                "img"
+            );
+
+
+        image.className =
+            "file-preview-image";
+
+
+        image.alt =
+            "Vista previa";
+
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload =
+            event => {
+
+                image.src =
+                    event.target.result;
+            };
+
+
+        reader.readAsDataURL(
+            file
+        );
+
+
+        filePreviewVisual.appendChild(
+            image
+        );
+
+
+    } else {
+
+        const icon =
+            document.createElement(
+                "div"
+            );
+
+
+        icon.className =
+            "file-preview-icon";
+
+
+        icon.textContent =
+            getFileExtension(
+                file.name
+            );
+
+
+        filePreviewVisual.appendChild(
+            icon
+        );
     }
 
-    selectedFile = file;
 
-    filePreview.style.display =
-        "block";
+    filePreview.classList.add(
+        "visible"
+    );
+}
 
-    filePreview.textContent =
-        "ARCHIVO: " +
-        file.name;
-};
+
+/* =========================================================
+   QUITAR ARCHIVO
+========================================================= */
+
+removeFile.onclick =
+    clearSelectedFile;
+
+
+function clearSelectedFile() {
+
+    selectedFile =
+        null;
+
+
+    fileInput.value =
+        "";
+
+
+    filePreview.classList.remove(
+        "visible"
+    );
+
+
+    filePreviewVisual.innerHTML =
+        "";
+
+
+    fileName.textContent =
+        "";
+
+
+    fileMeta.textContent =
+        "";
+}
+
+
+/* =========================================================
+   TAMAÑO
+========================================================= */
+
+function formatFileSize(
+    bytes
+) {
+
+    if (
+        bytes < 1024
+    ) {
+
+        return bytes +
+            " B";
+    }
+
+
+    if (
+        bytes < 1024 * 1024
+    ) {
+
+        return (
+            bytes / 1024
+        ).toFixed(1) +
+        " KB";
+    }
+
+
+    return (
+        bytes /
+        (1024 * 1024)
+    ).toFixed(1) +
+    " MB";
+}
+
+
+/* =========================================================
+   EXTENSIÓN
+========================================================= */
+
+function getFileExtension(
+    filename
+) {
+
+    const parts =
+        filename
+            .split(".");
+
+
+    if (
+        parts.length < 2
+    ) {
+
+        return "FILE";
+    }
+
+
+    return parts
+        .pop()
+        .toUpperCase()
+        .slice(0, 5);
+}
 
 
 /* =========================================================
    DATA URL
 ========================================================= */
 
-function fileToDataURL(file) {
+function fileToDataURL(
+    file
+) {
 
     return new Promise(
-        (resolve, reject) => {
+        (
+            resolve,
+            reject
+        ) => {
 
             const reader =
                 new FileReader();
 
-            reader.onload = () =>
-                resolve(reader.result);
+
+            reader.onload =
+                () =>
+                    resolve(
+                        reader.result
+                    );
+
 
             reader.onerror =
                 reject;
 
-            reader.readAsDataURL(file);
+
+            reader.readAsDataURL(
+                file
+            );
         }
     );
 }
@@ -1712,12 +3357,15 @@ function autoResize() {
     input.style.height =
         "auto";
 
+
     input.style.height =
         Math.min(
             input.scrollHeight,
             180
-        ) + "px";
+        ) +
+        "px";
 }
+
 
 input.addEventListener(
     "input",
@@ -1734,7 +3382,8 @@ input.addEventListener(
     event => {
 
         if (
-            event.key === "Enter" &&
+            event.key ===
+            "Enter" &&
             !event.shiftKey
         ) {
 
@@ -1747,7 +3396,7 @@ input.addEventListener(
 
 
 /* =========================================================
-   SEND BUTTON
+   ENVIAR
 ========================================================= */
 
 sendButton.onclick =
@@ -1755,7 +3404,7 @@ sendButton.onclick =
 
 
 /* =========================================================
-   NEW CHAT
+   NUEVO CHAT
 ========================================================= */
 
 newChatButton.onclick =
@@ -1763,10 +3412,12 @@ newChatButton.onclick =
 
 
 /* =========================================================
-   VOZ
+   RECONOCIMIENTO DE VOZ
 ========================================================= */
 
-let recognition = null;
+let recognition =
+    null;
+
 
 if (
     "webkitSpeechRecognition"
@@ -1779,26 +3430,35 @@ if (
         window.SpeechRecognition ||
         window.webkitSpeechRecognition;
 
+
     recognition =
         new SpeechRecognition();
+
 
     recognition.lang =
         "es-AR";
 
+
     recognition.interimResults =
         false;
 
+
     recognition.continuous =
         false;
+
 
     recognition.onresult =
         event => {
 
             input.value =
-                event.results[0][0].transcript;
+                event
+                    .results[0][0]
+                    .transcript;
+
 
             autoResize();
         };
+
 
     recognition.onstart =
         () => {
@@ -1809,6 +3469,7 @@ if (
             micButton.style.boxShadow =
                 "0 0 18px rgba(94,231,255,.25)";
         };
+
 
     recognition.onend =
         () => {
@@ -1821,32 +3482,27 @@ if (
         };
 }
 
-micButton.onclick = () => {
 
-    if (!recognition) {
+micButton.onclick =
+    () => {
 
-        alert(
-            "El reconocimiento de voz no está disponible en este navegador."
-        );
+        if (!recognition) {
 
-        return;
-    }
+            alert(
+                "El reconocimiento de voz no está disponible en este navegador."
+            );
 
-    recognition.start();
-};
+            return;
+        }
+
+
+        recognition.start();
+    };
 
 
 /* =========================================================
    INICIATIVA DE ALICIA
 ========================================================= */
-
-let initiativeTimer = null;
-
-let initiativeRunning = false;
-
-let lastInitiative =
-    Date.now();
-
 
 function scheduleInitiative() {
 
@@ -1854,9 +3510,22 @@ function scheduleInitiative() {
         initiativeTimer
     );
 
+
+    /*
+       Entre 2 y 5 minutos.
+
+       No significa que Alicia
+       vaya a hablar en ese momento.
+       Solo significa que en ese
+       momento puede preguntarle
+       a Gemini si tiene algo
+       genuino que decir.
+    */
+
     const delay =
         120000 +
         Math.random() * 180000;
+
 
     initiativeTimer =
         setTimeout(
@@ -1868,13 +3537,19 @@ function scheduleInitiative() {
 
 async function checkInitiative() {
 
-    if (initiativeRunning) {
+    if (
+        initiativeRunning
+    ) {
+
         scheduleInitiative();
+
         return;
     }
 
+
     const conversation =
         getActiveConversation();
+
 
     if (
         !conversation ||
@@ -1882,8 +3557,10 @@ async function checkInitiative() {
     ) {
 
         scheduleInitiative();
+
         return;
     }
+
 
     if (
         Date.now() -
@@ -1892,10 +3569,14 @@ async function checkInitiative() {
     ) {
 
         scheduleInitiative();
+
         return;
     }
 
-    initiativeRunning = true;
+
+    initiativeRunning =
+        true;
+
 
     try {
 
@@ -1903,24 +3584,33 @@ async function checkInitiative() {
             conversation.messages
                 .slice(-30);
 
+
         const response =
             await fetch(
                 WORKER_URL,
                 {
-                    method: "POST",
+
+                    method:
+                        "POST",
 
                     headers: {
+
                         "Content-Type":
                             "application/json"
                     },
 
                     body:
                         JSON.stringify({
-                            initiative: true,
-                            history: history
+
+                            initiative:
+                                true,
+
+                            history:
+                                history
                         })
                 }
             );
+
 
         const data =
             await response.json();
@@ -1941,14 +3631,53 @@ async function checkInitiative() {
                 "NO_INITIATIVE"
             ) {
 
-                conversation.messages.push({
-                    role: "assistant",
-                    content: answer
-                });
+                /*
+                   Verificamos que no sea
+                   exactamente el último
+                   mensaje de Alicia.
+                */
 
-                saveState();
+                const lastMessage =
+                    conversation
+                        .messages[
+                            conversation
+                                .messages
+                                .length - 1
+                        ];
 
-                renderMessages();
+
+                if (
+                    !lastMessage ||
+                    lastMessage.content
+                        !== answer
+                ) {
+
+                    conversation.messages.push({
+
+                        role:
+                            "assistant",
+
+                        content:
+                            answer
+                    });
+
+
+                    saveState();
+
+                    renderMessages();
+
+
+                    /*
+                       Si el usuario habilitó
+                       la voz, Alicia también
+                       puede hablar por iniciativa.
+                    */
+
+                    speakAlicia(
+                        answer
+                    );
+                }
+
 
                 lastInitiative =
                     Date.now();
@@ -1964,7 +3693,9 @@ async function checkInitiative() {
 
     } finally {
 
-        initiativeRunning = false;
+        initiativeRunning =
+            false;
+
 
         scheduleInitiative();
     }
@@ -1976,7 +3707,8 @@ async function checkInitiative() {
 ========================================================= */
 
 if (
-    conversations.length === 0
+    conversations.length ===
+    0
 ) {
 
     createConversation();
@@ -1994,10 +3726,12 @@ if (
         saveState();
     }
 
+
     renderConversations();
 
     renderMessages();
 }
+
 
 scheduleInitiative();
 
