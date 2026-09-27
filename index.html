@@ -1,12 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
 <meta charset="UTF-8">
 
 <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+
 >
 
 <title>Alicia AI</title>
@@ -838,6 +840,39 @@ body {
         rgba(94,231,255,.35);
 }
 
+
+/* =========================================================
+   IMAGEN DENTRO DEL CHAT
+========================================================= */
+
+.message-image {
+    display: block;
+
+    max-width: 100%;
+
+    width: auto;
+
+    max-height: 420px;
+
+    margin-top: 10px;
+
+    border-radius: 10px;
+
+    border:
+        1px solid
+        rgba(94,231,255,.15);
+
+    object-fit: contain;
+
+    background:
+        rgba(0,0,0,.18);
+
+    box-shadow:
+        0 0 20px
+        rgba(94,231,255,.04);
+}
+
+
 /* =========================================================
    EMPTY
 ========================================================= */
@@ -1369,56 +1404,57 @@ textarea::placeholder {
 
 <aside class="sidebar">
 
-    <div class="brand">
+```
+<div class="brand">
 
-        <div class="logo">
-            A
+    <div class="logo">
+        A
+    </div>
+
+    <div>
+
+        <div class="brand-name">
+            ALICIA
         </div>
 
-        <div>
-
-            <div class="brand-name">
-                ALICIA
-            </div>
-
-            <div class="brand-sub">
-                AI SYSTEM
-            </div>
-
+        <div class="brand-sub">
+            AI SYSTEM
         </div>
 
     </div>
 
-
-    <button
-        class="new-chat"
-        id="newChat"
-    >
-        + NUEVA CONVERSACIÓN
-    </button>
+</div>
 
 
-    <div class="section-title">
-        CONVERSACIONES
-    </div>
+<button
+    class="new-chat"
+    id="newChat"
+>
+    + NUEVA CONVERSACIÓN
+</button>
 
 
-    <div
-        class="conversations"
-        id="conversations"
-    ></div>
+<div class="section-title">
+    CONVERSACIONES
+</div>
 
 
-    <div class="system-status">
+<div
+    class="conversations"
+    id="conversations"
+></div>
 
-        <span class="status-dot"></span>
 
-        SISTEMA ONLINE
+<div class="system-status">
 
-    </div>
+    <span class="status-dot"></span>
+
+    SISTEMA ONLINE
+
+</div>
+```
 
 </aside>
-
 
 <!-- =====================================================
      MAIN
@@ -1428,55 +1464,56 @@ textarea::placeholder {
 
 <header class="header">
 
-    <div class="header-left">
+```
+<div class="header-left">
 
-        <div class="core"></div>
+    <div class="core"></div>
 
-        <div>
+    <div>
 
-            <div class="header-title">
-                ALICIA
-            </div>
+        <div class="header-title">
+            ALICIA
+        </div>
 
-            <div class="header-state">
-                ALICIA · SISTEMA AUTÓNOMO ACTIVO
-            </div>
-
+        <div class="header-state">
+            ALICIA · SISTEMA AUTÓNOMO ACTIVO
         </div>
 
     </div>
 
+</div>
 
-    <div class="header-right">
 
-        <div class="voice-control">
+<div class="header-right">
 
-            <span>
-                VOZ
-            </span>
-
-            <div
-                class="voice-toggle"
-                id="voiceToggle"
-                title="Activar o desactivar la voz de Alicia"
-            ></div>
-
-        </div>
-
+    <div class="voice-control">
 
         <span>
-            ALICIA ES ÚNICA
+            VOZ
         </span>
 
-
-        <span>
-            v1.0
-        </span>
+        <div
+            class="voice-toggle"
+            id="voiceToggle"
+            title="Activar o desactivar la voz de Alicia"
+        ></div>
 
     </div>
+
+
+    <span>
+        ALICIA ES ÚNICA
+    </span>
+
+
+    <span>
+        v1.0
+    </span>
+
+</div>
+```
 
 </header>
-
 
 <!-- =====================================================
      MESSAGES
@@ -1487,102 +1524,102 @@ textarea::placeholder {
     id="messages"
 ></section>
 
-
 <!-- =====================================================
      INPUT
 ====================================================== -->
 
 <div class="input-area">
 
-    <div
-        class="file-preview"
-        id="filePreview"
+```
+<div
+    class="file-preview"
+    id="filePreview"
+>
+
+    <div id="filePreviewVisual"></div>
+
+    <div class="file-info">
+
+        <div
+            class="file-name"
+            id="fileName"
+        ></div>
+
+        <div
+            class="file-meta"
+            id="fileMeta"
+        ></div>
+
+    </div>
+
+
+    <button
+        class="remove-file"
+        id="removeFile"
+        title="Quitar archivo"
+    >
+        ×
+    </button>
+
+</div>
+
+
+<div class="input-shell">
+
+    <button
+        class="input-button"
+        id="fileButton"
+        title="Adjuntar archivo"
+    >
+        +
+    </button>
+
+
+    <input
+        type="file"
+        id="fileInput"
+        hidden
+        accept="image/*,.txt,.md,.json,.csv,.html,.pdf,.docx"
     >
 
-        <div id="filePreviewVisual"></div>
 
-        <div class="file-info">
-
-            <div
-                class="file-name"
-                id="fileName"
-            ></div>
-
-            <div
-                class="file-meta"
-                id="fileMeta"
-            ></div>
-
-        </div>
+    <button
+        class="input-button"
+        id="micButton"
+        title="Hablar"
+    >
+        ◉
+    </button>
 
 
-        <button
-            class="remove-file"
-            id="removeFile"
-            title="Quitar archivo"
-        >
-            ×
-        </button>
-
-    </div>
+    <textarea
+        id="messageInput"
+        placeholder="Escribile a Alicia..."
+        rows="1"
+    ></textarea>
 
 
-    <div class="input-shell">
+    <button
+        class="input-button send-button"
+        id="sendButton"
+        title="Enviar"
+    >
+        ➤
+    </button>
 
-        <button
-            class="input-button"
-            id="fileButton"
-            title="Adjuntar archivo"
-        >
-            +
-        </button>
-
-
-        <input
-            type="file"
-            id="fileInput"
-            hidden
-            accept="image/*,.txt,.md,.json,.csv,.html,.pdf,.docx"
-        >
+</div>
 
 
-        <button
-            class="input-button"
-            id="micButton"
-            title="Hablar"
-        >
-            ◉
-        </button>
-
-
-        <textarea
-            id="messageInput"
-            placeholder="Escribile a Alicia..."
-            rows="1"
-        ></textarea>
-
-
-        <button
-            class="input-button send-button"
-            id="sendButton"
-            title="Enviar"
-        >
-            ➤
-        </button>
-
-    </div>
-
-
-    <div class="footer-info">
-        ALICIA · UNA PRESENCIA PROPIA · CONVERSACIÓN PRIVADA
-    </div>
+<div class="footer-info">
+    ALICIA · UNA PRESENCIA PROPIA · CONVERSACIÓN PRIVADA
+</div>
+```
 
 </div>
 
 </main>
 
 </div>
-
 
 <script>
 
@@ -1779,11 +1816,6 @@ async function unlockAudio() {
 }
 
 
-/*
-    Desbloqueamos el AudioContext
-    mediante interacción del usuario.
-*/
-
 document.addEventListener(
     "pointerdown",
     () => {
@@ -1866,11 +1898,6 @@ async function speakAlicia(text) {
         return;
     }
 
-
-    /*
-       Primero detenemos la voz anterior.
-       Después generamos el nuevo ID.
-    */
 
     stopSpeaking();
 
@@ -2007,11 +2034,6 @@ async function speakAlicia(text) {
         }
 
 
-        /*
-           Convertimos el MP3 recibido
-           en un AudioBuffer.
-        */
-
         const decodedAudio =
             await context.decodeAudioData(
                 audioData.slice(0)
@@ -2107,11 +2129,6 @@ async function speakAlicia(text) {
 ========================================================= */
 
 function stopSpeaking() {
-
-    /*
-       Invalidamos cualquier petición
-       de voz que estuviera pendiente.
-    */
 
     voiceRequestId++;
 
@@ -2504,7 +2521,8 @@ function renderMessages() {
 
         addMessageToDOM(
             message.role,
-            message.content
+            message.content,
+            message.image || null
         );
     }
 
@@ -2519,7 +2537,8 @@ function renderMessages() {
 
 function addMessageToDOM(
     role,
-    content
+    content,
+    imageData = null
 ) {
 
     const wrapper =
@@ -2563,24 +2582,73 @@ function addMessageToDOM(
             : "ALICIA";
 
 
-    const text =
-        document.createElement(
-            "div"
-        );
-
-
-    text.textContent =
-        content;
-
-
     box.appendChild(
         label
     );
 
 
-    box.appendChild(
-        text
-    );
+    /*
+       Si el mensaje tiene una imagen,
+       la mostramos dentro del mensaje.
+    */
+
+    if (
+        imageData &&
+        typeof imageData === "string"
+    ) {
+
+        const image =
+            document.createElement(
+                "img"
+            );
+
+
+        image.className =
+            "message-image";
+
+
+        image.src =
+            imageData;
+
+
+        image.alt =
+            "Imagen enviada a Alicia";
+
+
+        image.loading =
+            "lazy";
+
+
+        box.appendChild(
+            image
+        );
+    }
+
+
+    /*
+       El texto sigue apareciendo
+       debajo de la imagen.
+    */
+
+    if (
+        content &&
+        content.trim()
+    ) {
+
+        const text =
+            document.createElement(
+                "div"
+            );
+
+
+        text.textContent =
+            content;
+
+
+        box.appendChild(
+            text
+        );
+    }
 
 
     if (
@@ -2617,11 +2685,6 @@ function addMessageToDOM(
 
         speakButton.onclick =
             async () => {
-
-                /*
-                   Esta interacción desbloquea
-                   directamente el audio.
-                */
 
                 await unlockAudio();
 
@@ -2693,12 +2756,6 @@ async function sendMessage() {
     }
 
 
-    /*
-       El botón de enviar es una
-       interacción real del usuario.
-       Desbloqueamos el audio acá.
-    */
-
     await unlockAudio();
 
 
@@ -2726,6 +2783,12 @@ async function sendMessage() {
     let imageData =
         null;
 
+
+    /*
+       Convertimos la imagen a Data URL
+       antes de enviarla y antes de guardarla
+       dentro del mensaje.
+    */
 
     if (
         selectedFile &&
@@ -2772,13 +2835,21 @@ async function sendMessage() {
     }
 
 
+    /*
+       AHORA EL MENSAJE GUARDA TAMBIÉN
+       LA IMAGEN.
+    */
+
     conversation.messages.push({
 
         role:
             "user",
 
         content:
-            finalText
+            finalText,
+
+        image:
+            imageData
     });
 
 
@@ -2888,10 +2959,6 @@ async function sendMessage() {
 
         renderMessages();
 
-
-        /*
-           VOZ AUTOMÁTICA
-        */
 
         if (voiceEnabled) {
 
@@ -3061,6 +3128,97 @@ function showFilePreview(
         "visible"
     );
 }
+
+
+/* =========================================================
+   PEGAR IMAGEN CON CTRL + V
+========================================================= */
+
+input.addEventListener(
+    "paste",
+    event => {
+
+        const clipboardData =
+            event.clipboardData;
+
+
+        if (!clipboardData) {
+            return;
+        }
+
+
+        const items =
+            clipboardData.items;
+
+
+        if (!items) {
+            return;
+        }
+
+
+        for (
+            const item
+            of items
+        ) {
+
+            /*
+               Solo interceptamos el pegado
+               cuando realmente hay una imagen.
+            */
+
+            if (
+                item.kind === "file" &&
+                item.type.startsWith("image/")
+            ) {
+
+                const file =
+                    item.getAsFile();
+
+
+                if (!file) {
+                    continue;
+                }
+
+
+                event.preventDefault();
+
+
+                /*
+                   Algunas capturas del sistema
+                   llegan sin nombre.
+                */
+
+                const imageFile =
+                    new File(
+                        [file],
+                        "captura-portapapeles.png",
+                        {
+                            type:
+                                file.type ||
+                                "image/png"
+                        }
+                    );
+
+
+                selectedFile =
+                    imageFile;
+
+
+                showFilePreview(
+                    imageFile
+                );
+
+
+                console.log(
+                    "ALICIA: imagen pegada desde el portapapeles."
+                );
+
+
+                break;
+            }
+        }
+    }
+);
 
 
 /* =========================================================
