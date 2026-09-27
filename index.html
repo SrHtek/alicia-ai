@@ -1660,10 +1660,6 @@ textarea::placeholder {
 <div class="app">
 
 
-<!-- =====================================================
-     SIDEBAR
-====================================================== -->
-
 <aside class="sidebar">
 
 
@@ -1718,10 +1714,6 @@ textarea::placeholder {
 
 </aside>
 
-
-<!-- =====================================================
-     MAIN
-====================================================== -->
 
 <main class="main">
 
@@ -1782,19 +1774,11 @@ textarea::placeholder {
 </header>
 
 
-<!-- =====================================================
-     MESSAGES
-====================================================== -->
-
 <section
     class="messages"
     id="messages"
 ></section>
 
-
-<!-- =====================================================
-     INPUT
-====================================================== -->
 
 <div class="input-area">
 
@@ -2009,13 +1993,20 @@ let lastInitiative =
 
 
 /* =========================================================
-   VOZ
+   VOZ - ELEVENLABS
 ========================================================= */
 
 let voiceEnabled =
     localStorage.getItem(
         "alicia_voice"
     ) === "true";
+
+
+let currentAudio = null;
+
+let currentAudioUrl = null;
+
+let voiceRequestId = 0;
 
 
 function updateVoiceInterface() {
@@ -2035,10 +2026,12 @@ voiceToggle.onclick = () => {
     voiceEnabled =
         !voiceEnabled;
 
+
     localStorage.setItem(
         "alicia_voice",
         voiceEnabled
     );
+
 
     updateVoiceInterface();
 
@@ -2050,151 +2043,9 @@ voiceToggle.onclick = () => {
 };
 
 
-/* =========================================================
-   SELECCIÓN DE VOZ
-========================================================= */
-
-function getAliciaVoice() {
-
-    if (
-        !("speechSynthesis" in window)
-    ) {
-        return null;
-    }
-
-
-    const voices =
-        speechSynthesis.getVoices();
-
-
-    if (!voices.length) {
-        return null;
-    }
-
-
-    const spanish =
-        voices.filter(
-            voice =>
-                voice.lang
-                    ?.toLowerCase()
-                    .startsWith("es")
-        );
-
-
-    if (!spanish.length) {
-
-        return voices[0];
-    }
-
-
-    /*
-       Intentamos primero voces que
-       suelen corresponder a voces
-       femeninas en sistemas comunes.
-    */
-
-    const femaleNames = [
-
-        "helena",
-
-        "sabrina",
-
-        "sabina",
-
-        "elena",
-
-        "paulina",
-
-        "monica",
-
-        "monica",
-
-        "luciana",
-
-        "sofia",
-
-        "isabela",
-
-        "isabella",
-
-        "female",
-
-        "mujer"
-
-    ];
-
-
-    const femaleVoice =
-        spanish.find(
-            voice => {
-
-                const name =
-                    voice.name
-                        .toLowerCase();
-
-                return femaleNames.some(
-                    key =>
-                        name.includes(
-                            key
-                        )
-                );
-            }
-        );
-
-
-    if (femaleVoice) {
-
-        return femaleVoice;
-    }
-
-
-    /*
-       Si no podemos identificar
-       el género por nombre,
-       priorizamos una voz
-       española/argentina.
-    */
-
-    const argentina =
-        spanish.find(
-            voice =>
-                voice.lang
-                    ?.toLowerCase()
-                    === "es-ar"
-        );
-
-
-    if (argentina) {
-        return argentina;
-    }
-
-
-    return spanish[0];
-}
-
-
-if (
-    "speechSynthesis"
-    in window
-) {
-
-    speechSynthesis.onvoiceschanged =
-        () => {
-            getAliciaVoice();
-        };
-}
-
-
-function speakAlicia(text) {
+async function speakAlicia(text) {
 
     if (!voiceEnabled) {
-        return;
-    }
-
-
-    if (
-        !("speechSynthesis" in window)
-    ) {
         return;
     }
 
@@ -2204,55 +2055,199 @@ function speakAlicia(text) {
     }
 
 
+    const requestId =
+        ++voiceRequestId;
+
+
     stopSpeaking();
 
 
-    const utterance =
-        new SpeechSynthesisUtterance(
-            text
+    try {
+
+        const response =
+            await fetch(
+                WORKER_URL + "voice",
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            text:
+                                text
+                        })
+                }
+            );
+
+
+        if (
+            requestId !==
+            voiceRequestId
+        ) {
+
+            return;
+        }
+
+
+        if (!response.ok) {
+
+            let errorMessage =
+                "No pude generar la voz.";
+
+
+            try {
+
+                const data =
+                    await response.json();
+
+
+                errorMessage =
+                    data?.error ||
+                    errorMessage;
+
+            } catch (_) {}
+
+
+            throw new Error(
+                errorMessage
+            );
+        }
+
+
+        const audioBlob =
+            await response.blob();
+
+
+        if (
+            requestId !==
+            voiceRequestId
+        ) {
+
+            return;
+        }
+
+
+        if (currentAudioUrl) {
+
+            URL.revokeObjectURL(
+                currentAudioUrl
+            );
+        }
+
+
+        currentAudioUrl =
+            URL.createObjectURL(
+                audioBlob
+            );
+
+
+        currentAudio =
+            new Audio(
+                currentAudioUrl
+            );
+
+
+        currentAudio.volume =
+            1;
+
+
+        currentAudio.onended =
+            () => {
+
+                if (
+                    currentAudioUrl
+                ) {
+
+                    URL.revokeObjectURL(
+                        currentAudioUrl
+                    );
+                }
+
+
+                currentAudioUrl =
+                    null;
+
+
+                currentAudio =
+                    null;
+            };
+
+
+        currentAudio.onerror =
+            () => {
+
+                if (
+                    currentAudioUrl
+                ) {
+
+                    URL.revokeObjectURL(
+                        currentAudioUrl
+                    );
+                }
+
+
+                currentAudioUrl =
+                    null;
+
+
+                currentAudio =
+                    null;
+            };
+
+
+        await currentAudio.play();
+
+    } catch (error) {
+
+        console.error(
+            "Alicia ElevenLabs:",
+            error
         );
-
-
-    const voice =
-        getAliciaVoice();
-
-
-    if (voice) {
-
-        utterance.voice =
-            voice;
-
-        utterance.lang =
-            voice.lang;
-    } else {
-
-        utterance.lang =
-            "es-AR";
     }
-
-
-    /*
-       Valores pensados para que
-       no suene como un GPS.
-    */
-
-    utterance.rate =
-        0.94;
-
-    utterance.pitch =
-        1.03;
-
-    utterance.volume =
-        1;
-
-
-    speechSynthesis.speak(
-        utterance
-    );
 }
 
 
 function stopSpeaking() {
+
+    voiceRequestId++;
+
+
+    if (currentAudio) {
+
+        currentAudio.pause();
+
+        currentAudio.currentTime =
+            0;
+
+        currentAudio =
+            null;
+    }
+
+
+    if (currentAudioUrl) {
+
+        URL.revokeObjectURL(
+            currentAudioUrl
+        );
+
+        currentAudioUrl =
+            null;
+    }
+
+
+    /*
+       Dejamos esto por compatibilidad
+       por si algún navegador hubiera
+       iniciado una voz anterior.
+    */
 
     if (
         "speechSynthesis"
@@ -2875,13 +2870,6 @@ async function sendMessage() {
             .startsWith("image/")
     ) {
 
-        /*
-           De momento le informamos
-           a Alicia qué archivo recibió.
-           La previsualización ocurre
-           antes del envío.
-        */
-
         finalText +=
             (
                 finalText
@@ -2945,12 +2933,6 @@ async function sendMessage() {
 
     autoResize();
 
-
-    /*
-       Evitamos que Alicia
-       inicie inmediatamente
-       después del mensaje.
-    */
 
     lastInitiative =
         Date.now();
@@ -3029,11 +3011,6 @@ async function sendMessage() {
 
         renderMessages();
 
-
-        /*
-           Si la voz está activa,
-           Alicia habla automáticamente.
-        */
 
         speakAlicia(
             answer
@@ -3511,17 +3488,6 @@ function scheduleInitiative() {
     );
 
 
-    /*
-       Entre 2 y 5 minutos.
-
-       No significa que Alicia
-       vaya a hablar en ese momento.
-       Solo significa que en ese
-       momento puede preguntarle
-       a Gemini si tiene algo
-       genuino que decir.
-    */
-
     const delay =
         120000 +
         Math.random() * 180000;
@@ -3631,12 +3597,6 @@ async function checkInitiative() {
                 "NO_INITIATIVE"
             ) {
 
-                /*
-                   Verificamos que no sea
-                   exactamente el último
-                   mensaje de Alicia.
-                */
-
                 const lastMessage =
                     conversation
                         .messages[
@@ -3666,12 +3626,6 @@ async function checkInitiative() {
 
                     renderMessages();
 
-
-                    /*
-                       Si el usuario habilitó
-                       la voz, Alicia también
-                       puede hablar por iniciativa.
-                    */
 
                     speakAlicia(
                         answer
