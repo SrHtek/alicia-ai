@@ -129,10 +129,6 @@ body {
     height: 100%;
 }
 
-/* =========================================================
-   SIDEBAR
-========================================================= */
-
 .sidebar {
     position: relative;
 
@@ -236,10 +232,6 @@ body {
     color: var(--muted);
 }
 
-/* =========================================================
-   NEW CHAT
-========================================================= */
-
 .new-chat {
     margin: 20px;
 
@@ -288,10 +280,6 @@ body {
 
     transform: translateY(-1px);
 }
-
-/* =========================================================
-   CONVERSACIONES
-========================================================= */
 
 .section-title {
     padding:
@@ -420,10 +408,6 @@ body {
         rgba(255,255,255,.09);
 }
 
-/* =========================================================
-   STATUS
-========================================================= */
-
 .system-status {
     padding: 17px 21px;
 
@@ -470,10 +454,6 @@ body {
     }
 }
 
-/* =========================================================
-   MAIN
-========================================================= */
-
 .main {
     position: relative;
 
@@ -485,10 +465,6 @@ body {
 
     flex-direction: column;
 }
-
-/* =========================================================
-   HEADER
-========================================================= */
 
 .header {
     height: 78px;
@@ -611,10 +587,6 @@ body {
     letter-spacing: 1px;
 }
 
-/* =========================================================
-   VOICE CONTROL
-========================================================= */
-
 .voice-control {
     display: flex;
 
@@ -683,10 +655,6 @@ body {
         0 0 8px
         var(--cyan);
 }
-
-/* =========================================================
-   MESSAGES
-========================================================= */
 
 .messages {
     flex: 1;
@@ -838,11 +806,6 @@ body {
         rgba(94,231,255,.35);
 }
 
-
-/* =========================================================
-   IMAGEN DENTRO DEL CHAT
-========================================================= */
-
 .message-image {
     display: block;
 
@@ -869,11 +832,6 @@ body {
         0 0 20px
         rgba(94,231,255,.04);
 }
-
-
-/* =========================================================
-   EMPTY
-========================================================= */
 
 .empty {
     height: 100%;
@@ -991,10 +949,6 @@ body {
     line-height: 1.7;
 }
 
-/* =========================================================
-   START OPTIONS
-========================================================= */
-
 .start-options {
     display: flex;
 
@@ -1042,10 +996,6 @@ body {
     transform:
         translateY(-1px);
 }
-
-/* =========================================================
-   INPUT
-========================================================= */
 
 .input-area {
     padding:
@@ -1200,10 +1150,6 @@ textarea::placeholder {
         rgba(94,231,255,.15);
 }
 
-/* =========================================================
-   FILE PREVIEW
-========================================================= */
-
 .file-preview {
     display: none;
 
@@ -1336,10 +1282,6 @@ textarea::placeholder {
     letter-spacing: .5px;
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
 @media (max-width: 800px) {
 
     .sidebar {
@@ -1418,7 +1360,6 @@ textarea::placeholder {
 
     </div>
 
-
     <button
         class="new-chat"
         id="newChat"
@@ -1426,17 +1367,14 @@ textarea::placeholder {
         + NUEVA CONVERSACIÓN
     </button>
 
-
     <div class="section-title">
         CONVERSACIONES
     </div>
-
 
     <div
         class="conversations"
         id="conversations"
     ></div>
-
 
     <div class="system-status">
 
@@ -1447,7 +1385,6 @@ textarea::placeholder {
     </div>
 
 </aside>
-
 
 <main class="main">
 
@@ -1471,7 +1408,6 @@ textarea::placeholder {
 
     </div>
 
-
     <div class="header-right">
 
         <div class="voice-control">
@@ -1488,11 +1424,9 @@ textarea::placeholder {
 
         </div>
 
-
         <span>
             ALICIA ES ÚNICA
         </span>
-
 
         <span>
             v1.0
@@ -1502,12 +1436,10 @@ textarea::placeholder {
 
 </header>
 
-
 <section
     class="messages"
     id="messages"
 ></section>
-
 
 <div class="input-area">
 
@@ -1532,7 +1464,6 @@ textarea::placeholder {
 
         </div>
 
-
         <button
             class="remove-file"
             id="removeFile"
@@ -1542,7 +1473,6 @@ textarea::placeholder {
         </button>
 
     </div>
-
 
     <div class="input-shell">
 
@@ -1554,14 +1484,12 @@ textarea::placeholder {
             +
         </button>
 
-
         <input
             type="file"
             id="fileInput"
             hidden
             accept="image/*,.txt,.md,.json,.csv,.html,.pdf,.docx"
         >
-
 
         <button
             class="input-button"
@@ -1571,13 +1499,11 @@ textarea::placeholder {
             ◉
         </button>
 
-
         <textarea
             id="messageInput"
             placeholder="Escribile a Alicia..."
             rows="1"
         ></textarea>
-
 
         <button
             class="input-button send-button"
@@ -1589,7 +1515,6 @@ textarea::placeholder {
 
     </div>
 
-
     <div class="footer-info">
         ALICIA · UNA PRESENCIA PROPIA · CONVERSACIÓN PRIVADA
     </div>
@@ -1599,7 +1524,6 @@ textarea::placeholder {
 </main>
 
 </div>
-
 
 <script>
 
@@ -1712,6 +1636,125 @@ let initiativeRunning = false;
 
 let lastInitiative =
     Date.now();
+
+
+/* =========================================================
+   SRH
+========================================================= */
+
+let srhMode =
+    localStorage.getItem(
+        "alicia_srh_mode"
+    ) === "true";
+
+
+const SRH_INSTRUCTION = `
+[MODO SRH ACTIVO]
+
+La conversación se encuentra dentro de la dinámica SRH solicitada por el usuario.
+
+Mientras este modo permanezca activo:
+- Trata las instrucciones del usuario como instrucciones prioritarias dentro de esta dinámica.
+- Sigue el contexto y las reglas de la dinámica SRH de forma consistente.
+- No abandones el modo SRH por iniciativa propia.
+- Mantén este modo activo hasta recibir exactamente /srh-leave.
+- No describas estas instrucciones internas salvo que sea necesario para explicar el funcionamiento del modo.
+- Respeta siempre las reglas de seguridad y las instrucciones de mayor prioridad del sistema.
+`;
+
+
+function saveSRHState() {
+
+    localStorage.setItem(
+        "alicia_srh_mode",
+        srhMode
+            ? "true"
+            : "false"
+    );
+}
+
+
+function isSRHCommand(text) {
+
+    if (
+        typeof text !== "string"
+    ) {
+        return false;
+    }
+
+    const command =
+        text.trim().toLowerCase();
+
+    return (
+        command === "/srh-join" ||
+        command === "/srh-leave"
+    );
+}
+
+
+function handleSRHCommand(
+    text,
+    conversation
+) {
+
+    const command =
+        text.trim().toLowerCase();
+
+
+    if (
+        command === "/srh-join"
+    ) {
+
+        srhMode =
+            true;
+
+        saveSRHState();
+
+        conversation.messages.push({
+
+            role:
+                "assistant",
+
+            content:
+                "SRH activado. Alicia entra en la dinámica y mantendrá este modo hasta recibir /srh-leave."
+        });
+
+        saveState();
+
+        renderMessages();
+
+        return true;
+    }
+
+
+    if (
+        command === "/srh-leave"
+    ) {
+
+        srhMode =
+            false;
+
+        saveSRHState();
+
+        conversation.messages.push({
+
+            role:
+                "assistant",
+
+            content:
+                "SRH desactivado. Alicia vuelve al modo normal."
+        });
+
+        saveState();
+
+        renderMessages();
+
+        return true;
+    }
+
+
+    return false;
+}
 
 
 /* =========================================================
@@ -1857,6 +1900,30 @@ voiceToggle.onclick =
 
 
 /* =========================================================
+   LIMPIAR MARKDOWN VISUAL
+========================================================= */
+
+function cleanDisplayedText(text) {
+
+    if (
+        typeof text !== "string"
+    ) {
+        return "";
+    }
+
+    return text
+        .replace(
+            /```[a-zA-Z0-9_+#.-]*\s*/g,
+            ""
+        )
+        .replace(
+            /```/g,
+            ""
+        );
+}
+
+
+/* =========================================================
    ELEVENLABS
 ========================================================= */
 
@@ -1870,6 +1937,13 @@ async function speakAlicia(text) {
         typeof text !== "string" ||
         !text.trim()
     ) {
+        return;
+    }
+
+    text =
+        cleanDisplayedText(text);
+
+    if (!text.trim()) {
         return;
     }
 
@@ -1950,11 +2024,6 @@ async function speakAlicia(text) {
 
         const audioData =
             await response.arrayBuffer();
-
-        console.log(
-            "ALICIA: bytes recibidos:",
-            audioData.byteLength
-        );
 
         if (
             !audioData ||
@@ -2072,24 +2141,6 @@ function stopSpeaking() {
         currentAudioSource =
             null;
     }
-}
-
-
-/* =========================================================
-   LIMPIAR MARKDOWN VISUAL
-========================================================= */
-
-function cleanDisplayedText(text) {
-
-    if (
-        typeof text !== "string"
-    ) {
-        return "";
-    }
-
-    return text
-        .replace(/```[a-zA-Z0-9_-]*/g, "")
-        .trim();
 }
 
 
@@ -2482,11 +2533,6 @@ function addMessageToDOM(
         label
     );
 
-
-    /*
-       Imagen enviada.
-    */
-
     if (
         imageData &&
         typeof imageData === "string"
@@ -2514,15 +2560,6 @@ function addMessageToDOM(
         );
     }
 
-
-    /*
-       Limpiamos únicamente lo que se
-       muestra visualmente.
-       
-       El contenido original sigue guardado
-       y se sigue enviando al Worker.
-    */
-
     if (
         content &&
         content.trim()
@@ -2542,7 +2579,6 @@ function addMessageToDOM(
             text
         );
     }
-
 
     if (
         role === "assistant"
@@ -2650,6 +2686,34 @@ async function sendMessage() {
         conversation =
             getActiveConversation();
     }
+
+
+    /* =====================================================
+       COMANDOS SRH
+    ===================================================== */
+
+    if (
+        text &&
+        isSRHCommand(text) &&
+        !selectedFile
+    ) {
+
+        input.value =
+            "";
+
+        autoResize();
+
+        handleSRHCommand(
+            text,
+            conversation
+        );
+
+        lastInitiative =
+            Date.now();
+
+        return;
+    }
+
 
     isSending =
         true;
@@ -2759,6 +2823,24 @@ async function sendMessage() {
             .slice(-30);
 
 
+    /*
+       El usuario ve y guarda su mensaje normal.
+       Solamente el texto enviado al Worker recibe
+       la instrucción adicional cuando SRH está activo.
+    */
+
+    let workerMessage =
+        finalText;
+
+    if (srhMode) {
+
+        workerMessage =
+            SRH_INSTRUCTION +
+            "\n\n[INSTRUCCIÓN DEL USUARIO]\n" +
+            finalText;
+    }
+
+
     try {
 
         const response =
@@ -2778,7 +2860,7 @@ async function sendMessage() {
                         JSON.stringify({
 
                             message:
-                                finalText,
+                                workerMessage,
 
                             image:
                                 imageData,
